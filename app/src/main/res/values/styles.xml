@@ -1,0 +1,65 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <!-- App colors -->
+        <item name="colorPrimary">@color/ColorPrimary</item>
+        <item name="colorPrimaryDark">@color/ColorPrimaryDark</item>
+        <!-- FAB color -->
+        <item name="colorAccent">@color/ColorPrimary</item>
+        <!-- Navigation Drawer
+        <item name="android:statusBarColor">@android:color/transparent</item-->
+
+        <!-- Para poner la context action bar por encima de la toolbar: -->
+        <!-- Al usar AppCompatActivity no hay que poner android: adelante -->
+        <item name="windowActionModeOverlay">true</item>
+        <item name="actionModeStyle">@style/CustomActionMode</item>
+    </style>
+
+    <!-- Variant of {@link #AppTheme} with no title bar -->
+    <style name="AppTheme.Translucent.NoTitleBar" parent="AppTheme">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <!-- Note that we use the base animation style here (that is no
+             animations) because we really have no idea how this kind of
+             activity will be used. -->
+        <item name="android:windowAnimationStyle">@android:style/Animation</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowNoDisplay">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+    <!-- En teoria esto es para el picker de galería -->
+    <style name="GalleryPicker" parent="AppTheme">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:textColorPrimary">@color/ColorPrimaryLight</item>
+    </style>
+
+    <!-- Los colores de la action bar y sus elementos -->
+    <style name="Widget.Mascota.ActionBar" parent="Widget.AppCompat.ActionBar">
+        <item name="android:background">@color/ColorPrimary</item>
+        <item name="theme">@style/ThemeOverlay.Mascota.ActionBar</item>
+        <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+    </style>
+
+    <style name="ThemeOverlay.Mascota.ActionBar" parent="ThemeOverlay.AppCompat.ActionBar">
+        <item name="android:textColorPrimary">@color/ColorPrimaryLight</item>
+        <item name="android:textColorSecondary">@color/ColorPrimaryLight</item>
+    </style>
+
+    <!-- Contextual Action Bar Styling -->
+    <style name="CustomActionMode" parent="@style/Widget.AppCompat.ActionMode">
+        <item name="background">@color/ColorPrimary</item>
+    </style>
+
+    <style name="HorizontalDivider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_marginStart">8dp</item>
+        <item name="android:layout_marginEnd">8dp</item>
+        <item name="android:background">?android:attr/listDivider</item>
+    </style>
+</resources>

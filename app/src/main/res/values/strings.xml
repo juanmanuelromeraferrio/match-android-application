@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">Match</string>
+    <string name="google_api_key">AIzaSyA8SQnBoNts5HaBHUW0EiaAYqg0qrWe358</string>
+
+    <!-- Login -->
+    <string name="link_signup">¿Aún no estás registrado?</string>
+    <string name="email">Correo Electrónico</string>
+    <string name="password">Contraseña</string>
+    <string name="login">Iniciar Sesión</string>
+    <string name="error_email_login">ingrese un correo válido</string>
+    <string name="error_password_login">debe estar entre 4 y 10 caracteres</string>
+    <string name="loading_dialog_text">Cargando...</string>
+
+    <!-- Datos cuenta -->
+    <string name="title_activity_datos_cuenta">Nuevo Usuario</string>
+    <string name="name_label">Nombre</string>
+    <string name="crear_usuario_label">Crear usuario</string>
+    <string name="ya_tenes_usuario_link">¿Ya tenes un usuario? Inicia Sesión</string>
+
+    <string name="title_activity_home">Inicio</string>
+    <string name="action_logout">Cerrar Sesión</string>
+    <string name="configuracion">Configuración</string>
+
+    <string name="openDrawer">Abrir Menu</string>
+    <string name="closeDrawer">Cerrar Menu</string>
+
+    <string name="ERROR_NO_CONECTIVIDAD_MENSAJE">Asegúrate que estas conectado a un red WI-FI o a la red de tu celular e intenta de nuevo.</string>
+
+</resources>
