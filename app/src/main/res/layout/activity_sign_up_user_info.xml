@@ -32,6 +32,20 @@
                 android:hint="@string/address" />
         </android.support.design.widget.TextInputLayout>
 
+<!--        <ImageButton style="?android:attr/borderlessButtonStyle"
+            android:id="@+id/photo_picker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/view_margin"
+            android:layout_marginBottom="@dimen/view_margin"
+            android:maxHeight="128dp"
+            android:src="@drawable/matches_logo_pink"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:cropToPadding="true"
+            android:contentDescription="choose an avatar picture, this is the picture set for user by default."
+            android:onClick="startPhotoPicker" />-->
+
         <!-- Signup Button -->
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/btn_save"

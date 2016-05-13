@@ -113,8 +113,8 @@ public class LoginActivity extends AppCompatActivity {
 
     public boolean validate() {
         boolean valid = true;
-        valid |= validateEmail();
-        valid |= validatePassword();
+        valid &= validateEmail();
+        valid &= validatePassword();
         return valid;
     }
 
