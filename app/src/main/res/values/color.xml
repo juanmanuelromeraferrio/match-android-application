@@ -16,4 +16,9 @@
     <color name="black_trans80">#14000000</color>
     <color name="translucent_scrim_bottom">#88000000</color>
     <color name="translucent_scrim_bottom_center">#44000000</color>
+
+
+    <color name="ColorSecondary">#536DFE</color>
+    <color name="ColorSecondaryDark">#304FFE</color>
+    <color name="button_secondary_disable">#8C9EFF</color>
 </resources>
