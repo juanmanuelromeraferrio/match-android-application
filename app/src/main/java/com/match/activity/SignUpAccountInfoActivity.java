@@ -1,8 +1,8 @@
 package com.match.activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -14,6 +14,9 @@ import android.widget.Toast;
 import com.match.R;
 import com.match.client.entities.User;
 import com.match.error.ValidationError;
+import com.match.listener.ResultLoadingListener;
+import com.match.task.CreateUserTask;
+import com.match.task.TaskResponse;
 import com.match.utils.Parameters;
 import com.match.utils.Validator;
 import com.match.utils.WaitForInternet;
@@ -22,7 +25,7 @@ import com.match.utils.WaitForInternetCallback;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class SignUpAccountInfoActivity extends AppCompatActivity {
+public class SignUpAccountInfoActivity extends AppCompatActivity implements ResultLoadingListener {
 
     @InjectView(R.id.input_name)
     EditText _nameText;
@@ -38,6 +41,8 @@ public class SignUpAccountInfoActivity extends AppCompatActivity {
     Toolbar toolbar;
 
     private Validator validator;
+    private ProgressDialog progressDialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,9 +83,8 @@ public class SignUpAccountInfoActivity extends AppCompatActivity {
         _signupButton.setEnabled(true);
         User user = createUser();
 
-        Intent intent = new Intent(SignUpAccountInfoActivity.this, SignUpUserInfoActivity.class);
-        intent.putExtra(Parameters.USER.toString(), user);
-        startActivity(intent);
+        CreateUserTask task = new CreateUserTask(this);
+        task.execute(user);
     }
 
     public void onSignUpFailed() {
@@ -139,4 +143,30 @@ public class SignUpAccountInfoActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void show() {
+        progressDialog = ProgressDialog.show(SignUpAccountInfoActivity.this, "", getResources().getString(R.string.creating_user), true, false);
+        progressDialog.show();
+    }
+
+    @Override
+    public void dismiss() {
+        if (progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+    }
+
+    @Override
+    public void notifyResult(Object... params) {
+        TaskResponse taskResponse = (TaskResponse) params[0];
+        if (taskResponse.hasError()) {
+            Toast.makeText(getBaseContext(), taskResponse.getError(), Toast.LENGTH_SHORT).show();
+        } else {
+            User user = (User) taskResponse.getResponse();
+            Intent intent = new Intent(SignUpAccountInfoActivity.this, SignUpUserInfoActivity.class);
+            intent.putExtra(Parameters.USER.toString(), user);
+            startActivity(intent);
+        }
+
+    }
 }

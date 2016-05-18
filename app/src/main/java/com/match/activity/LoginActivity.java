@@ -11,12 +11,13 @@ import android.widget.TextView;
 
 import com.match.R;
 import com.match.error.ValidationError;
+import com.match.listener.ProgressDialogOperationListener;
 import com.match.utils.Validator;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements ProgressDialogOperationListener {
 
     private static final int REQUEST_SIGNUP = 0;
 
@@ -138,5 +139,15 @@ public class LoginActivity extends AppCompatActivity {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public void show() {
+
+    }
+
+    @Override
+    public void dismiss() {
+
     }
 }

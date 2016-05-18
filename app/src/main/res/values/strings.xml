@@ -37,5 +37,6 @@
     <string name="error_user_name">Ingrese un nombre de al menos %1$s letras.</string>
     <string name="error_mail">Ingrese un correo válido.</string>
     <string name="error_password">Debe estar entre %1$s y %2$s caracteres</string>
+    <string name="creating_user">Creando usuario ...</string>
 
 </resources>

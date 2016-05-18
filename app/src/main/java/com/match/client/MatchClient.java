@@ -1,6 +1,8 @@
 package com.match.client;
 
 import com.match.client.resources.Interests;
+import com.match.client.resources.Users;
+import com.match.utils.Configuration;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -12,19 +14,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class MatchClient {
 
-    private static final String DEFAULT_API_URL = "https://shared-server-match.herokuapp.com";
-
     public final Interests interests;
+    public final Users users;
+
 
     public MatchClient() {
-        final Retrofit retrofit = defaultRetrofit();
-        this.interests = retrofit.create(Interests.class);
-    }
-
-    private static Retrofit defaultRetrofit() {
-        return new Retrofit.Builder()
-                .baseUrl(DEFAULT_API_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        this.interests = ServiceGenerator.createDefaultService(Interests.class);
+        this.users = ServiceGenerator.createDefaultService(Users.class);
     }
 }

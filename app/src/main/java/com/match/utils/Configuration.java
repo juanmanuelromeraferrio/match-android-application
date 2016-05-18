@@ -5,17 +5,5 @@ package com.match.utils;
  */
 public class Configuration {
 
-    public static Boolean developmentMode = Boolean.FALSE;
-
-    public static void developmentModeEnable() {
-        developmentMode = Boolean.TRUE;
-    }
-
-    public static void developmentModeDisable() {
-        developmentMode = Boolean.FALSE;
-    }
-
-    public static boolean isDevelopmentMode() {
-        return developmentMode;
-    }
+    public static final String DEFAULT_API_URL = "https://shared-server-match.herokuapp.com";
 }

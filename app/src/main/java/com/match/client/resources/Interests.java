@@ -18,6 +18,6 @@ public interface Interests {
      * @return a list of {@link Interests}
      */
     @GET("/interests/")
-    public Call<InterestResponse> getInterestResponse();
+    Call<InterestResponse> getInterestResponse();
 
 }
