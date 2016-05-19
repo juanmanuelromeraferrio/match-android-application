@@ -39,4 +39,11 @@
     <string name="error_password">Debe estar entre %1$s y %2$s caracteres</string>
     <string name="creating_user">Creando usuario ...</string>
 
+    <string name="usuario_ya_registrado">El mail %1$s ya esta registrado con otro usuario</string>
+    <string name="foto">Foto</string>
+    <string name="ubicacion">Ubicacion</string>
+    <string name="subir_foto">Necesitamos una linda foto tuya!</string>
+    <string name="saving_user_info">Registrando datos de usuario ...</string>
+    <string name="usuario_no_registrado">El usuario %1$s no existe</string>
+
 </resources>

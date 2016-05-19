@@ -6,4 +6,5 @@ package com.match.utils;
 public class Configuration {
 
     public static final String DEFAULT_API_URL = "https://shared-server-match.herokuapp.com";
+    public static final long TOKEN_TIME_MS = 3600000; //1 hora
 }

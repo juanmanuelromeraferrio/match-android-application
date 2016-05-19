@@ -162,11 +162,8 @@ public class SignUpAccountInfoActivity extends AppCompatActivity implements Resu
         if (taskResponse.hasError()) {
             Toast.makeText(getBaseContext(), taskResponse.getError(), Toast.LENGTH_SHORT).show();
         } else {
-            User user = (User) taskResponse.getResponse();
             Intent intent = new Intent(SignUpAccountInfoActivity.this, SignUpUserInfoActivity.class);
-            intent.putExtra(Parameters.USER.toString(), user);
             startActivity(intent);
         }
-
     }
 }

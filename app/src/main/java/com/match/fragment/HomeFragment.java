@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 
 import com.match.R;
 import com.match.activity.LoginActivity;
+import com.match.service.factory.ServiceFactory;
 import com.parse.ParseUser;
 
 /**
@@ -62,6 +63,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void logout() {
+        ServiceFactory.getInstance().getUserService().logout();
         Intent intent = new Intent(activity, LoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);

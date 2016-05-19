@@ -61,6 +61,7 @@ dependencies {
     compile 'com.squareup.retrofit2:retrofit:2.0.2'
     compile 'com.squareup.retrofit2:converter-gson:2.0.2'
     compile group: 'com.sun.xml.security', name: 'xml-security-impl', version: '1.0'
+    compile 'com.google.code.gson:gson:2.5'
 
 
 }

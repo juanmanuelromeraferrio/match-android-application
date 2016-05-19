@@ -1,6 +1,7 @@
 package com.match.activity;
 
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -13,11 +14,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.match.R;
+import com.match.client.entities.User;
 import com.match.fragment.HomeFragment;
+import com.match.service.factory.ServiceFactory;
+import com.match.utils.PhotoUtils;
 import com.match.utils.WaitForInternet;
 import com.match.utils.WaitForInternetCallback;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -42,19 +49,7 @@ public class HomeActivity extends AppCompatActivity {
                 tx.replace(R.id.frame, fragment);
                 tx.commit();
 
-
-                // Fill user information in header.
-/*                CircleImageView imageProfileView = (CircleImageView) findViewById(R.id.profile_image);
-                imageProfileView.setImageResource(R.drawable.user_male);*/
-
-/*
-                TextView userName = (TextView) findViewById(R.id.username);
-                userName.setText(user.getName());
-
-                TextView email = (TextView) findViewById(R.id.email);
-                if (user.getEmail() != null) {
-                    email.setText(user.getEmail());
-                }*/
+                createProfileInfo();
 
                 navigationView = (NavigationView) findViewById(R.id.navigation_view);
                 navigationView.setCheckedItem(R.id.drawer_home);
@@ -84,6 +79,28 @@ public class HomeActivity extends AppCompatActivity {
             }
         };
         WaitForInternet.setCallback(callback);
+    }
+
+    private void createProfileInfo() {
+        User localUser = ServiceFactory.getInstance().getUserService().getLocalUser();
+        String photo = localUser.getPhoto();
+
+        if (photo != null) {
+            Bitmap photoBitmap = PhotoUtils.base64ToBitmap(localUser.getPhoto());
+
+            // Fill user information in header.
+            CircleImageView imageProfileView = (CircleImageView) findViewById(R.id.profile_image);
+            imageProfileView.setImageBitmap(photoBitmap);
+        }
+
+
+        TextView userName = (TextView) findViewById(R.id.username);
+        userName.setText(localUser.getName());
+
+        TextView email = (TextView) findViewById(R.id.email);
+        if (localUser.getEmail() != null) {
+            email.setText(localUser.getEmail());
+        }
     }
 
     private boolean selectFragment(MenuItem menuItem) {

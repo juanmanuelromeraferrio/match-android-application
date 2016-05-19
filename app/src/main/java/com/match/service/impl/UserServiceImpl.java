@@ -4,6 +4,7 @@ import com.match.client.MatchClient;
 import com.match.client.MatchUser;
 import com.match.client.entities.Token;
 import com.match.client.entities.User;
+import com.match.client.entities.request.UserRequest;
 import com.match.error.service.APIError;
 import com.match.error.service.ServiceException;
 import com.match.listener.ProgressDialogOperationListener;
@@ -20,23 +21,22 @@ import retrofit2.Response;
  */
 public class UserServiceImpl extends UserService {
 
-
-    private Token token;
     private MatchClient matchClient;
-    private MatchUser matchUser;
-    private ProgressDialogOperationListener listener;
 
     public UserServiceImpl() {
+        super();
         matchClient = new MatchClient();
     }
 
     @Override
     public void createUser(User user) throws ServiceException {
-        Call<Token> call = matchClient.users.createUser(user);
+        Call<Token> call = matchClient.users.createUser(new UserRequest(user));
         try {
             Response<Token> response = call.execute();
             if (response.isSuccessful()) {
-                token = response.body();
+                Token token = response.body();
+                this.db.setUser(user);
+                this.db.setToken(token);
             } else {
                 APIError error = ErrorUtils.parseError(response);
                 throw new ServiceException(error.getData());
