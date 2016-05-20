@@ -5,7 +5,9 @@ import com.match.R;
 import com.match.client.entities.Token;
 import com.match.client.entities.User;
 import com.match.error.service.ServiceException;
+import com.match.infrastructure.Database;
 import com.match.service.api.UserService;
+import com.match.utils.Configuration;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,8 +19,8 @@ public class UserServiceMock extends UserService {
 
     private Map<String, User> users = new HashMap<>();
 
-    public UserServiceMock() {
-        super();
+    public UserServiceMock(Database database) {
+        super(database);
     }
 
     @Override
@@ -32,13 +34,28 @@ public class UserServiceMock extends UserService {
 
     @Override
     public void updateUser(User user) throws ServiceException {
-        String userID = this.db.getToken().getUserID();
+        String userID = this.database.getToken().getUserID();
         if (users.containsKey(userID)) {
             saveUser(userID, user);
         } else {
             String errorMessage = MatchApplication.getContext().getResources().getString(R.string.usuario_no_registrado, user.getName());
             throw new ServiceException(errorMessage);
         }
+    }
+
+    @Override
+    public boolean isUserLogged(User user) throws ServiceException {
+        Token token = database.getToken();
+        if (token != null) {
+            long createdAt = new Long(token.getCreatedAt()).longValue();
+            long diff = System.currentTimeMillis() - createdAt;
+            if (diff > Configuration.TOKEN_TIME_MS) {
+                return false;
+            }
+            return true;
+        }
+
+        return false;
     }
 
     private boolean userExists(User user) {
@@ -59,7 +76,7 @@ public class UserServiceMock extends UserService {
 
     private void saveUser(String userID, User user) {
         users.put(userID, user);
-        db.setUser(user);
-        db.setToken(new Token("", userID, System.currentTimeMillis() + ""));
+        database.setUser(user);
+        database.setToken(new Token("", userID, System.currentTimeMillis() + ""));
     }
 }

@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    tools:context="com.match.activity.SignUpUserInfoActivity">
+    tools:context="com.match.activity.register.RegisterUserActivity">
 
     <include
         android:id="@+id/toolbar"
@@ -34,6 +34,10 @@
                     android:id="@+id/addLocation"
                     layout="@layout/card_add_address_profile" />
 
+                <include
+                    android:id="@+id/addLocation"
+                    layout="@layout/card_add_interests" />
+
                 <!-- Signup Button -->
                 <android.support.v7.widget.AppCompatButton
                     android:id="@+id/btn_save"
@@ -44,6 +48,7 @@
                     android:layout_marginTop="24dp"
                     android:layout_marginRight="24dp"
                     android:layout_marginLeft="24dp"
+                    android:onClick="saveUser"
                     android:padding="12dp"
                     android:text="@string/sign_up" />
             </LinearLayout>

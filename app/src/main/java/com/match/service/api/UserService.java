@@ -1,10 +1,8 @@
 package com.match.service.api;
 
-import com.match.client.entities.Token;
 import com.match.client.entities.User;
 import com.match.error.service.ServiceException;
-import com.match.infrastructure.MatchDB;
-import com.match.utils.Configuration;
+import com.match.infrastructure.Database;
 
 /**
  * Created by Juan Manuel Romera on 16/5/2016.
@@ -13,10 +11,10 @@ import com.match.utils.Configuration;
  */
 public abstract class UserService implements MatchService {
 
-    protected MatchDB db;
+    protected Database database;
 
-    protected UserService() {
-        db = new MatchDB();
+    protected UserService(Database database) {
+        this.database = database;
     }
 
     /**
@@ -31,35 +29,23 @@ public abstract class UserService implements MatchService {
 
     public abstract void updateUser(User user) throws ServiceException;
 
+    public abstract boolean isUserLogged(User user) throws ServiceException;
+
     public User getLocalUser() {
-        return db.getUser();
+        return database.getUser();
     }
 
     public ServiceType getType() {
         return ServiceType.USER;
     }
 
-    public boolean isUserLogged() {
-        Token token = db.getToken();
-        if (token != null) {
-            long createdAt = new Long(token.getCreatedAt()).longValue();
-            long diff = System.currentTimeMillis() - createdAt;
-            if (diff > Configuration.TOKEN_TIME_MS) {
-                return false;
-            }
-            return true;
-        }
-
-        return false;
-    }
-
     public boolean hasSavedInformation() {
-        User user = db.getUser();
+        User user = database.getUser();
         return !user.getLocation().isDefault();
     }
 
     public void logout() {
-        db.setUser(null);
-        db.setToken(null);
+        database.setUser(null);
+        database.setToken(null);
     }
 }

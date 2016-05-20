@@ -1,4 +1,4 @@
-package com.match.activity;
+package com.match.activity.register;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -15,9 +15,10 @@ import com.match.R;
 import com.match.client.entities.User;
 import com.match.error.ValidationError;
 import com.match.listener.ResultLoadingListener;
+import com.match.service.api.UserService;
+import com.match.service.factory.ServiceFactory;
 import com.match.task.CreateUserTask;
 import com.match.task.TaskResponse;
-import com.match.utils.Parameters;
 import com.match.utils.Validator;
 import com.match.utils.WaitForInternet;
 import com.match.utils.WaitForInternetCallback;
@@ -25,7 +26,7 @@ import com.match.utils.WaitForInternetCallback;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class SignUpAccountInfoActivity extends AppCompatActivity implements ResultLoadingListener {
+public class RegistarAccountActivity extends AppCompatActivity implements ResultLoadingListener {
 
     @InjectView(R.id.input_name)
     EditText _nameText;
@@ -50,7 +51,7 @@ public class SignUpAccountInfoActivity extends AppCompatActivity implements Resu
         this.validator = new Validator(this);
         WaitForInternetCallback callback = new WaitForInternetCallback(this) {
             public void onConnectionSuccess() {
-                setContentView(R.layout.activity_sign_up_account_info);
+                setContentView(R.layout.activity_register_account);
                 ButterKnife.inject(mActivity);
 
                 setSupportActionBar(toolbar);
@@ -83,7 +84,8 @@ public class SignUpAccountInfoActivity extends AppCompatActivity implements Resu
         _signupButton.setEnabled(true);
         User user = createUser();
 
-        CreateUserTask task = new CreateUserTask(this);
+        UserService userService = ServiceFactory.getUserService();
+        CreateUserTask task = new CreateUserTask(userService, this);
         task.execute(user);
     }
 
@@ -145,7 +147,7 @@ public class SignUpAccountInfoActivity extends AppCompatActivity implements Resu
 
     @Override
     public void show() {
-        progressDialog = ProgressDialog.show(SignUpAccountInfoActivity.this, "", getResources().getString(R.string.creating_user), true, false);
+        progressDialog = ProgressDialog.show(RegistarAccountActivity.this, "", getResources().getString(R.string.creating_user), true, false);
         progressDialog.show();
     }
 
@@ -162,7 +164,7 @@ public class SignUpAccountInfoActivity extends AppCompatActivity implements Resu
         if (taskResponse.hasError()) {
             Toast.makeText(getBaseContext(), taskResponse.getError(), Toast.LENGTH_SHORT).show();
         } else {
-            Intent intent = new Intent(SignUpAccountInfoActivity.this, SignUpUserInfoActivity.class);
+            Intent intent = new Intent(RegistarAccountActivity.this, RegisterUserActivity.class);
             startActivity(intent);
         }
     }

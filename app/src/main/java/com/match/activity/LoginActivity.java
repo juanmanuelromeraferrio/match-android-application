@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.match.R;
+import com.match.activity.register.RegistarAccountActivity;
 import com.match.error.ValidationError;
 import com.match.listener.ProgressDialogOperationListener;
 import com.match.utils.Validator;
@@ -87,7 +88,7 @@ public class LoginActivity extends AppCompatActivity implements ProgressDialogOp
     }
 
     private void signUp() {
-        Intent intent = new Intent(LoginActivity.this, SignUpAccountInfoActivity.class);
+        Intent intent = new Intent(LoginActivity.this, RegistarAccountActivity.class);
         startActivityForResult(intent, REQUEST_SIGNUP);
     }
 

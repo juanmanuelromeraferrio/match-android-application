@@ -50,6 +50,7 @@
                 android:layout_width="112dp"
                 android:layout_height="112dp"
                 android:layout_gravity="center"
+                android:onClick="pickImage"
                 android:background="@drawable/profile" />
 
 

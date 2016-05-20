@@ -4,6 +4,8 @@ import android.app.Application;
 import android.content.Context;
 
 import com.match.client.MatchClient;
+import com.match.infrastructure.Database;
+import com.match.infrastructure.MatchDatabase;
 import com.match.service.api.Services;
 import com.match.service.factory.ServiceFactory;
 
@@ -18,8 +20,12 @@ public class MatchApplication extends Application {
     public void onCreate() {
         super.onCreate();
         mContext = this;
+        initConfiguration();
+    }
 
-        ServiceFactory.init(Services.MOCK);
+    private void initConfiguration() {
+        Database database = new MatchDatabase();
+        ServiceFactory.init(Services.MOCK, database);
     }
 
     public static Context getContext() {

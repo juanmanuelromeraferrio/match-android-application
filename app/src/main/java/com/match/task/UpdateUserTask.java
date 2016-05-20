@@ -17,8 +17,10 @@ import com.match.utils.PhotoUtils;
 public class UpdateUserTask extends AsyncTask<Object, Void, TaskResponse> {
 
     private ResultLoadingListener listener;
+    private UserService userService;
 
-    public UpdateUserTask(ResultLoadingListener listener) {
+    public UpdateUserTask(UserService userService, ResultLoadingListener listener) {
+        this.userService = userService;
         this.listener = listener;
     }
 
@@ -30,8 +32,6 @@ public class UpdateUserTask extends AsyncTask<Object, Void, TaskResponse> {
 
     @Override
     protected TaskResponse doInBackground(Object... params) {
-        UserService userService = ServiceFactory.getInstance().getUserService();
-
         Location location = (Location) params[0];
         Bitmap bitmap = (Bitmap) params[1];
 

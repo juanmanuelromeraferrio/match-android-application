@@ -82,7 +82,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void createProfileInfo() {
-        User localUser = ServiceFactory.getInstance().getUserService().getLocalUser();
+        User localUser = ServiceFactory.getUserService().getLocalUser();
         String photo = localUser.getPhoto();
 
         if (photo != null) {

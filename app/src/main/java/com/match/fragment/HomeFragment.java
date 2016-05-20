@@ -63,7 +63,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void logout() {
-        ServiceFactory.getInstance().getUserService().logout();
+        ServiceFactory.getUserService().logout();
         Intent intent = new Intent(activity, LoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);

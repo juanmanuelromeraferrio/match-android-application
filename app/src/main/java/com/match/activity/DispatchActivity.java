@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.match.client.entities.User;
+import com.match.error.service.ServiceException;
 import com.match.service.api.UserService;
 import com.match.service.factory.ServiceFactory;
 import com.match.utils.WaitForInternet;
@@ -23,15 +24,20 @@ public class DispatchActivity extends AppCompatActivity {
 
         WaitForInternetCallback callback = new WaitForInternetCallback(this) {
             public void onConnectionSuccess() {
-                UserService userService = ServiceFactory.getInstance().getUserService();
-                if (userService.isUserLogged()) {
-                    if (userService.hasSavedInformation()) {
-                        startActivity(new Intent(mActivity, HomeActivity.class));
+                UserService userService = ServiceFactory.getUserService();
+                User localUser = userService.getLocalUser();
+                try {
+                    if (userService.isUserLogged(localUser)) {
+                        if (userService.hasSavedInformation()) {
+                            startActivity(new Intent(mActivity, HomeActivity.class));
+                        } else {
+                            startActivity(new Intent(mActivity, LoginActivity.class));
+                        }
                     } else {
                         startActivity(new Intent(mActivity, LoginActivity.class));
                     }
-                } else {
-                    startActivity(new Intent(mActivity, LoginActivity.class));
+                } catch (ServiceException e) {
+                    e.printStackTrace();
                 }
             }
         };

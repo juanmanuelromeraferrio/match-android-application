@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    tools:context="com.match.activity.SignUpAccountInfoActivity">
+    tools:context="com.match.activity.register.RegistarAccountActivity">
 
     <include
         android:id="@+id/toolbar"

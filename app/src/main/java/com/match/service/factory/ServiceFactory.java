@@ -1,5 +1,6 @@
 package com.match.service.factory;
 
+import com.match.infrastructure.Database;
 import com.match.service.api.MatchService;
 import com.match.service.api.ServiceType;
 import com.match.service.api.Services;
@@ -15,46 +16,34 @@ import java.util.Map;
  */
 public class ServiceFactory {
 
-    private static ServiceFactory instance = null;
-    private Map<ServiceType, MatchService> services = new HashMap<>();
+    private static Map<ServiceType, MatchService> services = new HashMap<>();
 
-    private ServiceFactory(Services type) {
-        buildServices(type);
+    private ServiceFactory() {
     }
 
-    public static ServiceFactory getInstance() {
-        if (instance == null) {
-            throw new IllegalAccessError();
-        }
-        return instance;
+    public static void init(Services type, Database database) {
+        buildServices(type, database);
     }
 
-    public static ServiceFactory init(Services type) {
-        if (instance == null) {
-            instance = new ServiceFactory(type);
-        }
-        return instance;
-    }
-
-    public void buildServices(Services type) {
+    private static void buildServices(Services type, Database database) {
         if (type.equals(Services.REAL)) {
-            buildRealServices();
+            buildRealServices(database);
         } else {
-            buildMockServices();
+            buildMockServices(database);
         }
     }
 
-    private void buildRealServices() {
-        UserService userService = new UserServiceImpl();
+    private static void buildRealServices(Database database) {
+        UserService userService = new UserServiceImpl(database);
         services.put(userService.getType(), userService);
     }
 
-    private void buildMockServices() {
-        UserService userService = new UserServiceMock();
+    private static void buildMockServices(Database database) {
+        UserService userService = new UserServiceMock(database);
         services.put(userService.getType(), userService);
     }
 
-    public UserService getUserService() {
+    public static UserService getUserService() {
         return (UserService) services.get(ServiceType.USER);
     }
 }
