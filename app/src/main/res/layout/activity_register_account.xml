@@ -69,13 +69,5 @@
             android:padding="12dp"
             android:text="@string/crear_usuario_label"/>
 
-        <TextView android:id="@+id/link_login"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            android:text="@string/ya_tenes_usuario_link"
-            android:gravity="center"
-            android:textSize="16dip"/>
-
     </LinearLayout>
 </LinearLayout>

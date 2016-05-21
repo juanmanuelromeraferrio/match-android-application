@@ -1,23 +1,17 @@
 package com.match.activity.register;
 
-import android.location.Geocoder;
-import android.widget.AdapterView;
+import android.graphics.Bitmap;
 
-import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.PlaceBuffer;
-import com.google.android.gms.location.places.Places;
+import com.match.client.entities.Interest;
 import com.match.client.entities.Location;
-import com.match.infrastructure.PlaceAutoCompleteAdapter;
+import com.match.service.api.InterestService;
 import com.match.service.api.UserService;
 import com.match.service.factory.ServiceFactory;
+import com.match.task.TaskResponse;
 import com.match.task.UpdateUserTask;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -25,103 +19,74 @@ import java.util.Map;
  */
 public class RegisterUserControllerImpl implements RegisterUserController {
 
-    private final RegisterUserActivity activity;
+    private static final boolean LOCAL_INTERESTS = true;
 
-    public RegisterUserControllerImpl(RegisterUserActivity activity) {
-        this.activity = activity;
+    private RegisterUserView view;
+    private UserService userService;
+    private InterestService interestService;
+
+    public RegisterUserControllerImpl(RegisterUserView view) {
+        this.view = view;
+        this.userService = ServiceFactory.getUserService();
+        this.interestService = ServiceFactory.getInterestService();
     }
 
     @Override
-    public void onSaveUserButtonClicked() {
-        if (!validate()) {
-            activity.onError();
-            return;
-        } else {
-            activity.onSuccess();
+    public void saveUser(Bitmap photo, Location address, List<Interest> interests) {
+        boolean hasInputDataErrors = hasInputDataErrors(photo, address);
+        if (!hasInputDataErrors) {
+            UpdateUserTask task = new UpdateUserTask(userService, this);
+            task.execute(address, photo, interests);
+        }
+    }
+
+    private boolean hasInputDataErrors(Bitmap photo, Location address) {
+        boolean errors = false;
+
+        if (photo == null) {
+            view.setPhotoError();
+            errors = true;
         }
 
-        createUser();
-    }
-
-    @Override
-    public void onSelectedCategoryItem(AdapterView<?> adapter, int position) {
-        String category = adapter.getItemAtPosition(position).toString();
-        activity.updateInterestValues(category);
-    }
-
-    @Override
-    public void onAddInterestButtonClicked() {
-        String interest = activity.getSelectedInterest();
-        activity.addInterest(interest);
-    }
-
-    @Override
-    public void onInterestItemClicked(int position) {
-        String interest = activity.getInterestItem(position);
-        activity.removeInterest(interest);
-    }
-
-    @Override
-    public void onLocationItemClicked(int position) {
-        final PlaceAutoCompleteAdapter.PlaceAutocomplete item = activity.getLocationAdapter().getItem(position);
-        final String placeId = String.valueOf(item.placeId);
-        PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi
-                .getPlaceById(activity.getGoogleApiClient(), placeId);
-
-        placeResult.setResultCallback(new ResultCallback<PlaceBuffer>() {
-            @Override
-            public void onResult(PlaceBuffer places) {
-                if (!places.getStatus().isSuccess()) {
-                    places.release();
-                    activity.setLocation(null);
-                    return;
-                }
-                final Place place = places.get(0);
-                Geocoder gcd = new Geocoder(activity.getBaseContext(), Locale.getDefault());
-
-                double longitude = place.getLatLng().longitude;
-                double latitude = place.getLatLng().latitude;
-
-                Location location = new Location(latitude, longitude);
-                activity.setLocation(location);
-                places.release();
-            }
-        });
-    }
-
-    private boolean validate() {
-        boolean valid = true;
-        Location location = activity.getLocation();
-        if (location == null) {
-            activity.setLocationError();
-            valid = false;
-        } else {
-            activity.removeLocationError();
+        if (address == null) {
+            view.setLocationError();
+            errors = true;
         }
-        return valid;
+
+        return errors;
     }
 
-    private void createUser() {
-        UserService userService = ServiceFactory.getUserService();
-        UpdateUserTask task = new UpdateUserTask(userService, activity);
-        task.execute(activity.getLocation(), activity.getPhoto());
+    @Override
+    public List<String> getCategories() {
+        return new ArrayList<>(getInterests().keySet());
     }
 
+    @Override
+    public List<String> getInterestValues(String category) {
+        return getInterests().get(category);
+    }
 
-    public Map<String, List<String>> getInterests() {
-        Map<String, List<String>> interests = new HashMap<>();
-        List<String> bands = new ArrayList<String>();
-        bands.add("The Beatles");
-        bands.add("The Who");
+    private Map<String, List<String>> getInterests() {
+        return interestService.getInterests(LOCAL_INTERESTS);
+    }
 
-        List<String> clubs = new ArrayList<String>();
-        clubs.add("Independiente");
-        clubs.add("Boca Juniors");
+    @Override
+    public void initTask() {
+        view.showProgress();
+    }
 
-        interests.put("Bandas", bands);
-        interests.put("Clubs", clubs);
+    @Override
+    public void finishTask() {
+        view.hideProgress();
+    }
 
-        return interests;
-
+    @Override
+    public void onResult(Object result) {
+        TaskResponse response = (TaskResponse) result;
+        if (response.hasError()) {
+            view.onError(response.getError());
+        } else {
+            view.goToNext();
+        }
     }
 }

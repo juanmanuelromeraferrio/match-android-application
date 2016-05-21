@@ -54,4 +54,9 @@ public class UserServiceImpl extends UserService {
     public boolean isUserLogged(User user) throws ServiceException {
         return false;
     }
+
+    @Override
+    public void loginUser(String email, String password) throws ServiceException {
+
+    }
 }

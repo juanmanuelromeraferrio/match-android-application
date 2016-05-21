@@ -1,5 +1,5 @@
 
-package com.match.infrastructure;
+package com.match.infrastructure.adpater;
 
 import android.content.Context;
 import android.widget.ArrayAdapter;

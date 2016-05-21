@@ -1,6 +1,7 @@
 package com.match.activity.register;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -8,25 +9,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.match.R;
-import com.match.client.entities.User;
-import com.match.error.ValidationError;
-import com.match.listener.ResultLoadingListener;
-import com.match.service.api.UserService;
-import com.match.service.factory.ServiceFactory;
-import com.match.task.CreateUserTask;
-import com.match.task.TaskResponse;
 import com.match.utils.Validator;
-import com.match.utils.WaitForInternet;
-import com.match.utils.WaitForInternetCallback;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class RegistarAccountActivity extends AppCompatActivity implements ResultLoadingListener {
+public class RegistarAccountActivity extends AppCompatActivity implements RegisterAccountView {
 
     @InjectView(R.id.input_name)
     EditText _nameText;
@@ -36,136 +27,89 @@ public class RegistarAccountActivity extends AppCompatActivity implements Result
     EditText _passwordText;
     @InjectView(R.id.btn_signup)
     Button _signupButton;
-    @InjectView(R.id.link_login)
-    TextView _loginLink;
     @InjectView(R.id.toolbar)
     Toolbar toolbar;
 
-    private Validator validator;
     private ProgressDialog progressDialog;
+    private RegisterAccountController controller;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.validator = new Validator(this);
-        WaitForInternetCallback callback = new WaitForInternetCallback(this) {
-            public void onConnectionSuccess() {
-                setContentView(R.layout.activity_register_account);
-                ButterKnife.inject(mActivity);
+        setContentView(R.layout.activity_register_account);
+        ButterKnife.inject(this);
 
-                setSupportActionBar(toolbar);
-                getSupportActionBar().setTitle(getResources().getString(R.string.title_activity_sign_up_account_info));
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(getResources().getString(R.string.title_activity_sign_up_account_info));
 
-                _signupButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        signUp();
-                    }
-                });
+        controller = new RegisterAccountControllerImpl(this);
 
-                _loginLink.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        finish();
-                    }
-                });
+        _signupButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                signUp();
             }
-        };
-        WaitForInternet.setCallback(callback);
+        });
     }
 
     public void signUp() {
 
-        if (!validate()) {
-            onSignUpFailed();
-            return;
-        }
-        _signupButton.setEnabled(true);
-        User user = createUser();
-
-        UserService userService = ServiceFactory.getUserService();
-        CreateUserTask task = new CreateUserTask(userService, this);
-        task.execute(user);
-    }
-
-    public void onSignUpFailed() {
-        Toast.makeText(getBaseContext(), R.string.error_activity_sign_up, Toast.LENGTH_LONG).show();
-        _signupButton.setEnabled(true);
-    }
-
-    public boolean validate() {
-        boolean valid = true;
-        valid &= validateUserName();
-        valid &= validateEmail();
-        valid &= validatePassword();
-        return valid;
-    }
-
-
-    private boolean validateUserName() {
-        String userName = _nameText.getText().toString();
-        try {
-            this.validator.validateUserName(userName);
-        } catch (ValidationError validationError) {
-            _nameText.setError(validationError.getMessage());
-            return false;
-        }
-        return true;
-    }
-
-    private boolean validateEmail() {
-        String email = _emailText.getText().toString();
-        try {
-            this.validator.validateEmail(email);
-        } catch (ValidationError validationError) {
-            _emailText.setError(validationError.getMessage());
-            return false;
-        }
-        return true;
-    }
-
-    private boolean validatePassword() {
-        String password = _passwordText.getText().toString();
-        try {
-            this.validator.validatePassword(password);
-        } catch (ValidationError validationError) {
-            _passwordText.setError(validationError.getMessage());
-            return false;
-        }
-        return true;
-    }
-
-    private User createUser() {
         String name = _nameText.getText().toString();
         String email = _emailText.getText().toString();
         String password = _passwordText.getText().toString();
 
-        return new User(name, email, password);
+        clearErrors();
+        controller.registerUser(name, email, password);
     }
 
+    private void clearErrors() {
+        this._nameText.setError(null);
+        this._emailText.setError(null);
+        this._passwordText.setError(null);
+    }
 
     @Override
-    public void show() {
+    public void setNameError() {
+        this._nameText.setError(getBaseContext().getResources().getString(R.string.error_user_name, Validator.MIN_LENGTH_USER_NAME));
+    }
+
+    @Override
+    public void setEmailError() {
+        this._emailText.setError(getBaseContext().getResources().getString(R.string.error_mail));
+    }
+
+    @Override
+    public void setPasswordError() {
+        this._passwordText.setError(getBaseContext().getResources().getString(R.string.error_password, Validator.MIN_LENGTH_PASSWORD, Validator.MAX_LENGTH_PASSWORD));
+    }
+
+    @Override
+    public void onError(String errorMsg) {
+        Toast.makeText(getBaseContext(), errorMsg, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showProgress() {
         progressDialog = ProgressDialog.show(RegistarAccountActivity.this, "", getResources().getString(R.string.creating_user), true, false);
         progressDialog.show();
     }
 
     @Override
-    public void dismiss() {
+    public void hideProgress() {
         if (progressDialog.isShowing()) {
             progressDialog.dismiss();
         }
     }
 
     @Override
-    public void notifyResult(Object... params) {
-        TaskResponse taskResponse = (TaskResponse) params[0];
-        if (taskResponse.hasError()) {
-            Toast.makeText(getBaseContext(), taskResponse.getError(), Toast.LENGTH_SHORT).show();
-        } else {
-            Intent intent = new Intent(RegistarAccountActivity.this, RegisterUserActivity.class);
-            startActivity(intent);
-        }
+    public void goToNext() {
+        Intent intent = new Intent(RegistarAccountActivity.this, RegisterUserActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public Context getContext() {
+        return this;
     }
 }

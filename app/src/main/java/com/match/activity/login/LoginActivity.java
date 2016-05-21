@@ -1,6 +1,7 @@
-package com.match.activity;
+package com.match.activity.login;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -8,17 +9,18 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.match.R;
+import com.match.activity.HomeActivity;
 import com.match.activity.register.RegistarAccountActivity;
-import com.match.error.ValidationError;
-import com.match.listener.ProgressDialogOperationListener;
+import com.match.activity.register.RegisterUserActivity;
 import com.match.utils.Validator;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class LoginActivity extends AppCompatActivity implements ProgressDialogOperationListener {
+public class LoginActivity extends AppCompatActivity implements LoginView {
 
     private static final int REQUEST_SIGNUP = 0;
 
@@ -33,7 +35,9 @@ public class LoginActivity extends AppCompatActivity implements ProgressDialogOp
     @InjectView(R.id.link_forget_password)
     TextView _forgetPassword;
 
-    private Validator validator;
+    private ProgressDialog progressDialog;
+    private LoginController controller;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -41,7 +45,7 @@ public class LoginActivity extends AppCompatActivity implements ProgressDialogOp
         setContentView(R.layout.activity_login);
         ButterKnife.inject(this);
 
-        validator = new Validator(this);
+        controller = new LoginControllerImpl(this);
 
         _loginButton.setOnClickListener(new View.OnClickListener() {
 
@@ -57,39 +61,27 @@ public class LoginActivity extends AppCompatActivity implements ProgressDialogOp
                 signUp();
             }
         });
-
         _forgetPassword.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                // Start the Signup activity
-/*                Intent intent = new Intent(getApplicationContext(), RegistrarDatosCuentaActivity.class);
-                startActivityForResult(intent, REQUEST_SIGNUP);*/
+                forgetPassword();
             }
         });
     }
 
-
     private void login() {
-
-        if (!validate()) {
-            return;
-        }
-
-        final ProgressDialog progressDialog = ProgressDialog.show(LoginActivity.this, "", "Iniciando Sesión...", true, false);
-
         String email = _emailText.getText().toString();
         String password = _passwordText.getText().toString();
-
-        //Valid Passwords
-        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
+        controller.loginUser(email, password);
     }
 
     private void signUp() {
         Intent intent = new Intent(LoginActivity.this, RegistarAccountActivity.class);
         startActivityForResult(intent, REQUEST_SIGNUP);
+    }
+
+    private void forgetPassword() {
     }
 
 
@@ -108,47 +100,50 @@ public class LoginActivity extends AppCompatActivity implements ProgressDialogOp
         moveTaskToBack(true);
     }
 
-    public void onLoginSuccess() {
-        _loginButton.setEnabled(true);
-        finish();
-    }
-
-    public boolean validate() {
-        boolean valid = true;
-        valid &= validateEmail();
-        valid &= validatePassword();
-        return valid;
-    }
-
-    private boolean validateEmail() {
-        String email = _emailText.getText().toString();
-        try {
-            this.validator.validateEmail(email);
-        } catch (ValidationError validationError) {
-            _emailText.setError(validationError.getMessage());
-            return false;
-        }
-        return true;
-    }
-
-    private boolean validatePassword() {
-        String password = _passwordText.getText().toString();
-        try {
-            this.validator.validatePassword(password);
-        } catch (ValidationError validationError) {
-            _passwordText.setError(validationError.getMessage());
-            return false;
-        }
-        return true;
+    @Override
+    public void setEmailError() {
+        this._emailText.setError(getBaseContext().getResources().getString(R.string.error_mail));
     }
 
     @Override
-    public void show() {
+    public void setPasswordError() {
+        this._passwordText.setError(getBaseContext().getResources().getString(R.string.error_password, Validator.MIN_LENGTH_PASSWORD, Validator.MAX_LENGTH_PASSWORD));
+    }
+
+
+    @Override
+    public void onError(String errorMsg) {
+        Toast.makeText(getBaseContext(), errorMsg, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showProgress() {
+        progressDialog = ProgressDialog.show(LoginActivity.this, "", "Iniciando Sesión...", true, false);
+        progressDialog.show();
 
     }
 
     @Override
-    public void dismiss() {
+    public void hideProgress() {
+        if (progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+    }
 
+    @Override
+    public void goToNext() {
+        Intent intent = null;
+        if (controller.userHasSavedInformation()) {
+            intent = new Intent(LoginActivity.this, HomeActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        } else {
+            intent = new Intent(LoginActivity.this, RegisterUserActivity.class);
+        }
+        startActivity(intent);
+    }
+
+    @Override
+    public Context getContext() {
+        return this;
     }
 }

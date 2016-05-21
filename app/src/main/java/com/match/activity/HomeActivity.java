@@ -21,8 +21,6 @@ import com.match.client.entities.User;
 import com.match.fragment.HomeFragment;
 import com.match.service.factory.ServiceFactory;
 import com.match.utils.PhotoUtils;
-import com.match.utils.WaitForInternet;
-import com.match.utils.WaitForInternetCallback;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -36,49 +34,43 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_home);
 
-        WaitForInternetCallback callback = new WaitForInternetCallback(this) {
-            public void onConnectionSuccess() {
-                setContentView(R.layout.activity_home);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-                toolbar = (Toolbar) findViewById(R.id.toolbar);
-                setSupportActionBar(toolbar);
+        FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
+        Fragment fragment = new HomeFragment();
+        tx.replace(R.id.frame, fragment);
+        tx.commit();
 
-                FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
-                Fragment fragment = new HomeFragment();
-                tx.replace(R.id.frame, fragment);
-                tx.commit();
+        createProfileInfo();
 
-                createProfileInfo();
+        navigationView = (NavigationView) findViewById(R.id.navigation_view);
+        navigationView.setCheckedItem(R.id.drawer_home);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+                menuItem.setChecked(true);
+                drawerLayout.closeDrawers();
+                return selectFragment(menuItem);
+            }
+        });
 
-                navigationView = (NavigationView) findViewById(R.id.navigation_view);
-                navigationView.setCheckedItem(R.id.drawer_home);
-                navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(MenuItem menuItem) {
-                        menuItem.setChecked(true);
-                        drawerLayout.closeDrawers();
-                        return selectFragment(menuItem);
-                    }
-                });
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
+        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.openDrawer, R.string.closeDrawer) {
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+            }
 
-                drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
-                ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(mActivity, drawerLayout, toolbar, R.string.openDrawer, R.string.closeDrawer) {
-                    @Override
-                    public void onDrawerClosed(View drawerView) {
-                        super.onDrawerClosed(drawerView);
-                    }
-
-                    @Override
-                    public void onDrawerOpened(View drawerView) {
-                        super.onDrawerOpened(drawerView);
-                    }
-                };
-                drawerLayout.setDrawerListener(actionBarDrawerToggle);
-                actionBarDrawerToggle.syncState();
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
             }
         };
-        WaitForInternet.setCallback(callback);
+        drawerLayout.setDrawerListener(actionBarDrawerToggle);
+        actionBarDrawerToggle.syncState();
     }
 
     private void createProfileInfo() {

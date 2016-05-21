@@ -26,9 +26,26 @@ public class Interest implements Serializable {
 
     @Override
     public String toString() {
-        return "Interest{" +
-                "category='" + category + '\'' +
-                ", value='" + value + '\'' +
-                '}';
+        return value;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Interest interest = (Interest) o;
+
+        if (category != null ? !category.equals(interest.category) : interest.category != null)
+            return false;
+        return !(value != null ? !value.equals(interest.value) : interest.value != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = category != null ? category.hashCode() : 0;
+        result = 31 * result + (value != null ? value.hashCode() : 0);
+        return result;
     }
 }

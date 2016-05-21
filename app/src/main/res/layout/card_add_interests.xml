@@ -38,7 +38,7 @@
                 android:layout_alignParentTop="false"
                 android:layout_centerVertical="true"
                 android:scaleType="centerCrop"
-                android:src="@drawable/location" />
+                android:src="@drawable/like" />
         </RelativeLayout>
 
         <LinearLayout

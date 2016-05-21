@@ -8,6 +8,10 @@ import com.match.MatchApplication;
 import com.match.client.entities.Token;
 import com.match.client.entities.User;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * Created by Juan Manuel Romera on 18/5/2016.
  */
@@ -16,9 +20,11 @@ public class MatchDatabase implements Database {
     private static final String DB = "DB";
     private static final String USER = "USER";
     private static final String TOKEN = "TOKEN";
+    private static final String INTERESTS = "INTERESTS";
 
     private User user;
     private Token token;
+    private Map<String, List<String>> interests = new HashMap<>();
 
     public MatchDatabase() {
         user = get(USER, User.class);
@@ -27,6 +33,11 @@ public class MatchDatabase implements Database {
 
     public User getUser() {
         return user;
+    }
+
+    @Override
+    public Map<String, List<String>> getInterests() {
+        return interests;
     }
 
     public Token getToken() {
@@ -41,6 +52,13 @@ public class MatchDatabase implements Database {
     public void setToken(Token token) {
         this.token = token;
         save(TOKEN, token);
+    }
+
+    @Override
+    public void setInterests(Map<String, List<String>> interests) {
+        this.interests = interests;
+        save(INTERESTS, interests);
+
     }
 
     public void save(String key, Object value) {

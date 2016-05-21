@@ -6,6 +6,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
 
+import com.match.MatchApplication;
+import com.match.R;
+
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -33,7 +36,6 @@ public class PhotoUtils {
         if (data == null) {
             return null;
         }
-
         try {
             InputStream inputStream = context.getContentResolver().openInputStream(data.getData());
             return BitmapFactory.decodeStream(inputStream);

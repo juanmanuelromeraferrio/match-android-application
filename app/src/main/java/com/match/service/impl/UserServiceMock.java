@@ -58,6 +58,12 @@ public class UserServiceMock extends UserService {
         return false;
     }
 
+    @Override
+    public void loginUser(String email, String password) throws ServiceException {
+        User user = new User("Name", email, password);
+        saveUser(user);
+    }
+
     private boolean userExists(User user) {
         for (User user_ : users.values()) {
             if (user_.getEmail().equals(user.getEmail())) {

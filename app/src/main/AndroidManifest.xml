@@ -47,7 +47,7 @@
             android:name=".activity.DispatchActivity"
             android:noHistory="true" />
         <activity
-            android:name=".activity.LoginActivity"
+            android:name=".activity.login.LoginActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" />
         <activity

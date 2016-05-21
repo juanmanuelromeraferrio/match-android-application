@@ -31,6 +31,8 @@ public abstract class UserService implements MatchService {
 
     public abstract boolean isUserLogged(User user) throws ServiceException;
 
+    public abstract void loginUser(String email, String password) throws ServiceException;
+
     public User getLocalUser() {
         return database.getUser();
     }

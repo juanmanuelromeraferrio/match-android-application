@@ -8,6 +8,7 @@ import com.match.client.entities.Interest;
 import com.match.client.entities.Location;
 import com.match.client.entities.User;
 import com.match.error.service.ServiceException;
+import com.match.service.api.InterestService;
 import com.match.service.api.UserService;
 import com.match.utils.PhotoUtils;
 
@@ -16,13 +17,17 @@ import java.util.List;
 /**
  * Created by Juan Manuel Romera on 17/5/2016.
  */
-public class UpdateUserTask extends AsyncTask<Object, Void, TaskResponse> {
+public class LoginUserTask extends AsyncTask<String, Void, TaskResponse> {
+
+    private static final boolean REMOTE_INTERESTS = false;
 
     private UserService userService;
+    private InterestService interestService;
     private BaseController controller;
 
-    public UpdateUserTask(UserService userService, BaseController controller) {
+    public LoginUserTask(UserService userService, InterestService interestService, BaseController controller) {
         this.userService = userService;
+        this.interestService = interestService;
         this.controller = controller;
     }
 
@@ -33,19 +38,16 @@ public class UpdateUserTask extends AsyncTask<Object, Void, TaskResponse> {
     }
 
     @Override
-    protected TaskResponse doInBackground(Object... params) {
-        Location location = (Location) params[0];
-        Bitmap bitmap = (Bitmap) params[1];
-        List<Interest> interests = (List<Interest>) params[2];
+    protected TaskResponse doInBackground(String... params) {
+        String email = params[0];
+        String password = params[1];
 
         try {
-
-            User localUser = userService.getLocalUser();
-            localUser.setLocation(location);
-            localUser.setPhoto(PhotoUtils.bitmapToBase64(bitmap));
-            localUser.setInterests(interests);
-            userService.updateUser(localUser);
-        } catch (Exception e) {
+            userService.loginUser(email, password);
+            if (!userService.hasSavedInformation()) {
+                interestService.getInterests(REMOTE_INTERESTS);
+            }
+        } catch (ServiceException e) {
             return new TaskResponse(e.getMessage());
         }
 

@@ -6,14 +6,12 @@ package com.match.task;
 public class TaskResponse {
 
     private String error;
-    private Object response;
 
     public TaskResponse(String error) {
         this.error = error;
     }
 
-    public TaskResponse(Object response) {
-        this.response = response;
+    public TaskResponse() {
         this.error = "";
     }
 
@@ -23,9 +21,5 @@ public class TaskResponse {
 
     public String getError() {
         return error;
-    }
-
-    public Object getResponse() {
-        return response;
     }
 }

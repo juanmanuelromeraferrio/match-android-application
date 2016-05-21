@@ -13,9 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.match.R;
-import com.match.activity.LoginActivity;
+import com.match.activity.login.LoginActivity;
 import com.match.service.factory.ServiceFactory;
-import com.parse.ParseUser;
 
 /**
  * Created by Juan Manuel Romera Ferrio on 26/10/16.
