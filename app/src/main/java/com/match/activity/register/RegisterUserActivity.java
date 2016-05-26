@@ -119,10 +119,6 @@ public class RegisterUserActivity extends AppCompatActivity implements RegisterU
     public void onBackPressed() {
         super.onBackPressed();
         finish();
-  /*      Intent intent = new Intent(RegisterUserActivity.this, RegistarAccountActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-        finish();*/
     }
 
     @Override
@@ -244,6 +240,7 @@ public class RegisterUserActivity extends AppCompatActivity implements RegisterU
     @Override
     public void goToNext() {
         Intent intent = new Intent(RegisterUserActivity.this, HomeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
 

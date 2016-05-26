@@ -17,11 +17,19 @@ public class User implements Serializable {
     private Location location;
     private String photo;
 
+
     public User(String name, String email, String password) {
         this.name = name;
         this.email = email;
         this.alias = email;
         this.password = password;
+        this.interests = new Vector<>();
+        this.location = new Location();
+    }
+
+    public User(String name) {
+        this.name = name;
+        this.alias = email;
         this.interests = new Vector<>();
         this.location = new Location();
     }

@@ -1,14 +1,18 @@
 package com.match.service.factory;
 
 import com.match.infrastructure.Database;
+import com.match.service.api.CandidatesService;
 import com.match.service.api.InterestService;
 import com.match.service.api.MatchService;
 import com.match.service.api.ServiceType;
 import com.match.service.api.Services;
 import com.match.service.api.UserService;
+import com.match.service.impl.CandidatesServiceMock;
 import com.match.service.impl.InterestServiceMock;
 import com.match.service.impl.UserServiceImpl;
 import com.match.service.impl.UserServiceMock;
+import com.match.utils.mapper.CandidateMapper;
+import com.match.utils.mapper.MatchCandidateMapper;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,11 +23,13 @@ import java.util.Map;
 public class ServiceFactory {
 
     private static Map<ServiceType, MatchService> services = new HashMap<>();
+    private static CandidateMapper candidateMapper;
 
     private ServiceFactory() {
     }
 
     public static void init(Services type, Database database) {
+        candidateMapper = new MatchCandidateMapper();
         buildServices(type, database);
     }
 
@@ -43,8 +49,11 @@ public class ServiceFactory {
     private static void buildMockServices(Database database) {
         UserService userService = new UserServiceMock(database);
         InterestService interestService = new InterestServiceMock(database);
+        CandidatesService candidatesService = new CandidatesServiceMock(database, candidateMapper);
+
         save(userService);
         save(interestService);
+        save(candidatesService);
     }
 
     private static void save(MatchService service) {
@@ -57,5 +66,9 @@ public class ServiceFactory {
 
     public static InterestService getInterestService() {
         return (InterestService) services.get(ServiceType.INTEREST);
+    }
+
+    public static CandidatesService getCandidatesService() {
+        return (CandidatesService) services.get(ServiceType.CANDIDATES);
     }
 }

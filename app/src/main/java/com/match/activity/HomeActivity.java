@@ -18,7 +18,7 @@ import android.widget.TextView;
 
 import com.match.R;
 import com.match.client.entities.User;
-import com.match.fragment.HomeFragment;
+import com.match.fragment.candidates.HomeFragment;
 import com.match.service.factory.ServiceFactory;
 import com.match.utils.PhotoUtils;
 

@@ -5,6 +5,8 @@
     <color name="Disabled">#afafaf</color>
     <color name="Selected">#FCE4EC</color>
 
+    <drawable name="light_transparent">#80F8BBD0</drawable>
+
     <!-- Color de la rallita indicadora -->
     <color name="ColorPrimaryLight">#ffffff</color>
 
