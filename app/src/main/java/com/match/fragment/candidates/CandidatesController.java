@@ -13,4 +13,6 @@ public interface CandidatesController extends BaseController {
     void likeCandidate(Candidate user);
 
     void dislikeCandidate(Candidate user);
+
+    void acceptMatch(String candidateId);
 }

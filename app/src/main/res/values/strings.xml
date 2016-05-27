@@ -62,4 +62,7 @@
     <string name="Masculino">Masculino</string>
     <string name="Femenino">Femenino</string>
     <string name="radio_group_error">Debes seleccionar alguna opción</string>
+    <string name="candidate_match_title">¡Hubo un Match!</string>
+    <string name="candidate_match_message">%1$s tambien quiere conocerte.</string>
+    <string name="aceptar">Aceptar</string>
 </resources>

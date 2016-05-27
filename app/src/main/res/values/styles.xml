@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
@@ -7,12 +7,7 @@
         <item name="colorPrimary">@color/ColorPrimary</item>
         <item name="colorPrimaryDark">@color/ColorPrimaryDark</item>
         <!-- FAB color -->
-        <item name="colorAccent">@color/ColorPrimary</item>
-        <!-- Navigation Drawer
-        <item name="android:statusBarColor">@android:color/transparent</item-->
-
-        <!-- Para poner la context action bar por encima de la toolbar: -->
-        <!-- Al usar AppCompatActivity no hay que poner android: adelante -->
+        <item name="colorAccent">@color/ColorAccent</item>
         <item name="windowActionModeOverlay">true</item>
         <item name="actionModeStyle">@style/CustomActionMode</item>
     </style>
@@ -61,5 +56,12 @@
         <item name="android:layout_marginStart">8dp</item>
         <item name="android:layout_marginEnd">8dp</item>
         <item name="android:background">?android:attr/listDivider</item>
+    </style>
+
+
+    <style name="AlertDialogCustom" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:background">@color/ColorPrimary</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="colorAccent">@color/white</item>
     </style>
 </resources>

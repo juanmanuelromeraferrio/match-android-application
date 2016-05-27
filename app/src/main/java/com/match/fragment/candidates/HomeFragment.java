@@ -1,9 +1,11 @@
 package com.match.fragment.candidates;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -39,6 +41,7 @@ public class HomeFragment extends Fragment implements CandidatesView {
     private LinearLayout linearLayoutHeaderProgress;
     private ImageButton buttonYes;
     private ImageButton buttonNo;
+    private ImageButton reloadButton;
 
     private CandidatesController controller;
 
@@ -77,7 +80,7 @@ public class HomeFragment extends Fragment implements CandidatesView {
                 dislikeCandidate();
             }
         });
-        ImageButton reloadButton = (ImageButton) mainView.findViewById(R.id.reloadButton);
+        reloadButton = (ImageButton) mainView.findViewById(R.id.reloadButton);
         reloadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -177,11 +180,13 @@ public class HomeFragment extends Fragment implements CandidatesView {
             emptyView.setVisibility(View.VISIBLE);
             buttonNo.setEnabled(Boolean.FALSE);
             buttonYes.setEnabled(Boolean.FALSE);
+            reloadButton.setEnabled(Boolean.TRUE);
         } else {
             candidateViewHolder.setVisibility(View.VISIBLE);
             emptyView.setVisibility(View.GONE);
             buttonNo.setEnabled(Boolean.TRUE);
             buttonYes.setEnabled(Boolean.TRUE);
+            reloadButton.setEnabled(Boolean.FALSE);
         }
     }
 
@@ -193,7 +198,20 @@ public class HomeFragment extends Fragment implements CandidatesView {
 
     @Override
     public void showMatch() {
-        Toast.makeText(activity, "Hubo un match con " + this.candidates.get(0).getName() + ", puedes inciar un chat si quieres", Toast.LENGTH_SHORT).show();
+        final Candidate candidate = this.candidates.get(0);
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity,R.style.AlertDialogCustom);
+        builder.setTitle(R.string.candidate_match_title);
+        builder.setMessage(getString(R.string.candidate_match_message, candidate.getName()));
+        builder.setCancelable(Boolean.FALSE);
+        builder.setPositiveButton(getString(R.string.aceptar), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+                controller.acceptMatch(candidate.getId());
+                removeCurrentCandidate();
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 
     private void refreshCandidate() {

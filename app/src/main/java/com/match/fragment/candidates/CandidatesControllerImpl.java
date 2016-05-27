@@ -44,6 +44,11 @@ public class CandidatesControllerImpl implements CandidatesController {
         executeSendVoteTask(candidate, CandidateVote.NO);
     }
 
+    @Override
+    public void acceptMatch(String candidateId) {
+
+    }
+
     private void executeSendVoteTask(Candidate candidate, CandidateVote vote) {
         SendCandidateVoteTask sendVoteTask = new SendCandidateVoteTask(userService, candidatesService, this);
         sendVoteTask.execute(vote, candidate.getId());
@@ -98,8 +103,10 @@ public class CandidatesControllerImpl implements CandidatesController {
         Boolean wasMatch = (Boolean) response.getResponse();
         if (wasMatch != null) {
             this.view.showMatch();
+        } else {
+            this.view.removeCurrentCandidate();
         }
-        this.view.removeCurrentCandidate();
+
     }
 
     private void sendVoteNoResult() {
