@@ -67,6 +67,16 @@ public class CandidatesServiceMock extends CandidatesService {
     }
 
     @Override
+    public Boolean voteYes(String userId, String candidateID) throws ServiceException {
+        return Boolean.TRUE;
+    }
+
+    @Override
+    public void voteNo(String userId, String candidateID) throws ServiceException {
+
+    }
+
+    @Override
     public ServiceType getType() {
         return ServiceType.CANDIDATES;
     }

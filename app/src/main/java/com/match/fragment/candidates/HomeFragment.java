@@ -191,6 +191,11 @@ public class HomeFragment extends Fragment implements CandidatesView {
         Toast.makeText(activity, errorMsg, Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void showMatch() {
+        Toast.makeText(activity, "Hubo un match con " + this.candidates.get(0).getName() + ", puedes inciar un chat si quieres", Toast.LENGTH_SHORT).show();
+    }
+
     private void refreshCandidate() {
         if (!this.candidates.isEmpty()) {
             candidateViewHolder.loadCandidate(this.candidates.get(0));

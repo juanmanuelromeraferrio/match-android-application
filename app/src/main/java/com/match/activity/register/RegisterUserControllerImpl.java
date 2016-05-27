@@ -32,19 +32,25 @@ public class RegisterUserControllerImpl implements RegisterUserController {
     }
 
     @Override
-    public void saveUser(Bitmap photo, Location address, List<Interest> interests) {
-        boolean hasInputDataErrors = hasInputDataErrors(photo, address);
+    public void saveUser(Bitmap photo, String sex, Location address, List<Interest> interests) {
+        this.view.clearErrors();
+        boolean hasInputDataErrors = hasInputDataErrors(photo, sex, address);
         if (!hasInputDataErrors) {
             UpdateUserTask task = new UpdateUserTask(userService, this);
-            task.execute(address, photo, interests);
+            task.execute(address, photo, interests, sex);
         }
     }
 
-    private boolean hasInputDataErrors(Bitmap photo, Location address) {
+    private boolean hasInputDataErrors(Bitmap photo, String sex, Location address) {
         boolean errors = false;
 
         if (photo == null) {
             view.setPhotoError();
+            errors = true;
+        }
+
+        if (sex == null || sex.isEmpty()) {
+            view.setSexError();
             errors = true;
         }
 

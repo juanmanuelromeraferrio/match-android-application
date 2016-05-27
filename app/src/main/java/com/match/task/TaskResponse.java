@@ -32,4 +32,12 @@ public class TaskResponse {
     public Object getResponse() {
         return response;
     }
+
+    public void setError(String error) {
+        this.error = error;
+    }
+
+    public void setResponse(Object response) {
+        this.response = response;
+    }
 }

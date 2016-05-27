@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -15,7 +16,10 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -38,6 +42,8 @@ public class RegisterUserActivity extends AppCompatActivity implements RegisterU
 
     private static final int PICK_PHOTO_FOR_PROFILE = 100;
 
+    @InjectView(R.id.radioGroupUserSex)
+    RadioGroup radioGroupUserSex;
     @InjectView(R.id.input_address)
     AutoCompleteTextView _addressAutoCompleteText;
     @InjectView(R.id.photoButton)
@@ -103,7 +109,17 @@ public class RegisterUserActivity extends AppCompatActivity implements RegisterU
 
     /* onClick save button */
     public void saveUser(View view) {
-        controller.saveUser(photo, location, interests);
+        String sex = getSex();
+        controller.saveUser(photo, sex, location, interests);
+    }
+
+    @NonNull
+    private String getSex() {
+        String sex = "";
+        if (radioGroupUserSex.getCheckedRadioButtonId() != -1) {
+            sex = ((RadioButton) findViewById(radioGroupUserSex.getCheckedRadioButtonId())).getText().toString();
+        }
+        return sex;
     }
 
     @Override
@@ -141,6 +157,20 @@ public class RegisterUserActivity extends AppCompatActivity implements RegisterU
     @Override
     public void setPhotoError() {
 
+    }
+
+    @Override
+    public void setSexError() {
+        TextView lblSex = (TextView) findViewById(R.id.lbSexo);
+        lblSex.setError(getString(R.string.radio_group_error));
+    }
+
+    @Override
+    public void clearErrors() {
+        _addressAutoCompleteText.setError(null);
+
+        TextView lblSex = (TextView) findViewById(R.id.lbSexo);
+        lblSex.setError(null);
     }
 
     @Override

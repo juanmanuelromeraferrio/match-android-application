@@ -22,4 +22,8 @@ public abstract class CandidatesService implements MatchService {
     }
 
     public abstract List<Candidate> findCandidates(User user) throws ServiceException;
+
+    public abstract Boolean voteYes(String userId, String candidateID) throws ServiceException;
+
+    public abstract void voteNo(String userId, String candidateID) throws ServiceException;
 }

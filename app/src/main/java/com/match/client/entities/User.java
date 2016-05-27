@@ -9,16 +9,19 @@ import java.util.Vector;
  */
 public class User implements Serializable {
 
+    private String id;
     private String name;
     private String email;
     private String alias;
     private String password;
+    private String sex;
     private List<Interest> interests;
     private Location location;
     private String photo;
 
 
     public User(String name, String email, String password) {
+        this.id = "";
         this.name = name;
         this.email = email;
         this.alias = email;
@@ -28,10 +31,15 @@ public class User implements Serializable {
     }
 
     public User(String name) {
+        this.id = "";
         this.name = name;
         this.alias = email;
         this.interests = new Vector<>();
         this.location = new Location();
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getName() {
@@ -56,6 +64,10 @@ public class User implements Serializable {
 
     public String getPhoto() {
         return photo;
+    }
+
+    public String getSex() {
+        return sex;
     }
 
     public void setName(String name) {
@@ -85,4 +97,9 @@ public class User implements Serializable {
     public void setPhoto(String photo) {
         this.photo = photo;
     }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
 }

@@ -21,4 +21,5 @@ public interface CandidatesView extends BaseView {
 
     void onError(String errorMsg);
 
+    void showMatch();
 }

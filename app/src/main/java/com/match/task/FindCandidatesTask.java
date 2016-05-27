@@ -8,7 +8,6 @@ import com.match.client.entities.User;
 import com.match.error.service.ServiceException;
 import com.match.service.api.CandidatesService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,33 +18,46 @@ public class FindCandidatesTask extends AsyncTask<User, Void, TaskResponse> {
 
     private final CandidatesService candidatesService;
     private final BaseController controller;
+    private Boolean showLoading = Boolean.TRUE;
 
     public FindCandidatesTask(CandidatesService candidatesService, BaseController controller) {
+        this(candidatesService, controller, Boolean.TRUE);
+    }
+
+    public FindCandidatesTask(CandidatesService candidatesService, BaseController controller, Boolean showLoading) {
         this.candidatesService = candidatesService;
         this.controller = controller;
+        this.showLoading = showLoading;
     }
 
     @Override
     protected void onPreExecute() {
-        controller.initTask();
+        if (showLoading) {
+            controller.initTask();
+        }
     }
 
     @Override
     protected TaskResponse doInBackground(User... params) {
+        CandidateTaskResponse taskResponse = new CandidateTaskResponse(CandidateTaskState.FINDING_CANDIDATES);
         User user = params[0];
         List<Candidate> candidates;
         try {
             candidates = candidatesService.findCandidates(user);
         } catch (ServiceException e) {
-            return new TaskResponse(e.getMessage());
+            taskResponse.setError(e.getMessage());
+            return taskResponse;
         }
 
-        return new TaskResponse(candidates);
+        taskResponse.setResponse(candidates);
+        return taskResponse;
     }
 
     @Override
     protected void onPostExecute(TaskResponse response) {
         controller.onResult(response);
-        controller.finishTask();
+        if (showLoading) {
+            controller.finishTask();
+        }
     }
 }

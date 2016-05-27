@@ -32,7 +32,7 @@
 
                 <include
                     android:id="@+id/addLocation"
-                    layout="@layout/card_add_address_profile" />
+                    layout="@layout/card_add_user_info_profile" />
 
                 <include
                     android:id="@+id/addLocation"
