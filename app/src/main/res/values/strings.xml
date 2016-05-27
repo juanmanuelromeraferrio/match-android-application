@@ -65,4 +65,5 @@
     <string name="candidate_match_title">¡Hubo un Match!</string>
     <string name="candidate_match_message">%1$s tambien quiere conocerte.</string>
     <string name="aceptar">Aceptar</string>
+    <string name="chat">Chat</string>
 </resources>

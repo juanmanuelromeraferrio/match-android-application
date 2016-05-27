@@ -121,16 +121,17 @@ public class HomeFragment extends Fragment implements CandidatesView {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        if (id == R.id.action_logout) {
-            logout();
+        switch (id) {
+            case R.id.action_logout:
+                logout();
+                return true;
+            case R.id.action_chat:
+                goToChat();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-
-        return super.onOptionsItemSelected(item);
     }
 
     private void logout() {
@@ -138,6 +139,9 @@ public class HomeFragment extends Fragment implements CandidatesView {
         Intent intent = new Intent(activity, LoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+    }
+
+    private void goToChat() {
     }
 
     @Override
@@ -199,7 +203,7 @@ public class HomeFragment extends Fragment implements CandidatesView {
     @Override
     public void showMatch() {
         final Candidate candidate = this.candidates.get(0);
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity,R.style.AlertDialogCustom);
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity, R.style.AlertDialogCustom);
         builder.setTitle(R.string.candidate_match_title);
         builder.setMessage(getString(R.string.candidate_match_message, candidate.getName()));
         builder.setCancelable(Boolean.FALSE);
