@@ -4,6 +4,7 @@ import com.match.client.MatchClient;
 import com.match.client.entities.Token;
 import com.match.client.entities.User;
 import com.match.client.entities.request.UserRequest;
+import com.match.client.entities.response.MatchResponse;
 import com.match.error.service.APIError;
 import com.match.error.service.ServiceException;
 import com.match.infrastructure.Database;
@@ -29,13 +30,13 @@ public class UserServiceImpl extends UserService {
 
     @Override
     public void createUser(User user) throws ServiceException {
-        Call<Token> call = matchClient.users.createUser(new UserRequest(user));
+        Call<MatchResponse> call = matchClient.users.createUser(new UserRequest(user));
         try {
-            Response<Token> response = call.execute();
+            Response<MatchResponse> response = call.execute();
             if (response.isSuccessful()) {
-                Token token = response.body();
+                MatchResponse matchResponse = response.body();
+                user.setId(matchResponse.getData());
                 this.database.setUser(user);
-                this.database.setToken(token);
             } else {
                 APIError error = ErrorUtils.parseError(response);
                 throw new ServiceException(error.getData());
@@ -46,8 +47,19 @@ public class UserServiceImpl extends UserService {
     }
 
     @Override
-    public void updateUser(User user) {
-
+    public void updateUser(User user) throws ServiceException {
+        Call<MatchResponse> call = matchClient.users.updateUser(new UserRequest(user));
+        try {
+            Response<MatchResponse> response = call.execute();
+            if (response.isSuccessful()) {
+                this.database.setUser(user);
+            } else {
+                APIError error = ErrorUtils.parseError(response);
+                throw new ServiceException(error.getData());
+            }
+        } catch (IOException e) {
+            throw new ServiceException(e.getLocalizedMessage());
+        }
     }
 
     @Override

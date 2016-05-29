@@ -11,11 +11,19 @@ public class APIError {
     public APIError() {
     }
 
+    public APIError(String data) {
+        this.data = data;
+    }
+
     public boolean isSuccess() {
         return success;
     }
 
     public String getData() {
         return data;
+    }
+
+    public void setData(String data) {
+        this.data = data;
     }
 }

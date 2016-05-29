@@ -26,4 +26,9 @@ public abstract class CandidatesService implements MatchService {
     public abstract Boolean voteYes(String userId, String candidateID) throws ServiceException;
 
     public abstract void voteNo(String userId, String candidateID) throws ServiceException;
+
+    @Override
+    public ServiceType getType() {
+        return ServiceType.CANDIDATES;
+    }
 }

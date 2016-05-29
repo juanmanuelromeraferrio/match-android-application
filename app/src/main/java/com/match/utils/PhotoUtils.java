@@ -19,6 +19,24 @@ import java.io.InputStream;
  */
 public class PhotoUtils {
 
+    public static int PHOTO_WIDHT_MAX = 800;
+    public static int PHOTO_HEIGHT_MAX = 600;
+
+    public static Bitmap resizeImage(Bitmap bitmap, int width, int height) {
+        float factorH = height / (float) bitmap.getHeight();
+        float factorW = width / (float) bitmap.getWidth();
+
+        if (factorH > 1 || factorW > 1) {
+            return bitmap;
+        }
+
+        float factorToUse = (factorH > factorW) ? factorW : factorH;
+        Bitmap bm = Bitmap.createScaledBitmap(bitmap,
+                (int) (bitmap.getWidth() * factorToUse),
+                (int) (bitmap.getHeight() * factorToUse), false);
+        return bm;
+    }
+
     public static String bitmapToBase64(Bitmap bitmap) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
@@ -38,7 +56,14 @@ public class PhotoUtils {
         }
         try {
             InputStream inputStream = context.getContentResolver().openInputStream(data.getData());
-            return BitmapFactory.decodeStream(inputStream);
+            Bitmap photo = BitmapFactory.decodeStream(inputStream);
+            Bitmap bitmapResized = resizeImage(photo, PhotoUtils.PHOTO_WIDHT_MAX, PhotoUtils.PHOTO_HEIGHT_MAX);
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            bitmapResized.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+            byte[] bitmapArray = bos.toByteArray();
+
+            return BitmapFactory.decodeByteArray(bitmapArray, 0, bitmapArray.length);
+
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
