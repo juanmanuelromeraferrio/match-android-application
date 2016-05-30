@@ -21,14 +21,9 @@ import static com.sun.org.apache.xml.internal.security.utils.Base64.encode;
 public class ServiceGenerator {
 
     public static Retrofit defaultRetrofit() {
-        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-        httpClient.readTimeout(Configuration.READ_TIMEOUT_SECONDS, TimeUnit.SECONDS);
-        httpClient.connectTimeout(Configuration.CONNECTION_TIMEOUT_SECONDS, TimeUnit.SECONDS);
-
         return new Retrofit.Builder()
                 .baseUrl(Configuration.DEFAULT_API_URL)
                 .addConverterFactory(GsonConverterFactory.create())
-                .client(httpClient.build())
                 .build();
     }
 
@@ -38,8 +33,6 @@ public class ServiceGenerator {
         final String authHeader = "Basic " + authStringEncoded;
 
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-        httpClient.readTimeout(Configuration.READ_TIMEOUT_SECONDS, TimeUnit.SECONDS);
-        httpClient.connectTimeout(Configuration.CONNECTION_TIMEOUT_SECONDS, TimeUnit.SECONDS);
         httpClient.addInterceptor(new Interceptor() {
             @Override
             public Response intercept(Chain chain) throws IOException {

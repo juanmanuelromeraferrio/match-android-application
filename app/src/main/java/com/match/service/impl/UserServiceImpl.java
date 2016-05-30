@@ -1,7 +1,6 @@
 package com.match.service.impl;
 
 import com.match.client.MatchClient;
-import com.match.client.entities.Token;
 import com.match.client.entities.User;
 import com.match.client.entities.request.UserRequest;
 import com.match.client.entities.response.MatchResponse;
@@ -57,6 +56,7 @@ public class UserServiceImpl extends UserService {
                 APIError error = ErrorUtils.parseError(response);
                 throw new ServiceException(error.getData());
             }
+            
         } catch (IOException e) {
             throw new ServiceException(e.getLocalizedMessage());
         }

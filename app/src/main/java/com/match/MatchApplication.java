@@ -3,7 +3,6 @@ package com.match;
 import android.app.Application;
 import android.content.Context;
 
-import com.match.client.MatchClient;
 import com.match.infrastructure.Database;
 import com.match.infrastructure.MatchDatabase;
 import com.match.service.api.Services;
