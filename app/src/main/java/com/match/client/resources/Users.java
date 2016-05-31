@@ -20,9 +20,9 @@ public interface Users {
      *
      * @return a {@link Token}
      */
-    @POST("/user/newuser")
+    @POST("user/newuser")
     Call<MatchResponse> createUser(@Body UserRequest user);
 
-    @PUT("/user/updateuser")
+    @PUT("user/updateuser")
     Call<MatchResponse> updateUser(@Body UserRequest user);
 }

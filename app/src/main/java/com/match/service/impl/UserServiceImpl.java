@@ -4,6 +4,8 @@ import com.match.client.MatchClient;
 import com.match.client.entities.User;
 import com.match.client.entities.request.UserRequest;
 import com.match.client.entities.response.MatchResponse;
+import com.match.client.entities.response.UserResponse;
+import com.match.client.utils.HttpClientMatch;
 import com.match.error.service.APIError;
 import com.match.error.service.ServiceException;
 import com.match.infrastructure.Database;
@@ -20,15 +22,13 @@ import retrofit2.Response;
  */
 public class UserServiceImpl extends UserService {
 
-    private MatchClient matchClient;
-
     public UserServiceImpl(Database database) {
         super(database);
-        matchClient = new MatchClient();
     }
 
     @Override
     public void createUser(User user) throws ServiceException {
+        MatchClient matchClient = new MatchClient();
         Call<MatchResponse> call = matchClient.users.createUser(new UserRequest(user));
         try {
             Response<MatchResponse> response = call.execute();
@@ -47,6 +47,7 @@ public class UserServiceImpl extends UserService {
 
     @Override
     public void updateUser(User user) throws ServiceException {
+        MatchClient matchClient = new MatchClient();
         Call<MatchResponse> call = matchClient.users.updateUser(new UserRequest(user));
         try {
             Response<MatchResponse> response = call.execute();
@@ -56,7 +57,7 @@ public class UserServiceImpl extends UserService {
                 APIError error = ErrorUtils.parseError(response);
                 throw new ServiceException(error.getData());
             }
-            
+
         } catch (IOException e) {
             throw new ServiceException(e.getLocalizedMessage());
         }

@@ -12,4 +12,9 @@ public class UserRequest {
     public UserRequest(User user) {
         this.user = user;
     }
+
+    public User getUser()
+    {
+        return user;
+    }
 }
