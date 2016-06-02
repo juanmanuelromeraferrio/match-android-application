@@ -1,5 +1,7 @@
 package com.match.task;
 
+import com.match.task.response.TaskResponse;
+
 /**
  * Created by Juan Manuel Romera on 27/5/2016.
  */

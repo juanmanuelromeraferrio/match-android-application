@@ -1,11 +1,9 @@
 package com.match.activity.register;
 
-import com.match.activity.api.BaseController;
 import com.match.client.entities.User;
-import com.match.service.api.UserService;
 import com.match.service.factory.ServiceFactory;
 import com.match.task.CreateUserTask;
-import com.match.task.TaskResponse;
+import com.match.task.response.TaskResponse;
 import com.match.utils.Validator;
 
 /**

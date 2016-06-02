@@ -2,10 +2,10 @@ package com.match.service.impl;
 
 import com.match.client.MatchClient;
 import com.match.client.entities.User;
+import com.match.client.entities.request.LoginRequest;
 import com.match.client.entities.request.UserRequest;
 import com.match.client.entities.response.MatchResponse;
 import com.match.client.entities.response.UserResponse;
-import com.match.client.utils.HttpClientMatch;
 import com.match.error.service.APIError;
 import com.match.error.service.ServiceException;
 import com.match.infrastructure.Database;
@@ -70,6 +70,20 @@ public class UserServiceImpl extends UserService {
 
     @Override
     public void loginUser(String email, String password) throws ServiceException {
+        MatchClient matchClient = new MatchClient();
+        Call<UserResponse> call = matchClient.users.loginUser(new LoginRequest(email, password));
+        try {
+            Response<UserResponse> response = call.execute();
+            if (response.isSuccessful()) {
+                UserResponse userResponse = response.body();
+                this.database.setUser(userResponse.getUser());
+            } else {
+                APIError error = ErrorUtils.parseError(response);
+                throw new ServiceException(error.getData());
+            }
 
+        } catch (IOException e) {
+            throw new ServiceException(e.getLocalizedMessage());
+        }
     }
 }

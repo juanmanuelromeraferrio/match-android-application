@@ -7,8 +7,8 @@ import com.match.activity.api.BaseController;
 import com.match.client.entities.Interest;
 import com.match.client.entities.Location;
 import com.match.client.entities.User;
-import com.match.error.service.ServiceException;
 import com.match.service.api.UserService;
+import com.match.task.response.TaskResponse;
 import com.match.utils.PhotoUtils;
 
 import java.util.List;

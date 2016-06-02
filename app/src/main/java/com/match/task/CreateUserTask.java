@@ -3,11 +3,11 @@ package com.match.task;
 import android.os.AsyncTask;
 
 import com.match.activity.api.BaseController;
-import com.match.client.entities.Interest;
 import com.match.client.entities.User;
 import com.match.error.service.ServiceException;
 import com.match.service.api.InterestService;
 import com.match.service.api.UserService;
+import com.match.task.response.TaskResponse;
 
 /**
  * Created by Juan Manuel Romera on 17/5/2016.
@@ -37,7 +37,7 @@ public class CreateUserTask extends AsyncTask<User, Void, TaskResponse> {
         User user = params[0];
         try {
             userService.createUser(user);
-            interestService.getInterests(REMOTE_INTERESTS);
+            interestService.getInterests();
         } catch (ServiceException e) {
             return new TaskResponse(e.getMessage());
         }

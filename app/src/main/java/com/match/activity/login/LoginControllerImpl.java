@@ -1,11 +1,9 @@
 package com.match.activity.login;
 
-import com.match.activity.register.RegisterAccountView;
-import com.match.client.entities.User;
+import com.match.R;
 import com.match.service.factory.ServiceFactory;
-import com.match.task.CreateUserTask;
 import com.match.task.LoginUserTask;
-import com.match.task.TaskResponse;
+import com.match.task.response.LoginTaskResponse;
 import com.match.utils.Validator;
 
 /**
@@ -39,12 +37,12 @@ public class LoginControllerImpl implements LoginController {
         boolean error = false;
 
         if (!validator.isEmailValid(email)) {
-            this.view.setEmailError();
+            this.view.setEmailError(view.getContext().getResources().getString(R.string.error_mail));
             error = true;
         }
 
         if (!validator.isPasswordValid(password)) {
-            this.view.setPasswordError();
+            this.view.setPasswordError(view.getContext().getResources().getString(R.string.error_password, Validator.MIN_LENGTH_PASSWORD, Validator.MAX_LENGTH_PASSWORD));
             error = true;
         }
 
@@ -63,9 +61,13 @@ public class LoginControllerImpl implements LoginController {
 
     @Override
     public void onResult(Object result) {
-        TaskResponse response = (TaskResponse) result;
+        LoginTaskResponse response = (LoginTaskResponse) result;
         if (response.hasError()) {
             view.onError(response.getError());
+        } else if (response.hasUserError()) {
+            view.setEmailError(response.getUserError());
+        } else if (response.hasPasswordError()) {
+            view.setPasswordError(response.getPasswordError());
         } else {
             view.goToNext();
         }

@@ -1,4 +1,4 @@
-package com.match.task;
+package com.match.task.response;
 
 /**
  * Created by Juan Manuel Romera on 17/5/2016.

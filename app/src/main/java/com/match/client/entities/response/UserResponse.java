@@ -1,39 +1,20 @@
 package com.match.client.entities.response;
 
-import com.match.client.entities.Interest;
-import com.match.client.entities.Location;
-
-import java.util.List;
-import java.util.Vector;
+import com.match.client.entities.User;
 
 /**
- * Created by Juan Manuel Romera on 30/5/2016.
+ * Created by Juan Manuel Romera on 17/5/2016.
  */
 public class UserResponse {
 
-    private UserResponseContext user;
+    private User user;
 
-    public String getId() {
-        return user.getId();
+    public UserResponse(User user) {
+        this.user = user;
     }
 
-    private class UserResponseContext {
-        private String id;
-        private String name;
-        private String email;
-        private String alias;
-        private String sex;
-        private List<Interest> interests;
-        private Location location;
-        private String photo;
-
-        public UserResponseContext() {
-
-        }
-
-        public String getId() {
-            return id;
-        }
-
+    public User getUser()
+    {
+        return user;
     }
 }

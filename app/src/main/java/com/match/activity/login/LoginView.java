@@ -7,9 +7,9 @@ import com.match.activity.api.BaseView;
  */
 public interface LoginView extends BaseView {
 
-    void setEmailError();
+    void setEmailError(String error);
 
-    void setPasswordError();
+    void setPasswordError(String error);
 
     void onError(String errorMsg);
 }

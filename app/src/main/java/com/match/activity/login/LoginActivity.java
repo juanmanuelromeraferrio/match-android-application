@@ -15,7 +15,6 @@ import com.match.R;
 import com.match.activity.HomeActivity;
 import com.match.activity.register.RegistarAccountActivity;
 import com.match.activity.register.RegisterUserActivity;
-import com.match.utils.Validator;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -101,13 +100,13 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     }
 
     @Override
-    public void setEmailError() {
-        this._emailText.setError(getBaseContext().getResources().getString(R.string.error_mail));
+    public void setEmailError(String error) {
+        this._emailText.setError(error);
     }
 
     @Override
-    public void setPasswordError() {
-        this._passwordText.setError(getBaseContext().getResources().getString(R.string.error_password, Validator.MIN_LENGTH_PASSWORD, Validator.MAX_LENGTH_PASSWORD));
+    public void setPasswordError(String error) {
+        this._passwordText.setError(error);
     }
 
 

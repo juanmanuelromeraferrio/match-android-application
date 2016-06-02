@@ -9,11 +9,11 @@ import java.util.Vector;
  */
 public class User implements Serializable {
 
-    private transient String id;
+    private String id;
     private String name;
     private String email;
     private String alias;
-    private transient String password;
+    private String password;
     private String sex;
     private List<Interest> interests;
     private Location location;

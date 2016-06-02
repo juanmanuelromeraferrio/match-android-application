@@ -36,12 +36,17 @@ public class InterestServiceMock extends InterestService {
     }
 
     @Override
-    public Map<String, List<String>> getInterests(boolean local) {
-        if (local) {
+    public Map<String, List<String>> getInterests() {
+        if (database.getInterests() != null) {
             return database.getInterests();
         }
         Map<String, List<String>> interests = createInterests();
         database.setInterests(interests);
         return interests;
+    }
+
+    @Override
+    public Map<String, List<String>> getLocalInterests() {
+        return database.getInterests();
     }
 }

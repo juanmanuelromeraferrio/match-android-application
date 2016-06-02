@@ -7,6 +7,7 @@ import com.match.client.entities.CandidateVote;
 import com.match.error.service.ServiceException;
 import com.match.service.api.CandidatesService;
 import com.match.service.api.UserService;
+import com.match.task.response.TaskResponse;
 
 /**
  * Created by Juan Manuel Romera on 17/5/2016.

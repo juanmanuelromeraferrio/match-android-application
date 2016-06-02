@@ -1,6 +1,9 @@
 package com.match.client.resources;
 
+import com.match.client.entities.Interest;
 import com.match.client.entities.response.InterestResponse;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -17,7 +20,7 @@ public interface Interests {
      *
      * @return a list of {@link Interests}
      */
-    @GET("/interests/")
-    Call<InterestResponse> getInterestResponse();
+    @GET("/interests")
+    Call<InterestResponse> getInterests();
 
 }

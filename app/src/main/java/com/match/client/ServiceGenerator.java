@@ -24,6 +24,7 @@ public class ServiceGenerator {
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         httpClient.readTimeout(Configuration.READ_TIMEOUT_SECONDS, TimeUnit.SECONDS);
         httpClient.connectTimeout(Configuration.CONNECTION_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+        httpClient.writeTimeout(Configuration.CONNECTION_TIMEOUT_SECONDS, TimeUnit.SECONDS);
 
         return new Retrofit.Builder()
                 .baseUrl(Configuration.DEFAULT_API_URL)
@@ -61,15 +62,5 @@ public class ServiceGenerator {
                 .build();
 
         return retrofit;
-    }
-
-    public static <S> S createDefaultService(Class<S> serviceClass) {
-        Retrofit retrofit = defaultRetrofit();
-        return retrofit.create(serviceClass);
-    }
-
-    public static <S> S createAuthorizationService(Class<S> serviceClass, Token token) {
-        Retrofit retrofit = authorizationRetrofit(token);
-        return retrofit.create(serviceClass);
     }
 }

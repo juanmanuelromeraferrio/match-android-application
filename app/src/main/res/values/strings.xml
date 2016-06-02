@@ -66,4 +66,8 @@
     <string name="candidate_match_message">%1$s tambien quiere conocerte.</string>
     <string name="aceptar">Aceptar</string>
     <string name="chat">Chat</string>
+    <string name="entidad_no_existente">No se encuentra la entidad</string>
+    <string name="usuario_no_existe">El usuario no existe</string>
+    <string name="password_invalido">Password incorrecto.</string>
+    <string name="password_invalido_server">El password es incorrecto.</string>
 </resources>

@@ -18,7 +18,9 @@ public abstract class InterestService implements MatchService {
         this.database = database;
     }
 
-    public abstract Map<String, List<String>> getInterests(boolean local);
+    public abstract Map<String, List<String>> getInterests() throws ServiceException;
+
+    public abstract Map<String, List<String>> getLocalInterests();
 
     public ServiceType getType() {
         return ServiceType.INTEREST;

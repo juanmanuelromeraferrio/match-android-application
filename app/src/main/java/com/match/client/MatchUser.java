@@ -22,9 +22,10 @@ import static com.sun.org.apache.xml.internal.security.utils.Base64.encode;
  */
 public class MatchUser {
 
-    public final Users users;
+   // public final Users users;
 
     public MatchUser(Token token) {
-        this.users = ServiceGenerator.createAuthorizationService(Users.class,token);
+
+        //this.users = ServiceGenerator.createAuthorizationService(Users.class,token);
     }
 }

@@ -11,18 +11,12 @@ import java.util.List;
 public class InterestResponse {
 
     private final List<Interest> interests;
-    private final Metadata metadata;
 
-    public InterestResponse(List<Interest> interests, Metadata metadata) {
+    public InterestResponse(List<Interest> interests) {
         this.interests = interests;
-        this.metadata = metadata;
     }
 
     public List<Interest> getInterests() {
         return interests;
-    }
-
-    public Metadata getMetadata() {
-        return metadata;
     }
 }

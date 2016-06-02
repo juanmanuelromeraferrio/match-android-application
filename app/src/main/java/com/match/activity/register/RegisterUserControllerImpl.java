@@ -7,7 +7,7 @@ import com.match.client.entities.Location;
 import com.match.service.api.InterestService;
 import com.match.service.api.UserService;
 import com.match.service.factory.ServiceFactory;
-import com.match.task.TaskResponse;
+import com.match.task.response.TaskResponse;
 import com.match.task.UpdateUserTask;
 
 import java.util.ArrayList;
@@ -73,7 +73,7 @@ public class RegisterUserControllerImpl implements RegisterUserController {
     }
 
     private Map<String, List<String>> getInterests() {
-        return interestService.getInterests(LOCAL_INTERESTS);
+        return interestService.getLocalInterests();
     }
 
     @Override
