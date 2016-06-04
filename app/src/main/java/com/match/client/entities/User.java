@@ -15,6 +15,7 @@ public class User implements Serializable {
     private String alias;
     private String password;
     private String sex;
+    private String age;
     private List<Interest> interests;
     private Location location;
     private String photo;
@@ -70,6 +71,10 @@ public class User implements Serializable {
         return sex;
     }
 
+    public String getAge() {
+        return age;
+    }
+
     public void setId(String id) {
         this.id = id;
     }
@@ -106,4 +111,7 @@ public class User implements Serializable {
         this.sex = sex;
     }
 
+    public void setAge(String age) {
+        this.age = age;
+    }
 }

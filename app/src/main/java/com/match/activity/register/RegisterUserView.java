@@ -13,6 +13,8 @@ public interface RegisterUserView extends BaseView {
 
     void setSexError();
 
+    void setAgeError();
+
     void onError(String errorMsg);
 
     void clearErrors();

@@ -38,6 +38,7 @@ public class UpdateUserTask extends AsyncTask<Object, Void, TaskResponse> {
         Bitmap bitmap = (Bitmap) params[1];
         List<Interest> interests = (List<Interest>) params[2];
         String sex = (String) params[3];
+        String age = (String) params[4];
 
         try {
 
@@ -46,6 +47,7 @@ public class UpdateUserTask extends AsyncTask<Object, Void, TaskResponse> {
             localUser.setPhoto(PhotoUtils.bitmapToBase64(bitmap));
             localUser.setInterests(interests);
             localUser.setSex(sex);
+            localUser.setAge(age);
             userService.updateUser(localUser);
         } catch (Exception e) {
             return new TaskResponse(e.getMessage());

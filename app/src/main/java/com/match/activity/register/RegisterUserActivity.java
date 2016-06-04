@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RadioButton;
@@ -44,6 +45,8 @@ public class RegisterUserActivity extends AppCompatActivity implements RegisterU
 
     @InjectView(R.id.radioGroupUserSex)
     RadioGroup radioGroupUserSex;
+    @InjectView(R.id.input_age)
+    EditText _ageEditText;
     @InjectView(R.id.input_address)
     AutoCompleteTextView _addressAutoCompleteText;
     @InjectView(R.id.photoButton)
@@ -110,7 +113,8 @@ public class RegisterUserActivity extends AppCompatActivity implements RegisterU
     /* onClick save button */
     public void saveUser(View view) {
         String sex = getSex();
-        controller.saveUser(photo, sex, location, interests);
+        String age = _ageEditText.getText().toString();
+        controller.saveUser(photo, sex, age, location, interests);
     }
 
     @NonNull
@@ -166,11 +170,20 @@ public class RegisterUserActivity extends AppCompatActivity implements RegisterU
     }
 
     @Override
+    public void setAgeError() {
+        TextView lbl = (TextView) findViewById(R.id.input_age);
+        lbl.setError(getString(R.string.age_error));
+    }
+
+    @Override
     public void clearErrors() {
         _addressAutoCompleteText.setError(null);
 
         TextView lblSex = (TextView) findViewById(R.id.lbSexo);
         lblSex.setError(null);
+
+        TextView lblAge = (TextView) findViewById(R.id.input_age);
+        lblAge.setError(null);
     }
 
     @Override

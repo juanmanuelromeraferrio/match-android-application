@@ -73,6 +73,7 @@ public class HomeFragment extends Fragment implements CandidatesView {
                 likeCandidate();
             }
         });
+        buttonYes.setEnabled(Boolean.FALSE);
         buttonNo = (ImageButton) mainView.findViewById(R.id.noButton);
         buttonNo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,6 +81,7 @@ public class HomeFragment extends Fragment implements CandidatesView {
                 dislikeCandidate();
             }
         });
+        buttonNo.setEnabled(Boolean.FALSE);
         reloadButton = (ImageButton) mainView.findViewById(R.id.reloadButton);
         reloadButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,6 +89,7 @@ public class HomeFragment extends Fragment implements CandidatesView {
                 reloadCandidates();
             }
         });
+        reloadButton.setEnabled(Boolean.FALSE);
 
         controller.findCandidates();
         return mainView;
@@ -146,9 +149,11 @@ public class HomeFragment extends Fragment implements CandidatesView {
 
     @Override
     public void showProgress() {
-        this.candidateViewHolder.setVisibility(View.GONE);
-        this.emptyView.setVisibility(View.GONE);
-        this.linearLayoutHeaderProgress.setVisibility(View.VISIBLE);
+        if (candidates.isEmpty()) {
+            this.candidateViewHolder.setVisibility(View.GONE);
+            this.emptyView.setVisibility(View.GONE);
+            this.linearLayoutHeaderProgress.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -174,24 +179,31 @@ public class HomeFragment extends Fragment implements CandidatesView {
     @Override
     public void removeCurrentCandidate() {
         this.candidates.remove(0);
+        reloadCandidates();
         refreshCandidate();
+
     }
 
     @Override
     public void finishLoadingCandidates() {
-        if (candidates.isEmpty()) {
-            candidateViewHolder.setVisibility(View.GONE);
-            emptyView.setVisibility(View.VISIBLE);
-            buttonNo.setEnabled(Boolean.FALSE);
-            buttonYes.setEnabled(Boolean.FALSE);
-            reloadButton.setEnabled(Boolean.TRUE);
+        if (controller.isFindingCandidates()) {
+            showProgress();
         } else {
-            candidateViewHolder.setVisibility(View.VISIBLE);
-            emptyView.setVisibility(View.GONE);
-            buttonNo.setEnabled(Boolean.TRUE);
-            buttonYes.setEnabled(Boolean.TRUE);
-            reloadButton.setEnabled(Boolean.FALSE);
+            if (candidates.isEmpty()) {
+                candidateViewHolder.setVisibility(View.GONE);
+                emptyView.setVisibility(View.VISIBLE);
+                buttonNo.setEnabled(Boolean.FALSE);
+                buttonYes.setEnabled(Boolean.FALSE);
+                reloadButton.setEnabled(Boolean.TRUE);
+            } else {
+                candidateViewHolder.setVisibility(View.VISIBLE);
+                emptyView.setVisibility(View.GONE);
+                buttonNo.setEnabled(Boolean.TRUE);
+                buttonYes.setEnabled(Boolean.TRUE);
+                reloadButton.setEnabled(Boolean.FALSE);
+            }
         }
+
     }
 
 

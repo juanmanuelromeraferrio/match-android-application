@@ -14,7 +14,7 @@ import java.util.List;
  */
 public interface RegisterUserController extends BaseController {
 
-    void saveUser(Bitmap photo, String sex, Location address, List<Interest> interests);
+    void saveUser(Bitmap photo, String sex, String age, Location address, List<Interest> interests);
 
     List<String> getCategories();
 

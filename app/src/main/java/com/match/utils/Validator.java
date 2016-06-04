@@ -37,4 +37,17 @@ public class Validator {
         }
         return true;
     }
+
+    public boolean isAgeValid(String age) {
+        if (age == null && age.isEmpty()) {
+            return false;
+        }
+
+        int ageInteger = new Integer(age);
+        if (ageInteger >= 18 && ageInteger <= 100) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

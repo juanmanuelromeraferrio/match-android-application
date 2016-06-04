@@ -9,6 +9,7 @@ import com.match.service.api.UserService;
 import com.match.service.factory.ServiceFactory;
 import com.match.task.response.TaskResponse;
 import com.match.task.UpdateUserTask;
+import com.match.utils.Validator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,24 +25,26 @@ public class RegisterUserControllerImpl implements RegisterUserController {
     private RegisterUserView view;
     private UserService userService;
     private InterestService interestService;
+    private Validator validator;
 
     public RegisterUserControllerImpl(RegisterUserView view) {
         this.view = view;
         this.userService = ServiceFactory.getUserService();
         this.interestService = ServiceFactory.getInterestService();
+        this.validator = new Validator(view.getContext());
     }
 
     @Override
-    public void saveUser(Bitmap photo, String sex, Location address, List<Interest> interests) {
+    public void saveUser(Bitmap photo, String sex, String age, Location address, List<Interest> interests) {
         this.view.clearErrors();
-        boolean hasInputDataErrors = hasInputDataErrors(photo, sex, address);
+        boolean hasInputDataErrors = hasInputDataErrors(photo, sex, age, address);
         if (!hasInputDataErrors) {
             UpdateUserTask task = new UpdateUserTask(userService, this);
-            task.execute(address, photo, interests, sex);
+            task.execute(address, photo, interests, sex, age);
         }
     }
 
-    private boolean hasInputDataErrors(Bitmap photo, String sex, Location address) {
+    private boolean hasInputDataErrors(Bitmap photo, String sex, String age, Location address) {
         boolean errors = false;
 
         if (photo == null) {
@@ -51,6 +54,11 @@ public class RegisterUserControllerImpl implements RegisterUserController {
 
         if (sex == null || sex.isEmpty()) {
             view.setSexError();
+            errors = true;
+        }
+
+        if (!validator.isAgeValid(age)) {
+            view.setAgeError();
             errors = true;
         }
 

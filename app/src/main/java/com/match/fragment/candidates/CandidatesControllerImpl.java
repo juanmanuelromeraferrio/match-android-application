@@ -1,5 +1,7 @@
 package com.match.fragment.candidates;
 
+import android.os.AsyncTask;
+
 import com.match.client.entities.Candidate;
 import com.match.client.entities.CandidateVote;
 import com.match.client.entities.User;
@@ -21,6 +23,8 @@ public class CandidatesControllerImpl implements CandidatesController {
     private CandidatesService candidatesService;
     private UserService userService;
 
+    private boolean isFindingCandidates = Boolean.FALSE;
+
     public CandidatesControllerImpl(CandidatesView view) {
         this.view = view;
         this.candidatesService = ServiceFactory.getCandidatesService();
@@ -29,9 +33,12 @@ public class CandidatesControllerImpl implements CandidatesController {
 
     @Override
     public void findCandidates() {
-        User localUser = this.userService.getLocalUser();
-        FindCandidatesTask task = new FindCandidatesTask(candidatesService, this);
-        task.execute(localUser);
+        if (!isFindingCandidates) {
+            isFindingCandidates = Boolean.TRUE;
+            User localUser = this.userService.getLocalUser();
+            FindCandidatesTask task = new FindCandidatesTask(candidatesService, this);
+            task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, localUser);
+        }
     }
 
     @Override
@@ -49,25 +56,24 @@ public class CandidatesControllerImpl implements CandidatesController {
 
     }
 
+    @Override
+    public boolean isFindingCandidates() {
+        return isFindingCandidates;
+    }
+
     private void executeSendVoteTask(Candidate candidate, CandidateVote vote) {
         SendCandidateVoteTask sendVoteTask = new SendCandidateVoteTask(userService, candidatesService, this);
-        sendVoteTask.execute(vote, candidate.getId());
-
-        User localUser = this.userService.getLocalUser();
-        FindCandidatesTask findCandidates = new FindCandidatesTask(candidatesService, this, Boolean.FALSE);
-        findCandidates.execute(localUser);
+        sendVoteTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, vote, candidate.getId());
     }
 
     @Override
     public void initTask() {
         this.view.showProgress();
-        this.view.clearCandidates();
     }
 
     @Override
     public void finishTask() {
         this.view.hideProgress();
-        this.view.finishLoadingCandidates();
     }
 
 
@@ -76,6 +82,7 @@ public class CandidatesControllerImpl implements CandidatesController {
         CandidateTaskResponse response = (CandidateTaskResponse) result;
         switch (response.getState()) {
             case FINDING_CANDIDATES:
+                isFindingCandidates = Boolean.FALSE;
                 findCandidatesResult(response);
                 break;
             case VOTE_YES:
@@ -93,9 +100,7 @@ public class CandidatesControllerImpl implements CandidatesController {
             this.view.onError(response.getError());
         } else {
             List<Candidate> candidates = (List<Candidate>) response.getResponse();
-            if (!candidates.isEmpty()) {
-                this.view.addCandidates(candidates);
-            }
+            this.view.addCandidates(candidates);
         }
     }
 
