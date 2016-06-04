@@ -10,13 +10,13 @@ import java.util.List;
  */
 public class CandidatesResponse {
 
-    private final List<User> users;
+    private final List<UserResponse> users;
 
-    public CandidatesResponse(List<User> users) {
+    public CandidatesResponse(List<UserResponse> users) {
         this.users = users;
     }
 
-    public List<User> getUsers() {
+    public List<UserResponse> getUsers() {
         return users;
     }
 }

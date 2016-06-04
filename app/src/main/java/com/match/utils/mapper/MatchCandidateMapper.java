@@ -17,13 +17,16 @@ public class MatchCandidateMapper implements CandidateMapper {
     @Override
     public Candidate map(User user) {
         if (user.getPhoto() != null) {
-            return new Candidate("", user.getName(), PhotoUtils.base64ToBitmap(user.getPhoto()), decodeInterest(user.getInterests()));
+            return new Candidate(user.getId(), user.getName(), PhotoUtils.base64ToBitmap(user.getPhoto()), decodeInterest(user.getInterests()));
         } else {
-            return new Candidate("", user.getName(), null, "");
+            return new Candidate(user.getId(), user.getName(), null, decodeInterest(user.getInterests()));
         }
     }
 
     private String decodeInterest(List<Interest> interests) {
+        if (interests == null) {
+            return "";
+        }
         StringBuffer result = new StringBuffer("Le gustan: ");
         int index = 0;
         for (Interest interest : interests) {

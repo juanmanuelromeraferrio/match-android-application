@@ -51,8 +51,8 @@ public class CandidatesServiceImpl extends CandidatesService {
 
     private List<Candidate> mapToCandidates(CandidatesResponse candidatesResponse) {
         List<Candidate> candidates = new ArrayList<>();
-        for (User user_ : candidatesResponse.getUsers()) {
-            Candidate candidate = mapper.map(user_);
+        for (UserResponse user_ : candidatesResponse.getUsers()) {
+            Candidate candidate = mapper.map(user_.getUser());
             candidates.add(candidate);
         }
 
