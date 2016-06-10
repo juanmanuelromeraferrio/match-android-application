@@ -3,6 +3,7 @@ package com.match.fragment.candidates;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -230,9 +231,18 @@ public class HomeFragment extends Fragment implements CandidatesView {
         alert.show();
     }
 
+    @Override
+    public void loadPhoto(Bitmap photo) {
+        if (!this.candidates.isEmpty()) {
+            candidateViewHolder.loadPhoto(photo);
+        }
+    }
+
     private void refreshCandidate() {
         if (!this.candidates.isEmpty()) {
-            candidateViewHolder.loadCandidate(this.candidates.get(0));
+            Candidate candidate = this.candidates.get(0);
+            this.controller.getPhoto(candidate);
+            candidateViewHolder.loadCandidate(candidate);
         }
         finishLoadingCandidates();
     }

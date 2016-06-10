@@ -1,5 +1,6 @@
 package com.match.fragment.candidates;
 
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 
 import com.match.client.entities.Candidate;
@@ -10,6 +11,7 @@ import com.match.service.api.UserService;
 import com.match.service.factory.ServiceFactory;
 import com.match.task.CandidateTaskResponse;
 import com.match.task.FindCandidatesTask;
+import com.match.task.GetPhotoTask;
 import com.match.task.SendCandidateVoteTask;
 
 import java.util.List;
@@ -52,9 +54,16 @@ public class CandidatesControllerImpl implements CandidatesController {
     }
 
     @Override
+    public void getPhoto(Candidate candidate) {
+        GetPhotoTask task = new GetPhotoTask(candidatesService, this);
+        task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, candidate.getId());
+    }
+
+    @Override
     public void acceptMatch(String candidateId) {
 
     }
+
 
     @Override
     public boolean isFindingCandidates() {
@@ -91,6 +100,9 @@ public class CandidatesControllerImpl implements CandidatesController {
             case VOTE_NO:
                 sendVoteNoResult();
                 break;
+            case GET_PHOTO:
+                loadPhoto(response);
+                break;
         }
 
     }
@@ -116,6 +128,11 @@ public class CandidatesControllerImpl implements CandidatesController {
 
     private void sendVoteNoResult() {
         this.view.removeCurrentCandidate();
+    }
+
+    private void loadPhoto(CandidateTaskResponse response) {
+        Bitmap photo = (Bitmap) response.getResponse();
+        this.view.loadPhoto(photo);
     }
 
 

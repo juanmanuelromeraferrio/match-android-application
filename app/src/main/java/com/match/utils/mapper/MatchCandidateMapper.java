@@ -17,7 +17,7 @@ public class MatchCandidateMapper implements CandidateMapper {
     @Override
     public Candidate map(User user) {
         if (user.getPhoto() != null) {
-            return new Candidate(user.getId(), user.getName(), PhotoUtils.base64ToBitmap(user.getPhoto()), decodeInterest(user.getInterests()));
+            return new Candidate(user.getId(), user.getName(), null, decodeInterest(user.getInterests()));
         } else {
             return new Candidate(user.getId(), user.getName(), null, decodeInterest(user.getInterests()));
         }

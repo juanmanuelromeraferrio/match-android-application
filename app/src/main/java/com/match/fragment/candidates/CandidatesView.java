@@ -1,5 +1,7 @@
 package com.match.fragment.candidates;
 
+import android.graphics.Bitmap;
+
 import com.match.activity.api.BaseView;
 import com.match.client.entities.Candidate;
 import com.match.client.entities.User;
@@ -22,4 +24,6 @@ public interface CandidatesView extends BaseView {
     void onError(String errorMsg);
 
     void showMatch();
+
+    void loadPhoto(Bitmap photo);
 }

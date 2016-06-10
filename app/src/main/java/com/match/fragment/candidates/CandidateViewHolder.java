@@ -1,5 +1,6 @@
 package com.match.fragment.candidates;
 
+import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -20,7 +21,6 @@ public class CandidateViewHolder extends RecyclerView.ViewHolder {
     private TextView interests;
     private CardView cardView;
 
-
     public CandidateViewHolder(View itemView) {
         super(itemView);
         cardView = (CardView) itemView.findViewById(R.id.candidateCard);
@@ -30,14 +30,16 @@ public class CandidateViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void loadCandidate(Candidate candidate) {
-        if (candidate.getPhoto() != null) {
-            BitmapDrawable photoDrawable = new BitmapDrawable(itemView.getResources(), candidate.getPhoto());
-            image.setImageDrawable(photoDrawable);
-        } else {
-            image.setImageResource(R.drawable.profile);
-        }
+        this.loadPhoto(candidate.getPhoto());
         name.setText(candidate.getName());
         interests.setText(candidate.getInterests());
+    }
+
+    public void loadPhoto(Bitmap bitmap) {
+        if (bitmap != null) {
+            BitmapDrawable photoDrawable = new BitmapDrawable(itemView.getResources(), bitmap);
+            image.setImageDrawable(photoDrawable);
+        }
     }
 
     public void setVisibility(int visibility) {

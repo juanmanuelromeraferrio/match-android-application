@@ -34,4 +34,8 @@ public class Candidate {
     public String getInterests() {
         return interests;
     }
+
+    public void setPhoto(Bitmap photo) {
+        this.photo = photo;
+    }
 }

@@ -1,17 +1,21 @@
 package com.match.service.impl;
 
+import android.graphics.Bitmap;
+import android.util.Log;
+
 import com.match.client.MatchClient;
 import com.match.client.entities.Candidate;
 import com.match.client.entities.User;
 import com.match.client.entities.response.CandidatesResponse;
-import com.match.client.entities.response.MatchResponse;
+import com.match.client.entities.response.PhotoResponse;
 import com.match.client.entities.response.UserResponse;
 import com.match.error.service.APIError;
 import com.match.error.service.ServiceException;
 import com.match.infrastructure.Database;
 import com.match.service.api.CandidatesService;
-import com.match.service.api.ServiceType;
+import com.match.utils.Configuration;
 import com.match.utils.ErrorUtils;
+import com.match.utils.PhotoUtils;
 import com.match.utils.mapper.CandidateMapper;
 
 import java.io.IOException;
@@ -67,5 +71,25 @@ public class CandidatesServiceImpl extends CandidatesService {
     @Override
     public void voteNo(String userId, String candidateID) throws ServiceException {
 
+    }
+
+    @Override
+    public Bitmap findPhoto(String id) {
+        MatchClient matchClient = new MatchClient();
+        Call<PhotoResponse> call = matchClient.users.getPhoto(id);
+
+        try {
+            Response<PhotoResponse> response = call.execute();
+            if (response.isSuccessful()) {
+                PhotoResponse photoResponse = response.body();
+                return PhotoUtils.base64ToBitmap(photoResponse.getPhoto());
+            } else {
+                Log.e(Configuration.LOG, response.errorBody().toString());
+            }
+        } catch (IOException e) {
+            Log.e(Configuration.LOG, e.getLocalizedMessage());
+        }
+
+        return null;
     }
 }
