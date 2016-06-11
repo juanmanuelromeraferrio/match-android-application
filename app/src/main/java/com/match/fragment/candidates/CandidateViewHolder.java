@@ -6,6 +6,7 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.match.R;
@@ -20,10 +21,12 @@ public class CandidateViewHolder extends RecyclerView.ViewHolder {
     private TextView name;
     private TextView interests;
     private CardView cardView;
+    private ProgressBar progressImage;
 
     public CandidateViewHolder(View itemView) {
         super(itemView);
         cardView = (CardView) itemView.findViewById(R.id.candidateCard);
+        progressImage = (ProgressBar) itemView.findViewById(R.id.progressImage);
         image = (ImageView) itemView.findViewById(R.id.candidateImage);
         name = (TextView) itemView.findViewById(R.id.candidateName);
         interests = (TextView) itemView.findViewById(R.id.candidateInterests);
@@ -36,10 +39,15 @@ public class CandidateViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void loadPhoto(Bitmap bitmap) {
+        BitmapDrawable photoDrawable = null;
         if (bitmap != null) {
-            BitmapDrawable photoDrawable = new BitmapDrawable(itemView.getResources(), bitmap);
-            image.setImageDrawable(photoDrawable);
+            photoDrawable = new BitmapDrawable(itemView.getResources(), bitmap);
+            progressImage.setVisibility(View.GONE);
+        } else {
+            progressImage.setVisibility(View.VISIBLE);
         }
+
+        image.setImageDrawable(photoDrawable);
     }
 
     public void setVisibility(int visibility) {

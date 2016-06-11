@@ -214,8 +214,7 @@ public class HomeFragment extends Fragment implements CandidatesView {
     }
 
     @Override
-    public void showMatch() {
-        final Candidate candidate = this.candidates.get(0);
+    public void showMatch(final Candidate candidate) {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity, R.style.AlertDialogCustom);
         builder.setTitle(R.string.candidate_match_title);
         builder.setMessage(getString(R.string.candidate_match_message, candidate.getName()));

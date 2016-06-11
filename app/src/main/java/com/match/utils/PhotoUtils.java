@@ -59,7 +59,7 @@ public class PhotoUtils {
             Bitmap photo = BitmapFactory.decodeStream(inputStream);
             Bitmap bitmapResized = resizeImage(photo, PhotoUtils.PHOTO_WIDHT_MAX, PhotoUtils.PHOTO_HEIGHT_MAX);
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            bitmapResized.compress(Bitmap.CompressFormat.JPEG, 50, bos);
+            bitmapResized.compress(Bitmap.CompressFormat.JPEG, 75, bos);
             byte[] bitmapArray = bos.toByteArray();
 
             return BitmapFactory.decodeByteArray(bitmapArray, 0, bitmapArray.length);

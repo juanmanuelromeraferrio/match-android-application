@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import com.match.client.entities.Candidate;
 import com.match.client.entities.CandidateVote;
 import com.match.client.entities.User;
+import com.match.client.entities.response.VoteYesResponse;
 import com.match.service.api.CandidatesService;
 import com.match.service.api.UserService;
 import com.match.service.factory.ServiceFactory;
@@ -72,7 +73,8 @@ public class CandidatesControllerImpl implements CandidatesController {
 
     private void executeSendVoteTask(Candidate candidate, CandidateVote vote) {
         SendCandidateVoteTask sendVoteTask = new SendCandidateVoteTask(userService, candidatesService, this);
-        sendVoteTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, vote, candidate.getId());
+        sendVoteTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, vote, candidate);
+        view.removeCurrentCandidate();
     }
 
     @Override
@@ -97,9 +99,6 @@ public class CandidatesControllerImpl implements CandidatesController {
             case VOTE_YES:
                 sendVoteYesResult(response);
                 break;
-            case VOTE_NO:
-                sendVoteNoResult();
-                break;
             case GET_PHOTO:
                 loadPhoto(response);
                 break;
@@ -117,17 +116,10 @@ public class CandidatesControllerImpl implements CandidatesController {
     }
 
     private void sendVoteYesResult(CandidateTaskResponse response) {
-        Boolean wasMatch = (Boolean) response.getResponse();
-        if (wasMatch != null) {
-            this.view.showMatch();
-        } else {
-            this.view.removeCurrentCandidate();
+        VoteYesResponse responseResponse = (VoteYesResponse) response.getResponse();
+        if (responseResponse.getMatch() != null && responseResponse.getMatch()) {
+            this.view.showMatch(responseResponse.getCandidate());
         }
-
-    }
-
-    private void sendVoteNoResult() {
-        this.view.removeCurrentCandidate();
     }
 
     private void loadPhoto(CandidateTaskResponse response) {

@@ -23,7 +23,7 @@ public interface CandidatesView extends BaseView {
 
     void onError(String errorMsg);
 
-    void showMatch();
+    void showMatch(final Candidate candidate);
 
     void loadPhoto(Bitmap photo);
 }

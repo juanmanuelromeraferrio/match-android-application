@@ -6,7 +6,9 @@ import android.util.Log;
 import com.match.client.MatchClient;
 import com.match.client.entities.Candidate;
 import com.match.client.entities.User;
+import com.match.client.entities.request.VoteRequest;
 import com.match.client.entities.response.CandidatesResponse;
+import com.match.client.entities.response.MatchResponse;
 import com.match.client.entities.response.PhotoResponse;
 import com.match.client.entities.response.UserResponse;
 import com.match.error.service.APIError;
@@ -29,6 +31,8 @@ import retrofit2.Response;
  * Created by Juan Manuel Romera on 29/5/2016.
  */
 public class CandidatesServiceImpl extends CandidatesService {
+
+    private static final String MATCHED = "matched";
 
     public CandidatesServiceImpl(Database database, CandidateMapper mapper) {
         super(database, mapper);
@@ -65,12 +69,39 @@ public class CandidatesServiceImpl extends CandidatesService {
 
     @Override
     public Boolean voteYes(String userId, String candidateID) throws ServiceException {
+        MatchClient matchClient = new MatchClient();
+        Call<MatchResponse> call = matchClient.candidates.voteYes(new VoteRequest(userId, candidateID));
+        try {
+            Response<MatchResponse> response = call.execute();
+            if (response.isSuccessful()) {
+                MatchResponse matchResponse = response.body();
+                return wasMatch(matchResponse.getData());
+            } else {
+                Log.e(Configuration.LOG, response.errorBody().toString());
+            }
+        } catch (IOException e) {
+            Log.e(Configuration.LOG, e.getLocalizedMessage());
+        }
+
         return Boolean.FALSE;
+    }
+
+    private Boolean wasMatch(String data) {
+        return data.equals(MATCHED);
     }
 
     @Override
     public void voteNo(String userId, String candidateID) throws ServiceException {
-
+        MatchClient matchClient = new MatchClient();
+        Call<MatchResponse> call = matchClient.candidates.voteNo(new VoteRequest(userId, candidateID));
+        try {
+            Response<MatchResponse> response = call.execute();
+            if (!response.isSuccessful()) {
+                Log.e(Configuration.LOG, response.errorBody().toString());
+            }
+        } catch (IOException e) {
+            Log.e(Configuration.LOG, e.getLocalizedMessage());
+        }
     }
 
     @Override
