@@ -9,6 +9,7 @@ import com.match.client.entities.response.VoteYesResponse;
 import com.match.error.service.ServiceException;
 import com.match.service.api.CandidatesService;
 import com.match.service.api.UserService;
+import com.match.task.response.CandidateTaskResponse;
 import com.match.task.response.TaskResponse;
 
 /**

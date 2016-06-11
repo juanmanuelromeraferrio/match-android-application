@@ -10,10 +10,11 @@ import com.match.client.entities.response.VoteYesResponse;
 import com.match.service.api.CandidatesService;
 import com.match.service.api.UserService;
 import com.match.service.factory.ServiceFactory;
-import com.match.task.CandidateTaskResponse;
+import com.match.task.response.CandidateTaskResponse;
 import com.match.task.FindCandidatesTask;
 import com.match.task.GetPhotoTask;
 import com.match.task.SendCandidateVoteTask;
+import com.match.task.response.PhotoTaskResponse;
 
 import java.util.List;
 
@@ -123,8 +124,8 @@ public class CandidatesControllerImpl implements CandidatesController {
     }
 
     private void loadPhoto(CandidateTaskResponse response) {
-        Bitmap photo = (Bitmap) response.getResponse();
-        this.view.loadPhoto(photo);
+        PhotoTaskResponse photoTaskResponse = (PhotoTaskResponse) response.getResponse();
+        this.view.loadPhoto(photoTaskResponse.getIdCandidatePhoto(), photoTaskResponse.getPhoto());
     }
 
 

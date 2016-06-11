@@ -1,5 +1,6 @@
-package com.match.task;
+package com.match.task.response;
 
+import com.match.task.CandidateTaskState;
 import com.match.task.response.TaskResponse;
 
 /**

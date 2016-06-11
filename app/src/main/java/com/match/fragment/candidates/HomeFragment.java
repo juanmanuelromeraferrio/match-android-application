@@ -26,6 +26,7 @@ import com.match.service.factory.ServiceFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 /**
  * Created by Juan Manuel Romera Ferrio on 26/10/16.
@@ -34,7 +35,7 @@ public class HomeFragment extends Fragment implements CandidatesView {
 
     private static final String TAG = "HomeFragment";
 
-    private List<Candidate> candidates;
+    private Vector<Candidate> candidates;
 
     private CandidateViewHolder candidateViewHolder;
     private TextView emptyView;
@@ -64,7 +65,7 @@ public class HomeFragment extends Fragment implements CandidatesView {
 
         // ListView
         emptyView = (TextView) mainView.findViewById(R.id.empty_view);
-        candidates = new ArrayList<>();
+        candidates = new Vector<>();
 
         //Buttons
         buttonYes = (ImageButton) mainView.findViewById(R.id.yesButton);
@@ -180,7 +181,7 @@ public class HomeFragment extends Fragment implements CandidatesView {
     @Override
     public void removeCurrentCandidate() {
         this.candidates.remove(0);
-        reloadCandidates();
+        //reloadCandidates();
         refreshCandidate();
 
     }
@@ -223,7 +224,6 @@ public class HomeFragment extends Fragment implements CandidatesView {
             @Override
             public void onClick(DialogInterface dialog, int id) {
                 controller.acceptMatch(candidate.getId());
-                removeCurrentCandidate();
             }
         });
         AlertDialog alert = builder.create();
@@ -231,9 +231,12 @@ public class HomeFragment extends Fragment implements CandidatesView {
     }
 
     @Override
-    public void loadPhoto(Bitmap photo) {
+    public void loadPhoto(String idCandidatePhoto, Bitmap photo) {
         if (!this.candidates.isEmpty()) {
-            candidateViewHolder.loadPhoto(photo);
+            String currentId = candidates.get(0).getId();
+            if (currentId.equals(idCandidatePhoto)) {
+                candidateViewHolder.loadPhoto(photo);
+            }
         }
     }
 

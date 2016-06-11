@@ -7,6 +7,7 @@ import com.match.client.entities.Candidate;
 import com.match.client.entities.User;
 import com.match.error.service.ServiceException;
 import com.match.service.api.CandidatesService;
+import com.match.task.response.CandidateTaskResponse;
 import com.match.task.response.TaskResponse;
 
 import java.util.List;

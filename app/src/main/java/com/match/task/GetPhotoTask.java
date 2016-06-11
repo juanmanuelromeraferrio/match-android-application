@@ -4,10 +4,9 @@ import android.graphics.Bitmap;
 import android.os.AsyncTask;
 
 import com.match.activity.api.BaseController;
-import com.match.client.entities.CandidateVote;
-import com.match.error.service.ServiceException;
 import com.match.service.api.CandidatesService;
-import com.match.service.api.UserService;
+import com.match.task.response.CandidateTaskResponse;
+import com.match.task.response.PhotoTaskResponse;
 import com.match.task.response.TaskResponse;
 
 /**
@@ -28,7 +27,7 @@ public class GetPhotoTask extends AsyncTask<Object, Void, TaskResponse> {
         String candidateID = (String) params[0];
         Bitmap photo = candidatesService.findPhoto(candidateID);
         CandidateTaskResponse response = new CandidateTaskResponse(CandidateTaskState.GET_PHOTO);
-        response.setResponse(photo);
+        response.setResponse(new PhotoTaskResponse(candidateID, photo));
         return response;
     }
 
