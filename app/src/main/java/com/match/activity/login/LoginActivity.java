@@ -70,8 +70,8 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     }
 
     private void login() {
-        String email = _emailText.getText().toString();
-        String password = _passwordText.getText().toString();
+        String email = "jlopez@gmail.com";//_emailText.getText().toString();
+        String password = "1234";//_passwordText.getText().toString();
         controller.loginUser(email, password);
     }
 

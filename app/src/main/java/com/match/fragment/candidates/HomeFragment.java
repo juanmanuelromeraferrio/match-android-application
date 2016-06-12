@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.match.R;
+import com.match.activity.chat.ChatActivity;
 import com.match.activity.login.LoginActivity;
 import com.match.client.entities.Candidate;
 import com.match.service.factory.ServiceFactory;
@@ -145,6 +146,10 @@ public class HomeFragment extends Fragment implements CandidatesView {
     }
 
     private void goToChat() {
+        Intent intent = new Intent(activity, ChatActivity.class);
+        intent.putExtra("user",ServiceFactory.getUserService().getLocalUser());
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 
     @Override
@@ -206,7 +211,6 @@ public class HomeFragment extends Fragment implements CandidatesView {
 
     }
 
-
     @Override
     public void onError(String errorMsg) {
         Toast.makeText(activity, errorMsg, Toast.LENGTH_SHORT).show();
@@ -222,7 +226,7 @@ public class HomeFragment extends Fragment implements CandidatesView {
         builder.setPositiveButton(getString(R.string.aceptar), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int id) {
-                controller.acceptMatch(candidate.getId());
+                controller.acceptMatch(candidate);
                 removeCurrentCandidate();
             }
         });

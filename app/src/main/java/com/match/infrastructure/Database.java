@@ -22,4 +22,5 @@ public interface Database {
     void setToken(Token token);
 
     void setInterests(Map<String, List<String>> interests);
+
 }

@@ -74,7 +74,7 @@ public class UserServiceMock extends UserService {
     }
 
 
-    private void saveUser(User user) {
+    public void saveUser(User user) {
         int size = users.size();
         size++;
         saveUser(String.valueOf(size), user);

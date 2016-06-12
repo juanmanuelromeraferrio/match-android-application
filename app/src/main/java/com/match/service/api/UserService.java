@@ -33,6 +33,8 @@ public abstract class UserService implements MatchService {
 
     public abstract void loginUser(String email, String password) throws ServiceException;
 
+    public abstract void saveUser(User user);
+
     public User getLocalUser() {
         return database.getUser();
     }

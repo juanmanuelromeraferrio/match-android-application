@@ -5,7 +5,10 @@ import android.os.AsyncTask;
 import com.match.client.entities.Candidate;
 import com.match.client.entities.CandidateVote;
 import com.match.client.entities.User;
+import com.match.error.service.ServiceException;
 import com.match.service.api.CandidatesService;
+import com.match.service.api.MatchService;
+import com.match.service.api.UserMatchesService;
 import com.match.service.api.UserService;
 import com.match.service.factory.ServiceFactory;
 import com.match.task.CandidateTaskResponse;
@@ -21,6 +24,7 @@ public class CandidatesControllerImpl implements CandidatesController {
 
     private CandidatesView view;
     private CandidatesService candidatesService;
+    private UserMatchesService userMatchesService;
     private UserService userService;
 
     private boolean isFindingCandidates = Boolean.FALSE;
@@ -28,6 +32,7 @@ public class CandidatesControllerImpl implements CandidatesController {
     public CandidatesControllerImpl(CandidatesView view) {
         this.view = view;
         this.candidatesService = ServiceFactory.getCandidatesService();
+        this.userMatchesService = ServiceFactory.getUserMatchesService();
         this.userService = ServiceFactory.getUserService();
     }
 
@@ -52,8 +57,12 @@ public class CandidatesControllerImpl implements CandidatesController {
     }
 
     @Override
-    public void acceptMatch(String candidateId) {
-
+    public void acceptMatch(Candidate candidate){
+        try {
+            this.userMatchesService.acceptMatch(this.userService.getLocalUser(), candidate);
+        }catch(ServiceException e){
+            e.printStackTrace();
+        }
     }
 
     @Override

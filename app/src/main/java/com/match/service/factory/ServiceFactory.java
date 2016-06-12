@@ -6,11 +6,13 @@ import com.match.service.api.InterestService;
 import com.match.service.api.MatchService;
 import com.match.service.api.ServiceType;
 import com.match.service.api.Services;
+import com.match.service.api.UserMatchesService;
 import com.match.service.api.UserService;
 import com.match.service.impl.CandidatesServiceImpl;
 import com.match.service.impl.CandidatesServiceMock;
 import com.match.service.impl.InterestServiceImpl;
 import com.match.service.impl.InterestServiceMock;
+import com.match.service.impl.UserMatchesServiceImpl;
 import com.match.service.impl.UserServiceImpl;
 import com.match.service.impl.UserServiceMock;
 import com.match.utils.mapper.CandidateMapper;
@@ -47,9 +49,11 @@ public class ServiceFactory {
         UserService userService = new UserServiceImpl(database);
         InterestService interestService = new InterestServiceImpl(database);
         CandidatesService candidatesService = new CandidatesServiceImpl(database, candidateMapper);
+        UserMatchesService userMatchesService = new UserMatchesServiceImpl(database, candidateMapper);
         save(userService);
         save(interestService);
         save(candidatesService);
+        save(userMatchesService);
     }
 
     private static void buildMockServices(Database database) {
@@ -76,5 +80,9 @@ public class ServiceFactory {
 
     public static CandidatesService getCandidatesService() {
         return (CandidatesService) services.get(ServiceType.CANDIDATES);
+    }
+
+    public static UserMatchesService getUserMatchesService() {
+        return (UserMatchesService) services.get(ServiceType.USER_MATCHES);
     }
 }

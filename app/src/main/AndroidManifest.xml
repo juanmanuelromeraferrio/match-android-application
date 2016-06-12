@@ -51,6 +51,10 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".activity.login.ChatActivity"
+            android:label="@string/app_chat"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".activity.register.RegisterUserActivity"
             android:label="@string/title_activity_sign_up_user_info" />
         <activity
@@ -71,6 +75,8 @@
                 <category android:name="com.match" />
             </intent-filter>
         </receiver>
+
+        <activity android:name=".activity.chat.ChatActivity"></activity>
     </application>
 
 </manifest>

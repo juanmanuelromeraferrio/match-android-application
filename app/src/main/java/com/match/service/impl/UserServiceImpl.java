@@ -4,6 +4,7 @@ import com.match.client.MatchClient;
 import com.match.client.entities.User;
 import com.match.client.entities.request.LoginRequest;
 import com.match.client.entities.request.UserRequest;
+import com.match.client.entities.response.CandidatesResponse;
 import com.match.client.entities.response.MatchResponse;
 import com.match.client.entities.response.UserResponse;
 import com.match.error.service.APIError;
@@ -35,7 +36,7 @@ public class UserServiceImpl extends UserService {
             if (response.isSuccessful()) {
                 MatchResponse matchResponse = response.body();
                 user.setId(matchResponse.getData());
-                this.database.setUser(user);
+                saveUser(user);
             } else {
                 APIError error = ErrorUtils.parseError(response);
                 throw new ServiceException(error.getData());
@@ -52,7 +53,7 @@ public class UserServiceImpl extends UserService {
         try {
             Response<MatchResponse> response = call.execute();
             if (response.isSuccessful()) {
-                this.database.setUser(user);
+                saveUser(user);
             } else {
                 APIError error = ErrorUtils.parseError(response);
                 throw new ServiceException(error.getData());
@@ -76,14 +77,17 @@ public class UserServiceImpl extends UserService {
             Response<UserResponse> response = call.execute();
             if (response.isSuccessful()) {
                 UserResponse userResponse = response.body();
-                this.database.setUser(userResponse.getUser());
+                saveUser(userResponse.getUser());
             } else {
                 APIError error = ErrorUtils.parseError(response);
                 throw new ServiceException(error.getData());
             }
-
         } catch (IOException e) {
             throw new ServiceException(e.getLocalizedMessage());
         }
+    }
+
+    public void saveUser(User user){
+        this.database.setUser(user);
     }
 }

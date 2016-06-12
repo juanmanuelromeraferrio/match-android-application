@@ -6,6 +6,7 @@ import com.match.client.entities.request.UserRequest;
 import com.match.client.entities.response.CandidatesResponse;
 import com.match.client.entities.response.MatchResponse;
 import com.match.client.entities.response.UserResponse;
+import com.match.task.CandidateTaskResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Body;

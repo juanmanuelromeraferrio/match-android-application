@@ -1,6 +1,7 @@
 package com.match.client.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
@@ -17,6 +18,7 @@ public class User implements Serializable {
     private String sex;
     private String age;
     private List<Interest> interests;
+    private List<Candidate> userMatches;
     private Location location;
     private String photo;
 
@@ -29,6 +31,7 @@ public class User implements Serializable {
         this.password = password;
         this.interests = new Vector<>();
         this.location = new Location();
+        this.userMatches = new Vector<>();
     }
 
     public User(String name) {
@@ -36,7 +39,16 @@ public class User implements Serializable {
         this.name = name;
         this.alias = email;
         this.interests = new Vector<>();
+        this.userMatches = new Vector<>();
         this.location = new Location();
+    }
+
+    public List<Candidate> getUserMatches() {
+        return userMatches;
+    }
+
+    public void setUserMatches(List<Candidate> userMatches) {
+        this.userMatches = userMatches;
     }
 
     public String getId() {

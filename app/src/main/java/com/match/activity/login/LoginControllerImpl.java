@@ -23,7 +23,7 @@ public class LoginControllerImpl implements LoginController {
     public void loginUser(String email, String password) {
         boolean hasInputDataErrors = hasInputDataErrors(email, password);
         if (!hasInputDataErrors) {
-            LoginUserTask task = new LoginUserTask(ServiceFactory.getUserService(), ServiceFactory.getInterestService(), this);
+            LoginUserTask task = new LoginUserTask(ServiceFactory.getUserService(), ServiceFactory.getUserMatchesService(), ServiceFactory.getInterestService(), this);
             task.execute(email, password);
         }
     }
