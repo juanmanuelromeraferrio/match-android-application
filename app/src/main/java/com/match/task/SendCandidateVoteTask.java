@@ -3,10 +3,13 @@ package com.match.task;
 import android.os.AsyncTask;
 
 import com.match.activity.api.BaseController;
+import com.match.client.entities.Candidate;
 import com.match.client.entities.CandidateVote;
+import com.match.client.entities.response.VoteYesResponse;
 import com.match.error.service.ServiceException;
 import com.match.service.api.CandidatesService;
 import com.match.service.api.UserService;
+import com.match.task.response.CandidateTaskResponse;
 import com.match.task.response.TaskResponse;
 
 /**
@@ -28,16 +31,16 @@ public class SendCandidateVoteTask extends AsyncTask<Object, Void, TaskResponse>
     protected TaskResponse doInBackground(Object... params) {
         CandidateTaskResponse response = null;
         CandidateVote vote = (CandidateVote) params[0];
-        String candidateID = (String) params[1];
+        Candidate candidate = (Candidate) params[1];
         String userId = userService.getLocalUser().getId();
         try {
             if (vote.isYes()) {
                 response = new CandidateTaskResponse(CandidateTaskState.VOTE_YES);
-                Boolean match = candidatesService.voteYes(userId, candidateID);
-                response.setResponse(match);
+                Boolean match = candidatesService.voteYes(userId, candidate.getId());
+                response.setResponse(new VoteYesResponse(candidate, match));
             } else {
                 response = new CandidateTaskResponse(CandidateTaskState.VOTE_NO);
-                candidatesService.voteNo(userId, candidateID);
+                candidatesService.voteNo(userId, candidate.getId());
             }
         } catch (ServiceException e) {
             response.setError(e.getMessage());

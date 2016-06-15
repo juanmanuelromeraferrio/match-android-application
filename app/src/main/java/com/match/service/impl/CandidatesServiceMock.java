@@ -1,5 +1,7 @@
 package com.match.service.impl;
 
+import android.graphics.Bitmap;
+
 import com.match.MatchApplication;
 import com.match.R;
 import com.match.client.entities.Candidate;
@@ -74,6 +76,11 @@ public class CandidatesServiceMock extends CandidatesService {
     @Override
     public void voteNo(String userId, String candidateID) throws ServiceException {
 
+    }
+
+    @Override
+    public Bitmap findPhoto(String id) {
+        return null;
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.match.service.api;
 
+import android.graphics.Bitmap;
+
 import com.match.client.entities.Candidate;
 import com.match.client.entities.User;
 import com.match.error.service.ServiceException;
@@ -27,8 +29,12 @@ public abstract class CandidatesService implements MatchService {
 
     public abstract void voteNo(String userId, String candidateID) throws ServiceException;
 
+    public abstract Bitmap findPhoto(String id);
+
     @Override
     public ServiceType getType() {
         return ServiceType.CANDIDATES;
     }
+
+
 }

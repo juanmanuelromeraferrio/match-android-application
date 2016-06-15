@@ -3,6 +3,7 @@ package com.match.client.resources;
 import com.match.client.entities.Token;
 import com.match.client.entities.request.LoginRequest;
 import com.match.client.entities.request.UserRequest;
+import com.match.client.entities.request.VoteRequest;
 import com.match.client.entities.response.CandidatesResponse;
 import com.match.client.entities.response.MatchResponse;
 import com.match.client.entities.response.UserResponse;
@@ -23,5 +24,12 @@ public interface Candidates {
 
     @GET("candidates")
     Call<CandidatesResponse> findCandidates(@Query("id") String id);
+
+    @POST("match/yes")
+    Call<MatchResponse> voteYes(@Body VoteRequest voteRequest);
+
+    @POST("match/no")
+    Call<MatchResponse> voteNo(@Body VoteRequest voteRequest);
+
 
 }

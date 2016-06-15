@@ -26,6 +26,7 @@ import com.match.service.factory.ServiceFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 /**
  * Created by Juan Manuel Romera Ferrio on 26/10/16.
@@ -34,7 +35,7 @@ public class HomeFragment extends Fragment implements CandidatesView {
 
     private static final String TAG = "HomeFragment";
 
-    private List<Candidate> candidates;
+    private Vector<Candidate> candidates;
 
     private CandidateViewHolder candidateViewHolder;
     private TextView emptyView;
@@ -64,7 +65,7 @@ public class HomeFragment extends Fragment implements CandidatesView {
 
         // ListView
         emptyView = (TextView) mainView.findViewById(R.id.empty_view);
-        candidates = new ArrayList<>();
+        candidates = new Vector<>();
 
         //Buttons
         buttonYes = (ImageButton) mainView.findViewById(R.id.yesButton);
@@ -184,7 +185,7 @@ public class HomeFragment extends Fragment implements CandidatesView {
     @Override
     public void removeCurrentCandidate() {
         this.candidates.remove(0);
-        reloadCandidates();
+        //reloadCandidates();
         refreshCandidate();
 
     }
@@ -211,14 +212,14 @@ public class HomeFragment extends Fragment implements CandidatesView {
 
     }
 
+
     @Override
     public void onError(String errorMsg) {
         Toast.makeText(activity, errorMsg, Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void showMatch() {
-        final Candidate candidate = this.candidates.get(0);
+    public void showMatch(final Candidate candidate) {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity, R.style.AlertDialogCustom);
         builder.setTitle(R.string.candidate_match_title);
         builder.setMessage(getString(R.string.candidate_match_message, candidate.getName()));
@@ -226,17 +227,28 @@ public class HomeFragment extends Fragment implements CandidatesView {
         builder.setPositiveButton(getString(R.string.aceptar), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int id) {
-                controller.acceptMatch(candidate);
-                removeCurrentCandidate();
+                controller.acceptMatch(candidate.getId());
             }
         });
         AlertDialog alert = builder.create();
         alert.show();
     }
 
+    @Override
+    public void loadPhoto(String idCandidatePhoto, Bitmap photo) {
+        if (!this.candidates.isEmpty()) {
+            String currentId = candidates.get(0).getId();
+            if (currentId.equals(idCandidatePhoto)) {
+                candidateViewHolder.loadPhoto(photo);
+            }
+        }
+    }
+
     private void refreshCandidate() {
         if (!this.candidates.isEmpty()) {
-            candidateViewHolder.loadCandidate(this.candidates.get(0));
+            Candidate candidate = this.candidates.get(0);
+            this.controller.getPhoto(candidate);
+            candidateViewHolder.loadCandidate(candidate);
         }
         finishLoadingCandidates();
     }

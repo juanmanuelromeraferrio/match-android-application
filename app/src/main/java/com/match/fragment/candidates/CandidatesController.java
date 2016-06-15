@@ -11,11 +11,14 @@ public interface CandidatesController extends BaseController {
 
     void findCandidates();
 
-    void likeCandidate(Candidate user);
+    void likeCandidate(Candidate candidate);
 
-    void dislikeCandidate(Candidate user);
+    void dislikeCandidate(Candidate candidate);
 
     void acceptMatch(Candidate user);
 
+    void getPhoto(Candidate candidate);
+
     boolean isFindingCandidates();
+
 }

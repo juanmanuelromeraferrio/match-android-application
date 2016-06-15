@@ -125,7 +125,7 @@ public class HomeActivity extends AppCompatActivity {
             super.onBackPressed();
             return;
         }
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogExit);
         builder.setMessage("¿Desea salir de la aplicación?")
                 .setCancelable(false)
                 .setPositiveButton("Sí", new DialogInterface.OnClickListener() {
