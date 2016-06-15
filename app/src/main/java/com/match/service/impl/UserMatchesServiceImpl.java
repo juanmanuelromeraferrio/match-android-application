@@ -31,14 +31,13 @@ import retrofit2.Response;
  */
 public class UserMatchesServiceImpl extends UserMatchesService {
 
-    private MatchClient matchClient = new MatchClient();
-
     public UserMatchesServiceImpl(Database database, CandidateMapper mapper) {
         super(database, mapper);
     }
 
     @Override
     public List<Candidate> findUserMatches(User user) throws ServiceException {
+        MatchClient matchClient = new MatchClient();
         Call<CandidatesResponse> call = matchClient.matches.findMatches(user.getId());
         try {
             Response<CandidatesResponse> response = call.execute();
@@ -57,7 +56,7 @@ public class UserMatchesServiceImpl extends UserMatchesService {
 
     @Override
     public void acceptMatch(User user, Candidate candidate) throws ServiceException{
-
+        MatchClient matchClient = new MatchClient();
         Call<MatchResponse> call = matchClient.matches.acceptMatch(user.getId(),candidate.getId());
 
         try {

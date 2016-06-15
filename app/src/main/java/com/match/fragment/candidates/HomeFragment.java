@@ -3,6 +3,7 @@ package com.match.fragment.candidates;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -24,7 +25,6 @@ import com.match.activity.login.LoginActivity;
 import com.match.client.entities.Candidate;
 import com.match.service.factory.ServiceFactory;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
@@ -227,7 +227,7 @@ public class HomeFragment extends Fragment implements CandidatesView {
         builder.setPositiveButton(getString(R.string.aceptar), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int id) {
-                controller.acceptMatch(candidate.getId());
+                controller.acceptMatch(candidate);
             }
         });
         AlertDialog alert = builder.create();
