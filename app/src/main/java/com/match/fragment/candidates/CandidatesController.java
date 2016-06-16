@@ -4,7 +4,7 @@ import com.match.activity.api.BaseController;
 import com.match.client.entities.Candidate;
 import com.match.client.entities.User;
 
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Created by Juan Manuel Romera on 22/5/2016.
@@ -19,7 +19,7 @@ public interface CandidatesController extends BaseController {
 
     void acceptMatch(Candidate user);
 
-    List<Candidate> getCandidatesMatch(User user);
+    ArrayList<Candidate> getCandidatesMatch(User user);
 
     void getPhoto(Candidate candidate);
 

@@ -13,6 +13,8 @@
     <!-- Chat -->
     <string name="app_chat">Chat</string>
 
+    <string name="matching_app">Matching App</string>
+
     <!-- Datos cuenta -->
     <string name="name_label">Nombre</string>
     <string name="crear_usuario_label">Crear usuario</string>

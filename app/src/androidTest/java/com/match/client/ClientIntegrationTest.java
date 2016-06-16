@@ -1,5 +1,6 @@
 package com.match.client;
 
+import com.match.client.entities.request.MatchRequest;
 import com.match.client.entities.response.InterestResponse;
 import com.match.client.entities.response.MatchResponse;
 import com.match.client.utils.MatchAsyncTask;
@@ -19,14 +20,14 @@ public class ClientIntegrationTest {
 
     public void testGetInterests() throws ExecutionException, InterruptedException {
         MatchClient matchClient = getMatchClient();
-        Call<InterestResponse> call = matchClient.interests.getInterestResponse();
+        Call<InterestResponse> call = matchClient.interests.getInterests();
         MatchAsyncTask<InterestResponse> task = new MatchAsyncTask<>();
         InterestResponse response = task.execute(call).get();
     }
 
     public void testGetMatches() throws ExecutionException, InterruptedException {
         MatchClient matchClient = getMatchClient();
-        Call<MatchResponse> call = matchClient.matches.acceptMatch("180","185");
+        Call<MatchResponse> call = matchClient.matches.acceptMatch(new MatchRequest("180","185"));
         MatchAsyncTask<MatchResponse> task = new MatchAsyncTask<>();
         MatchResponse response = task.execute(call).get();
     }

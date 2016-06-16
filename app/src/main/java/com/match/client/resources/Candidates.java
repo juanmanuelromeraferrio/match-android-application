@@ -4,7 +4,6 @@ import com.match.client.entities.request.VoteRequest;
 import com.match.client.entities.response.CandidatesResponse;
 import com.match.client.entities.response.MatchResponse;
 
-
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;

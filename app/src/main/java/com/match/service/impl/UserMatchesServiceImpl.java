@@ -30,7 +30,6 @@ public class UserMatchesServiceImpl extends UserMatchesService {
         super(database, mapper);
     }
 
-    @Override
     public ArrayList<Candidate> findUserMatches(User user) throws ServiceException {
         MatchClient matchClient = new MatchClient();
         Call<CandidatesResponse> call = matchClient.matches.findMatches(user.getId());
@@ -52,6 +51,7 @@ public class UserMatchesServiceImpl extends UserMatchesService {
     @Override
     public void acceptMatch(User user, Candidate candidate) throws ServiceException{
         MatchClient matchClient = new MatchClient();
+
         Call<MatchResponse> call = matchClient.matches.acceptMatch(new MatchRequest(user.getId(),candidate.getId()));
 
         try {

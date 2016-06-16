@@ -1,5 +1,6 @@
 package com.match.service.impl;
 
+import android.graphics.Bitmap;
 import android.util.Log;
 import com.match.client.MatchClient;
 import com.match.client.entities.Candidate;
@@ -32,15 +33,13 @@ public class CandidatesServiceImpl extends CandidatesService {
 
     private static final String MATCHED = "matched";
 
-    private MatchClient matchClient = new MatchClient();
-
     public CandidatesServiceImpl(Database database, CandidateMapper mapper) {
         super(database, mapper);
     }
 
     @Override
     public List<Candidate> findCandidates(User user) throws ServiceException {
-
+        MatchClient matchClient = new MatchClient();
         Call<CandidatesResponse> call = matchClient.candidates.findCandidates(user.getId());
         try {
             Response<CandidatesResponse> response = call.execute();
@@ -69,6 +68,7 @@ public class CandidatesServiceImpl extends CandidatesService {
 
     @Override
     public Boolean voteYes(String userId, String candidateID) throws ServiceException {
+        MatchClient matchClient = new MatchClient();
         Call<MatchResponse> call = matchClient.candidates.voteYes(new VoteRequest(userId, candidateID));
         try {
             Response<MatchResponse> response = call.execute();
@@ -91,6 +91,7 @@ public class CandidatesServiceImpl extends CandidatesService {
 
     @Override
     public void voteNo(String userId, String candidateID) throws ServiceException {
+        MatchClient matchClient = new MatchClient();
         Call<MatchResponse> call = matchClient.candidates.voteNo(new VoteRequest(userId, candidateID));
         try {
             Response<MatchResponse> response = call.execute();
@@ -104,6 +105,7 @@ public class CandidatesServiceImpl extends CandidatesService {
 
     @Override
     public Bitmap findPhoto(String id) {
+        MatchClient matchClient = new MatchClient();
         Call<PhotoResponse> call = matchClient.users.getPhoto(id);
 
         try {

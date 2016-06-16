@@ -1,6 +1,5 @@
 package com.match.fragment.candidates;
 
-import android.graphics.Bitmap;
 import android.os.AsyncTask;
 
 import com.match.client.entities.Candidate;
@@ -9,7 +8,6 @@ import com.match.client.entities.User;
 import com.match.error.service.ServiceException;
 import com.match.client.entities.response.VoteYesResponse;
 import com.match.service.api.CandidatesService;
-import com.match.service.api.MatchService;
 import com.match.service.api.UserMatchesService;
 import com.match.service.api.UserService;
 import com.match.service.factory.ServiceFactory;
@@ -19,6 +17,7 @@ import com.match.task.GetPhotoTask;
 import com.match.task.SendCandidateVoteTask;
 import com.match.task.response.PhotoTaskResponse;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -70,7 +69,7 @@ public class CandidatesControllerImpl implements CandidatesController {
     }
 
     @Override
-    public List<Candidate> getCandidatesMatch(User user){
+    public ArrayList<Candidate> getCandidatesMatch(User user){
         try{
             return this.userMatchesService.findUserMatches(user);
         }catch(ServiceException e){

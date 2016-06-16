@@ -26,7 +26,6 @@ import com.match.client.entities.Candidate;
 import com.match.client.entities.User;
 import com.match.service.factory.ServiceFactory;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
