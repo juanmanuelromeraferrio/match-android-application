@@ -3,6 +3,7 @@ package com.match.fragment.candidates;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -22,6 +23,7 @@ import com.match.R;
 import com.match.activity.chat.ChatActivity;
 import com.match.activity.login.LoginActivity;
 import com.match.client.entities.Candidate;
+import com.match.client.entities.User;
 import com.match.service.factory.ServiceFactory;
 
 import java.util.ArrayList;
@@ -52,7 +54,7 @@ public class HomeFragment extends Fragment implements CandidatesView {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         activity = getActivity();
         controller = new CandidatesControllerImpl(this);
-        ((AppCompatActivity) activity).getSupportActionBar().setSubtitle(null);
+        ((AppCompatActivity) activity).getSupportActionBar().setSubtitle(R.string.matching_app);
         // Toolbar:
         setHasOptionsMenu(true);
 
@@ -148,8 +150,13 @@ public class HomeFragment extends Fragment implements CandidatesView {
 
     private void goToChat() {
         Intent intent = new Intent(activity, ChatActivity.class);
-        intent.putExtra("user",ServiceFactory.getUserService().getLocalUser());
+        User user = ServiceFactory.getUserService().getLocalUser();
+        ArrayList<Candidate> listCandidatesMatches = controller.getCandidatesMatch(user);
+
+        intent.putExtra("user",user);
+        intent.putParcelableArrayListExtra("matches",listCandidatesMatches);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
         startActivity(intent);
     }
 
@@ -212,7 +219,6 @@ public class HomeFragment extends Fragment implements CandidatesView {
 
     }
 
-
     @Override
     public void onError(String errorMsg) {
         Toast.makeText(activity, errorMsg, Toast.LENGTH_SHORT).show();
@@ -227,7 +233,7 @@ public class HomeFragment extends Fragment implements CandidatesView {
         builder.setPositiveButton(getString(R.string.aceptar), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int id) {
-                controller.acceptMatch(candidate.getId());
+                controller.acceptMatch(candidate);
             }
         });
         AlertDialog alert = builder.create();

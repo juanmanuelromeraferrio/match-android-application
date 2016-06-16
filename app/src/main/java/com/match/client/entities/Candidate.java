@@ -5,7 +5,7 @@ import android.graphics.Bitmap;
 /**
  * Created by Juan Manuel Romera on 25/5/2016.
  */
-public class Candidate {
+public class Candidate implements Parcelable{
 
     private String id;
     private String name;

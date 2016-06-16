@@ -24,12 +24,6 @@ public interface Matches {
     @GET("chats")
     Call<CandidatesResponse> findMatches(@Query("id") String id);
 
-    /**
-     * @param idFrom
-     * @param idTo
-     * @return
-     */
-    @FormUrlEncoded
-    @POST("/match/confirm")
-    Call<MatchResponse> acceptMatch(@Field("idFrom") String idFrom,@Field("idTo") String idTo);
+    @POST("match/confirm")
+    Call<MatchResponse> acceptMatch(@Body MatchRequest matchRequest);
 }

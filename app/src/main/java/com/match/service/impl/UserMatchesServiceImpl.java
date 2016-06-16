@@ -1,6 +1,5 @@
 package com.match.service.impl;
 
-import com.google.gson.Gson;
 import com.match.client.MatchClient;
 import com.match.client.entities.Candidate;
 import com.match.client.entities.User;
@@ -11,17 +10,13 @@ import com.match.client.entities.response.UserResponse;
 import com.match.error.service.APIError;
 import com.match.error.service.ServiceException;
 import com.match.infrastructure.Database;
-import com.match.service.api.CandidatesService;
 import com.match.service.api.UserMatchesService;
 import com.match.utils.ErrorUtils;
 import com.match.utils.mapper.CandidateMapper;
 
 import java.io.IOException;
-import java.lang.reflect.GenericArrayType;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -31,14 +26,13 @@ import retrofit2.Response;
  */
 public class UserMatchesServiceImpl extends UserMatchesService {
 
-    private MatchClient matchClient = new MatchClient();
-
     public UserMatchesServiceImpl(Database database, CandidateMapper mapper) {
         super(database, mapper);
     }
 
     @Override
-    public List<Candidate> findUserMatches(User user) throws ServiceException {
+    public ArrayList<Candidate> findUserMatches(User user) throws ServiceException {
+        MatchClient matchClient = new MatchClient();
         Call<CandidatesResponse> call = matchClient.matches.findMatches(user.getId());
         try {
             Response<CandidatesResponse> response = call.execute();
@@ -57,8 +51,8 @@ public class UserMatchesServiceImpl extends UserMatchesService {
 
     @Override
     public void acceptMatch(User user, Candidate candidate) throws ServiceException{
-
-        Call<MatchResponse> call = matchClient.matches.acceptMatch(user.getId(),candidate.getId());
+        MatchClient matchClient = new MatchClient();
+        Call<MatchResponse> call = matchClient.matches.acceptMatch(new MatchRequest(user.getId(),candidate.getId()));
 
         try {
             Response<MatchResponse> response = call.execute();
@@ -75,8 +69,8 @@ public class UserMatchesServiceImpl extends UserMatchesService {
         }
     }
 
-    private List<Candidate> mapToCandidates(CandidatesResponse candidatesResponse) {
-        List<Candidate> candidates = new ArrayList<>();
+    private ArrayList<Candidate> mapToCandidates(CandidatesResponse candidatesResponse) {
+        ArrayList<Candidate> candidates = new ArrayList<>();
         for (UserResponse user_ : candidatesResponse.getUsers()) {
             Candidate candidate = mapper.map(user_.getUser());
             candidates.add(candidate);

@@ -61,12 +61,6 @@ public class CandidatesControllerImpl implements CandidatesController {
     }
 
     @Override
-    public void getPhoto(Candidate candidate) {
-        GetPhotoTask task = new GetPhotoTask(candidatesService, this);
-        task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, candidate.getId());
-    }
-
-    @Override
     public void acceptMatch(Candidate candidate){
         try {
             this.userMatchesService.acceptMatch(this.userService.getLocalUser(), candidate);
@@ -75,6 +69,20 @@ public class CandidatesControllerImpl implements CandidatesController {
         }
     }
 
+    @Override
+    public List<Candidate> getCandidatesMatch(User user){
+        try{
+            return this.userMatchesService.findUserMatches(user);
+        }catch(ServiceException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public void getPhoto(Candidate candidate) {
+        GetPhotoTask task = new GetPhotoTask(candidatesService, this);
+        task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, candidate.getId());
+    }
 
     @Override
     public boolean isFindingCandidates() {

@@ -1,8 +1,6 @@
 package com.match.service.impl;
 
-import android.graphics.Bitmap;
 import android.util.Log;
-
 import com.match.client.MatchClient;
 import com.match.client.entities.Candidate;
 import com.match.client.entities.User;
