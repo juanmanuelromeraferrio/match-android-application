@@ -13,5 +13,7 @@ public class Configuration {
     public static final String TOKEN_RESPONSE = "Token";
     public static final String TOKEN_REQUEST = "token";
     public static final String MATCHED_RESPONSE = "matched";
+    public static final String FORBIDDEN = "forbidden";
     public static final int HTTP_CODE_FORBIDDEN = 403;
+
 }

@@ -29,7 +29,7 @@ public abstract class UserService implements MatchService {
 
     public abstract void updateUser(User user) throws ServiceException;
 
-    public abstract boolean isUserLogged(User user) throws ServiceException;
+    public abstract boolean isUserLogged() throws ServiceException;
 
     public abstract void loginUser(String email, String password) throws ServiceException;
 

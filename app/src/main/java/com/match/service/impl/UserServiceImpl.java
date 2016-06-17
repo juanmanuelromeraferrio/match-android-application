@@ -1,5 +1,7 @@
 package com.match.service.impl;
 
+import android.util.Log;
+
 import com.match.client.MatchClient;
 import com.match.client.entities.User;
 import com.match.client.entities.request.LoginRequest;
@@ -11,6 +13,7 @@ import com.match.error.service.ServiceException;
 import com.match.infrastructure.Database;
 import com.match.service.api.ClientService;
 import com.match.service.api.UserService;
+import com.match.utils.Configuration;
 import com.match.utils.ErrorUtils;
 
 import java.io.IOException;
@@ -74,8 +77,31 @@ public class UserServiceImpl extends UserService {
     }
 
     @Override
-    public boolean isUserLogged(User user) throws ServiceException {
-        return false;
+    public boolean isUserLogged() throws ServiceException {
+/*        String token = database.getToken();
+        if (token == null && token.isEmpty()) {
+            return false;
+        }
+
+        MatchClient authClient = clientService.getAuthClient();
+        Call<MatchResponse> call = authClient.users.isUserLogged();
+        try {
+            Response<MatchResponse> response = call.execute();
+            if (response.isSuccessful()) {
+                MatchResponse matchResponse = response.body();
+                if (!matchResponse.getData().equals(Configuration.FORBIDDEN)) {
+                    //Save Token
+                    clientService.saveToken(response.headers());
+                    return Boolean.TRUE;
+                }
+            } else {
+                Log.e(Configuration.LOG, response.errorBody().toString());
+            }
+        } catch (IOException e) {
+            Log.e(Configuration.LOG, e.getLocalizedMessage());
+        }*/
+
+        return Boolean.FALSE;
     }
 
     @Override

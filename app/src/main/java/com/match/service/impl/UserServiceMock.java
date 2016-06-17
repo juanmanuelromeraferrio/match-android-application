@@ -44,7 +44,7 @@ public class UserServiceMock extends UserService {
     }
 
     @Override
-    public boolean isUserLogged(User user) throws ServiceException {
+    public boolean isUserLogged() throws ServiceException {
         return false;
     }
 
