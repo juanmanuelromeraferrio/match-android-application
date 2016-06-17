@@ -57,7 +57,11 @@ public class UserServiceImpl extends UserService {
 
     @Override
     public void updateUser(User user) throws ServiceException {
-        MatchClient matchClient = clientService.getAuthClient();
+        String token = database.getToken();
+        MatchClient matchClient = new MatchClient();
+        matchClient.setToken(token);
+        matchClient.build();
+
         Call<MatchResponse> call = matchClient.users.updateUser(new UserRequest(user));
         try {
             Response<MatchResponse> response = call.execute();
