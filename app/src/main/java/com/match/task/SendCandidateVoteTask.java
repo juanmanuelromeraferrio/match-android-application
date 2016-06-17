@@ -44,6 +44,7 @@ public class SendCandidateVoteTask extends AsyncTask<Object, Void, TaskResponse>
             }
         } catch (ServiceException e) {
             response.setError(e.getMessage());
+            response.setSessionExpired(e.isSessionExpired());
             return response;
         }
         return response;

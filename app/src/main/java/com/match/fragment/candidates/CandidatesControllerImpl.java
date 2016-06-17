@@ -1,22 +1,20 @@
 package com.match.fragment.candidates;
 
-import android.graphics.Bitmap;
 import android.os.AsyncTask;
 
 import com.match.client.entities.Candidate;
 import com.match.client.entities.CandidateVote;
 import com.match.client.entities.User;
-import com.match.error.service.ServiceException;
 import com.match.client.entities.response.VoteYesResponse;
+import com.match.error.service.ServiceException;
 import com.match.service.api.CandidatesService;
-import com.match.service.api.MatchService;
 import com.match.service.api.UserMatchesService;
 import com.match.service.api.UserService;
 import com.match.service.factory.ServiceFactory;
-import com.match.task.response.CandidateTaskResponse;
 import com.match.task.FindCandidatesTask;
 import com.match.task.GetPhotoTask;
 import com.match.task.SendCandidateVoteTask;
+import com.match.task.response.CandidateTaskResponse;
 import com.match.task.response.PhotoTaskResponse;
 
 import java.util.List;
@@ -67,10 +65,10 @@ public class CandidatesControllerImpl implements CandidatesController {
     }
 
     @Override
-    public void acceptMatch(Candidate candidate){
+    public void acceptMatch(Candidate candidate) {
         try {
             this.userMatchesService.acceptMatch(this.userService.getLocalUser(), candidate);
-        }catch(ServiceException e){
+        } catch (ServiceException e) {
             e.printStackTrace();
         }
     }
@@ -117,7 +115,9 @@ public class CandidatesControllerImpl implements CandidatesController {
     }
 
     private void findCandidatesResult(CandidateTaskResponse response) {
-        if (response.hasError()) {
+        if (response.sessionExpired()) {
+            view.sessionExpired();
+        } else if (response.hasError()) {
             this.view.onError(response.getError());
         } else {
             List<Candidate> candidates = (List<Candidate>) response.getResponse();
@@ -126,15 +126,24 @@ public class CandidatesControllerImpl implements CandidatesController {
     }
 
     private void sendVoteYesResult(CandidateTaskResponse response) {
-        VoteYesResponse responseResponse = (VoteYesResponse) response.getResponse();
-        if (responseResponse.getMatch() != null && responseResponse.getMatch()) {
-            this.view.showMatch(responseResponse.getCandidate());
+        if (response.sessionExpired()) {
+            view.sessionExpired();
+        } else {
+            VoteYesResponse responseResponse = (VoteYesResponse) response.getResponse();
+            if (responseResponse.getMatch() != null && responseResponse.getMatch()) {
+                this.view.showMatch(responseResponse.getCandidate());
+            }
         }
     }
 
     private void loadPhoto(CandidateTaskResponse response) {
-        PhotoTaskResponse photoTaskResponse = (PhotoTaskResponse) response.getResponse();
-        this.view.loadPhoto(photoTaskResponse.getIdCandidatePhoto(), photoTaskResponse.getPhoto());
+        if (response.sessionExpired()) {
+            view.sessionExpired();
+        } else {
+            PhotoTaskResponse photoTaskResponse = (PhotoTaskResponse) response.getResponse();
+            this.view.loadPhoto(photoTaskResponse.getIdCandidatePhoto(), photoTaskResponse.getPhoto());
+        }
+
     }
 
 

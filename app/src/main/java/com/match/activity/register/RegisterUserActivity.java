@@ -288,6 +288,11 @@ public class RegisterUserActivity extends AppCompatActivity implements RegisterU
     }
 
     @Override
+    public void sessionExpired() {
+        UiUtils.showSessionExpired(this);
+    }
+
+    @Override
     public Context getContext() {
         return this;
     }

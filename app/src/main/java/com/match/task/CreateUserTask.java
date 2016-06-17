@@ -7,6 +7,7 @@ import com.match.client.entities.User;
 import com.match.error.service.ServiceException;
 import com.match.service.api.InterestService;
 import com.match.service.api.UserService;
+import com.match.task.response.CreateUserTaskResponse;
 import com.match.task.response.TaskResponse;
 
 /**
@@ -39,10 +40,12 @@ public class CreateUserTask extends AsyncTask<User, Void, TaskResponse> {
             userService.createUser(user);
             interestService.getInterests();
         } catch (ServiceException e) {
-            return new TaskResponse(e.getMessage());
+            TaskResponse taskResponse = new CreateUserTaskResponse(e.getMessage(), user.getEmail());
+            taskResponse.setSessionExpired(e.isSessionExpired());
+            return taskResponse;
         }
 
-        return new TaskResponse();
+        return new CreateUserTaskResponse();
     }
 
     @Override

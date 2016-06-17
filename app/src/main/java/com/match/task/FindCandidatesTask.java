@@ -48,6 +48,7 @@ public class FindCandidatesTask extends AsyncTask<User, Void, TaskResponse> {
             candidates = candidatesService.findCandidates(user);
         } catch (ServiceException e) {
             taskResponse.setError(e.getMessage());
+            taskResponse.setSessionExpired(e.isSessionExpired());
             return taskResponse;
         }
 

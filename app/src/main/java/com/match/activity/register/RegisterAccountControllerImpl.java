@@ -3,6 +3,7 @@ package com.match.activity.register;
 import com.match.client.entities.User;
 import com.match.service.factory.ServiceFactory;
 import com.match.task.CreateUserTask;
+import com.match.task.response.CreateUserTaskResponse;
 import com.match.task.response.TaskResponse;
 import com.match.utils.Validator;
 
@@ -62,8 +63,10 @@ public class RegisterAccountControllerImpl implements RegisterAccountController 
 
     @Override
     public void onResult(Object result) {
-        TaskResponse response = (TaskResponse) result;
-        if (response.hasError()) {
+        CreateUserTaskResponse response = (CreateUserTaskResponse) result;
+        if (response.sessionExpired()) {
+            view.sessionExpired();
+        } else if (response.hasError()) {
             view.onError(response.getError());
         } else {
             view.goToNext();

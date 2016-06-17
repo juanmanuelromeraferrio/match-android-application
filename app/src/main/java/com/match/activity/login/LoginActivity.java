@@ -15,6 +15,7 @@ import com.match.R;
 import com.match.activity.HomeActivity;
 import com.match.activity.register.RegistarAccountActivity;
 import com.match.activity.register.RegisterUserActivity;
+import com.match.utils.UiUtils;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -70,8 +71,8 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     }
 
     private void login() {
-        String email = "jlopez@gmail.com";//_emailText.getText().toString();
-        String password = "1234";//_passwordText.getText().toString();
+        String email = _emailText.getText().toString();
+        String password = _passwordText.getText().toString();
         controller.loginUser(email, password);
     }
 
@@ -139,6 +140,11 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
             intent = new Intent(LoginActivity.this, RegisterUserActivity.class);
         }
         startActivity(intent);
+    }
+
+    @Override
+    public void sessionExpired() {
+        UiUtils.showSessionExpired(this);
     }
 
     @Override

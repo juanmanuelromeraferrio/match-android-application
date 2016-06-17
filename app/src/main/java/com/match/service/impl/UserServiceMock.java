@@ -34,7 +34,7 @@ public class UserServiceMock extends UserService {
 
     @Override
     public void updateUser(User user) throws ServiceException {
-        String userID = this.database.getToken().getUserID();
+        String userID = this.database.getUser().getId();
         if (users.containsKey(userID)) {
             saveUser(userID, user);
         } else {
@@ -45,16 +45,6 @@ public class UserServiceMock extends UserService {
 
     @Override
     public boolean isUserLogged(User user) throws ServiceException {
-        Token token = database.getToken();
-        if (token != null) {
-            long createdAt = new Long(token.getCreatedAt()).longValue();
-            long diff = System.currentTimeMillis() - createdAt;
-            if (diff > Configuration.TOKEN_TIME_MS) {
-                return false;
-            }
-            return true;
-        }
-
         return false;
     }
 
@@ -83,6 +73,5 @@ public class UserServiceMock extends UserService {
     private void saveUser(String userID, User user) {
         users.put(userID, user);
         database.setUser(user);
-        database.setToken(new Token("", userID, System.currentTimeMillis() + ""));
     }
 }

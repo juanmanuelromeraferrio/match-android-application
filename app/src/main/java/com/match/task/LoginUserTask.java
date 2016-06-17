@@ -10,6 +10,7 @@ import com.match.service.api.InterestService;
 import com.match.service.api.UserMatchesService;
 import com.match.service.api.UserService;
 import com.match.task.response.LoginTaskResponse;
+import com.match.task.response.TaskResponse;
 
 import java.util.List;
 
@@ -56,7 +57,9 @@ public class LoginUserTask extends AsyncTask<String, Void, LoginTaskResponse> {
             }
 
         } catch (ServiceException e) {
-            return new LoginTaskResponse(e.getMessage());
+            LoginTaskResponse taskResponse = new LoginTaskResponse(e.getMessage());
+            taskResponse.setSessionExpired(e.isSessionExpired());
+            return taskResponse;
         }
 
         return new LoginTaskResponse();

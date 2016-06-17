@@ -15,6 +15,7 @@ import com.match.error.service.APIError;
 import com.match.error.service.ServiceException;
 import com.match.infrastructure.Database;
 import com.match.service.api.CandidatesService;
+import com.match.service.api.ClientService;
 import com.match.utils.Configuration;
 import com.match.utils.ErrorUtils;
 import com.match.utils.PhotoUtils;
@@ -32,26 +33,29 @@ import retrofit2.Response;
  */
 public class CandidatesServiceImpl extends CandidatesService {
 
-    private static final String MATCHED = "matched";
+    private ClientService clientService;
 
-    private MatchClient matchClient = new MatchClient();
-
-    public CandidatesServiceImpl(Database database, CandidateMapper mapper) {
+    public CandidatesServiceImpl(Database database, ClientService clientService, CandidateMapper mapper) {
         super(database, mapper);
+        this.clientService = clientService;
     }
 
     @Override
     public List<Candidate> findCandidates(User user) throws ServiceException {
-
+        MatchClient matchClient = clientService.getAuthClient();
         Call<CandidatesResponse> call = matchClient.candidates.findCandidates(user.getId());
         try {
             Response<CandidatesResponse> response = call.execute();
             if (response.isSuccessful()) {
+                //Get Candidates
                 CandidatesResponse candidatesResponse = response.body();
-                return mapToCandidates(candidatesResponse);
+                List<Candidate> candidates = mapToCandidates(candidatesResponse);
+                //Save Token
+                clientService.saveToken(response.headers());
+                return candidates;
             } else {
                 APIError error = ErrorUtils.parseError(response);
-                throw new ServiceException(error.getData());
+                throw new ServiceException(error);
             }
 
         } catch (IOException e) {
@@ -71,14 +75,25 @@ public class CandidatesServiceImpl extends CandidatesService {
 
     @Override
     public Boolean voteYes(String userId, String candidateID) throws ServiceException {
+        MatchClient matchClient = clientService.getAuthClient();
         Call<MatchResponse> call = matchClient.candidates.voteYes(new VoteRequest(userId, candidateID));
         try {
             Response<MatchResponse> response = call.execute();
             if (response.isSuccessful()) {
+                //Match Response
                 MatchResponse matchResponse = response.body();
-                return wasMatch(matchResponse.getData());
+                Boolean isMatch = isMatch(matchResponse.getData());
+                //Save Token
+                clientService.saveToken(response.headers());
+                return isMatch;
             } else {
-                Log.e(Configuration.LOG, response.errorBody().toString());
+                Boolean sessionExpired = ErrorUtils.sessionExpired(response);
+                if (sessionExpired) {
+                    APIError error = ErrorUtils.parseError(response);
+                    throw new ServiceException(error);
+                } else {
+                    Log.e(Configuration.LOG, response.errorBody().toString());
+                }
             }
         } catch (IOException e) {
             Log.e(Configuration.LOG, e.getLocalizedMessage());
@@ -87,17 +102,23 @@ public class CandidatesServiceImpl extends CandidatesService {
         return Boolean.FALSE;
     }
 
-    private Boolean wasMatch(String data) {
-        return data.equals(MATCHED);
-    }
-
     @Override
     public void voteNo(String userId, String candidateID) throws ServiceException {
+        MatchClient matchClient = clientService.getAuthClient();
         Call<MatchResponse> call = matchClient.candidates.voteNo(new VoteRequest(userId, candidateID));
         try {
             Response<MatchResponse> response = call.execute();
             if (!response.isSuccessful()) {
-                Log.e(Configuration.LOG, response.errorBody().toString());
+                Boolean sessionExpired = ErrorUtils.sessionExpired(response);
+                if (sessionExpired) {
+                    APIError error = ErrorUtils.parseError(response);
+                    throw new ServiceException(error);
+                } else {
+                    Log.e(Configuration.LOG, response.errorBody().toString());
+                }
+            } else {
+                //Save Token
+                clientService.saveToken(response.headers());
             }
         } catch (IOException e) {
             Log.e(Configuration.LOG, e.getLocalizedMessage());
@@ -105,21 +126,36 @@ public class CandidatesServiceImpl extends CandidatesService {
     }
 
     @Override
-    public Bitmap findPhoto(String id) {
+    public Bitmap findPhoto(String id) throws ServiceException {
+        MatchClient matchClient = clientService.getAuthClient();
         Call<PhotoResponse> call = matchClient.users.getPhoto(id);
 
         try {
             Response<PhotoResponse> response = call.execute();
             if (response.isSuccessful()) {
+                // Get Photo
                 PhotoResponse photoResponse = response.body();
-                return PhotoUtils.base64ToBitmap(photoResponse.getPhoto());
+                Bitmap picture = PhotoUtils.base64ToBitmap(photoResponse.getPhoto());
+                //Save Token
+                clientService.saveToken(response.headers());
+                return picture;
             } else {
-                Log.e(Configuration.LOG, response.errorBody().toString());
+                Boolean sessionExpired = ErrorUtils.sessionExpired(response);
+                if (sessionExpired) {
+                    APIError error = ErrorUtils.parseError(response);
+                    throw new ServiceException(error);
+                } else {
+                    Log.e(Configuration.LOG, response.errorBody().toString());
+                }
             }
         } catch (IOException e) {
             Log.e(Configuration.LOG, e.getLocalizedMessage());
         }
 
         return null;
+    }
+
+    private Boolean isMatch(String data) {
+        return data.equals(Configuration.MATCHED_RESPONSE);
     }
 }
