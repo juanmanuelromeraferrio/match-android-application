@@ -18,7 +18,7 @@ public class User implements Serializable {
     private String sex;
     private String age;
     private List<Interest> interests;
-    private List<Candidate> userMatches;
+    private volatile List<Candidate> userMatches;
     private Location location;
     private String photo;
 
