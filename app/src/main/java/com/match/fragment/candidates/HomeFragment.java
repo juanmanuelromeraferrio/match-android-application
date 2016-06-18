@@ -153,9 +153,9 @@ public class HomeFragment extends Fragment implements CandidatesView {
     private void goToChat() {
         Intent intent = new Intent(activity, ChatActivity.class);
 
-        User user = ServiceFactory.getUserService().getLocalUser();
-        intent.putExtra("user",user);
-
+       // User user = ServiceFactory.getUserService().getLocalUser();
+       // intent.putExtra("user",user);
+        startActivity(intent);
     }
 
     @Override

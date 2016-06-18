@@ -39,8 +39,6 @@ public class Candidate implements Serializable{
         return interests;
     }
 
-<<<<<<< HEAD
-=======
     public void setPhoto(Bitmap photo) {
         this.photo = photo;
     }
@@ -48,5 +46,5 @@ public class Candidate implements Serializable{
     public String getAge() {
         return age;
     }
->>>>>>> a7b31bd445dfa0883f1ec18b7d2c7f0087fcd181
+
 }

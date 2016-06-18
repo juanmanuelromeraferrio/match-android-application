@@ -34,22 +34,16 @@ public class CandidatesServiceImpl extends CandidatesService {
 
     private ClientService clientService;
 
-<<<<<<< HEAD
-    public CandidatesServiceImpl(Database database, CandidateMapper mapper) {
-=======
     public CandidatesServiceImpl(Database database, ClientService clientService, CandidateMapper mapper) {
->>>>>>> a7b31bd445dfa0883f1ec18b7d2c7f0087fcd181
         super(database, mapper);
         this.clientService = clientService;
     }
 
     @Override
     public List<Candidate> findCandidates(User user) throws ServiceException {
-<<<<<<< HEAD
-        MatchClient matchClient = new MatchClient();
-=======
+
         MatchClient matchClient = clientService.getAuthClient();
->>>>>>> a7b31bd445dfa0883f1ec18b7d2c7f0087fcd181
+
         Call<CandidatesResponse> call = matchClient.candidates.findCandidates(user.getId());
         try {
             Response<CandidatesResponse> response = call.execute();
@@ -82,11 +76,9 @@ public class CandidatesServiceImpl extends CandidatesService {
 
     @Override
     public Boolean voteYes(String userId, String candidateID) throws ServiceException {
-<<<<<<< HEAD
-        MatchClient matchClient = new MatchClient();
-=======
+
         MatchClient matchClient = clientService.getAuthClient();
->>>>>>> a7b31bd445dfa0883f1ec18b7d2c7f0087fcd181
+
         Call<MatchResponse> call = matchClient.candidates.voteYes(new VoteRequest(userId, candidateID));
         try {
             Response<MatchResponse> response = call.execute();
@@ -115,11 +107,7 @@ public class CandidatesServiceImpl extends CandidatesService {
 
     @Override
     public void voteNo(String userId, String candidateID) throws ServiceException {
-<<<<<<< HEAD
-        MatchClient matchClient = new MatchClient();
-=======
         MatchClient matchClient = clientService.getAuthClient();
->>>>>>> a7b31bd445dfa0883f1ec18b7d2c7f0087fcd181
         Call<MatchResponse> call = matchClient.candidates.voteNo(new VoteRequest(userId, candidateID));
         try {
             Response<MatchResponse> response = call.execute();
@@ -141,13 +129,8 @@ public class CandidatesServiceImpl extends CandidatesService {
     }
 
     @Override
-<<<<<<< HEAD
-    public Bitmap findPhoto(String id) {
-        MatchClient matchClient = new MatchClient();
-=======
     public Bitmap findPhoto(String id) throws ServiceException {
         MatchClient matchClient = clientService.getAuthClient();
->>>>>>> a7b31bd445dfa0883f1ec18b7d2c7f0087fcd181
         Call<PhotoResponse> call = matchClient.users.getPhoto(id);
 
         try {
