@@ -70,7 +70,7 @@ public class UserMatchesServiceImpl extends UserMatchesService {
     }
 
     private ArrayList<Candidate> mapToCandidates(CandidatesResponse candidatesResponse) {
-        ArrayList<Candidate> candidates = new ArrayList<>();
+        ArrayList<Candidate> candidates = new ArrayList<Candidate>();
         for (UserResponse user_ : candidatesResponse.getUsers()) {
             Candidate candidate = mapper.map(user_.getUser());
             candidates.add(candidate);

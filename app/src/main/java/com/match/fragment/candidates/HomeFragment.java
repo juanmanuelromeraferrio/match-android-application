@@ -20,12 +20,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.match.R;
+import com.match.activity.HomeActivity;
 import com.match.activity.chat.ChatActivity;
 import com.match.activity.login.LoginActivity;
 import com.match.client.entities.Candidate;
 import com.match.client.entities.User;
 import com.match.service.factory.ServiceFactory;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
@@ -150,12 +152,7 @@ public class HomeFragment extends Fragment implements CandidatesView {
     private void goToChat() {
         Intent intent = new Intent(activity, ChatActivity.class);
         User user = ServiceFactory.getUserService().getLocalUser();
-        ArrayList<Candidate> listCandidatesMatches = controller.getCandidatesMatch(user);
-
         intent.putExtra("user",user);
-        intent.putParcelableArrayListExtra("matches",listCandidatesMatches);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
         startActivity(intent);
     }
 
@@ -175,6 +172,7 @@ public class HomeFragment extends Fragment implements CandidatesView {
 
     @Override
     public void goToNext() {
+
     }
 
     @Override
