@@ -39,7 +39,7 @@ public class Validator {
     }
 
     public boolean isAgeValid(String age) {
-        if (age == null && age.isEmpty()) {
+        if (age == null || age.isEmpty()) {
             return false;
         }
 

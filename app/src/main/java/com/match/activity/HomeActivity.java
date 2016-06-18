@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.match.R;
 import com.match.client.entities.User;
 import com.match.fragment.candidates.HomeFragment;
+import com.match.fragment.profile.ProfileFragment;
 import com.match.service.factory.ServiceFactory;
 import com.match.utils.PhotoUtils;
 
@@ -103,6 +104,10 @@ public class HomeActivity extends AppCompatActivity {
             case R.id.drawer_home:
                 fragment = new HomeFragment();
                 currentFragment = getResources().getString(R.string.app_name);
+                break;
+            case R.id.drawer_profile:
+                fragment = new ProfileFragment();
+                currentFragment = getResources().getString(R.string.item_perfil);
                 break;
             default:
                 break;

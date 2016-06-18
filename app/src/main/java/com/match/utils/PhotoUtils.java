@@ -61,7 +61,6 @@ public class PhotoUtils {
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             bitmapResized.compress(Bitmap.CompressFormat.JPEG, 100, bos);
             byte[] bitmapArray = bos.toByteArray();
-
             return BitmapFactory.decodeByteArray(bitmapArray, 0, bitmapArray.length);
 
         } catch (FileNotFoundException e) {
