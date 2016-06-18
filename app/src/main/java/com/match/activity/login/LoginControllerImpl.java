@@ -62,7 +62,9 @@ public class LoginControllerImpl implements LoginController {
     @Override
     public void onResult(Object result) {
         LoginTaskResponse response = (LoginTaskResponse) result;
-        if (response.hasError()) {
+        if (response.sessionExpired()) {
+            view.sessionExpired();
+        } else if (response.hasError()) {
             view.onError(response.getError());
         } else if (response.hasUserError()) {
             view.setEmailError(response.getUserError());

@@ -13,5 +13,7 @@ public interface BaseView {
 
     void goToNext();
 
+    void sessionExpired();
+
     Context getContext();
 }

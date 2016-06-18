@@ -5,7 +5,21 @@ package com.match.error.service;
  */
 public class ServiceException extends Exception {
 
-    public ServiceException(String localizedMessage) {
-        super(localizedMessage);
+    private APIError error;
+
+    public ServiceException(String messagge) {
+        super(messagge);
+    }
+
+    public ServiceException(APIError error) {
+        super(error.getData());
+        this.error = error;
+    }
+
+    public boolean isSessionExpired() {
+        if (error != null) {
+            return error.isSessionExpired();
+        }
+        return Boolean.FALSE;
     }
 }

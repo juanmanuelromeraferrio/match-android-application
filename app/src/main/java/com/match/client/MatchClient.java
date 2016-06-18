@@ -14,17 +14,36 @@ import retrofit2.Retrofit;
  */
 public class MatchClient {
 
-    public final Interests interests;
-    public final Users users;
-    public final Candidates candidates;
-    public final Matches matches;
-
+    public Interests interests;
+    public Users users;
+    public Candidates candidates;
+    public Matches matches;
+    private Boolean auth = Boolean.FALSE;
+    private String token;
 
     public MatchClient() {
-        Retrofit retrofit = ServiceGenerator.defaultRetrofit();
-        this.interests = retrofit.create(Interests.class);
-        this.users = retrofit.create(Users.class);
-        this.candidates = retrofit.create(Candidates.class);
-        this.matches = retrofit.create(Matches.class);
+    }
+
+    public void setToken(String token) {
+        if (token != null && !token.isEmpty()) {
+            this.token = token;
+            this.auth = Boolean.TRUE;
+        }
+    }
+
+    public void build() {
+        Retrofit retrofit = getRetrofit();
+        interests = retrofit.create(Interests.class);
+        users = retrofit.create(Users.class);
+        candidates = retrofit.create(Candidates.class);
+        matches = retrofit.create(Matches.class);
+    }
+
+    private Retrofit getRetrofit() {
+        if (auth) {
+            return ServiceGenerator.authorizationRetrofit(token);
+        } else {
+            return ServiceGenerator.defaultRetrofit();
+        }
     }
 }

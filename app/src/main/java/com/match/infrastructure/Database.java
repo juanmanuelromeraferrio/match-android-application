@@ -11,7 +11,7 @@ import java.util.Map;
  */
 public interface Database {
 
-    Token getToken();
+    String getToken();
 
     User getUser();
 
@@ -19,7 +19,7 @@ public interface Database {
 
     void setUser(User user);
 
-    void setToken(Token token);
+    void setToken(String token);
 
     void setInterests(Map<String, List<String>> interests);
 

@@ -38,6 +38,7 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class RegisterUserActivity extends AppCompatActivity implements RegisterUserView, OnLocation, GoogleApiClient.OnConnectionFailedListener {
 
@@ -50,7 +51,7 @@ public class RegisterUserActivity extends AppCompatActivity implements RegisterU
     @InjectView(R.id.input_address)
     AutoCompleteTextView _addressAutoCompleteText;
     @InjectView(R.id.photoButton)
-    ImageButton _addPhoto;
+    CircleImageView _addPhoto;
     @InjectView(R.id.toolbar)
     Toolbar toolbar;
     @InjectView(R.id.spCategory)
@@ -262,8 +263,7 @@ public class RegisterUserActivity extends AppCompatActivity implements RegisterU
         if (photo == null) {
             _addPhoto.setBackgroundResource(R.drawable.profile);
         } else {
-            BitmapDrawable photoDrawable = new BitmapDrawable(getResources(), photo);
-            _addPhoto.setBackground(photoDrawable);
+            _addPhoto.setImageBitmap(photo);
         }
     }
 
@@ -285,6 +285,11 @@ public class RegisterUserActivity extends AppCompatActivity implements RegisterU
         Intent intent = new Intent(RegisterUserActivity.this, HomeActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+    }
+
+    @Override
+    public void sessionExpired() {
+        UiUtils.showSessionExpired(this);
     }
 
     @Override

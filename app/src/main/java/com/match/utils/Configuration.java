@@ -10,5 +10,10 @@ public class Configuration {
     public static final long TOKEN_TIME_MS = 3600000; //1 hora
     public static final long READ_TIMEOUT_SECONDS = 300;
     public static final long CONNECTION_TIMEOUT_SECONDS = 300;
+    public static final String TOKEN_RESPONSE = "Token";
+    public static final String TOKEN_REQUEST = "token";
+    public static final String MATCHED_RESPONSE = "matched";
+    public static final String FORBIDDEN = "forbidden";
+    public static final int HTTP_CODE_FORBIDDEN = 403;
 
 }

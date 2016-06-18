@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.match.R;
+import com.match.utils.UiUtils;
 import com.match.utils.Validator;
 
 import butterknife.ButterKnife;
@@ -106,6 +107,11 @@ public class RegistarAccountActivity extends AppCompatActivity implements Regist
     public void goToNext() {
         Intent intent = new Intent(RegistarAccountActivity.this, RegisterUserActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void sessionExpired() {
+        UiUtils.showSessionExpired(this);
     }
 
     @Override

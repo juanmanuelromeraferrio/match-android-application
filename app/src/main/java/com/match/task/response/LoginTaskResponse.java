@@ -41,7 +41,7 @@ public class LoginTaskResponse extends TaskResponse {
         return passwordError;
     }
 
-    public String getString(int id) {
+    private String getString(int id) {
         return MatchApplication.getContext().getResources().getString(id);
     }
 }

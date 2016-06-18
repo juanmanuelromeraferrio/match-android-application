@@ -3,7 +3,6 @@ package com.match.utils.mapper;
 import com.match.client.entities.Candidate;
 import com.match.client.entities.Interest;
 import com.match.client.entities.User;
-import com.match.utils.PhotoUtils;
 
 import java.util.List;
 
@@ -17,9 +16,9 @@ public class MatchCandidateMapper implements CandidateMapper {
     @Override
     public Candidate map(User user) {
         if (user.getPhoto() != null) {
-            return new Candidate(user.getId(), user.getName(), null, decodeInterest(user.getInterests()));
+            return new Candidate(user.getId(), user.getName(), user.getAge(), null, decodeInterest(user.getInterests()));
         } else {
-            return new Candidate(user.getId(), user.getName(), null, decodeInterest(user.getInterests()));
+            return new Candidate(user.getId(), user.getName(), user.getAge(), null, decodeInterest(user.getInterests()));
         }
     }
 
@@ -29,16 +28,20 @@ public class MatchCandidateMapper implements CandidateMapper {
         }
         StringBuffer result = new StringBuffer("Le gustan: ");
         int index = 0;
+        int size = interests.size() > MAX_SHOW_INTEREST ? MAX_SHOW_INTEREST : interests.size();
         for (Interest interest : interests) {
             if (index == MAX_SHOW_INTEREST) {
                 break;
             }
             index++;
             result.append(interest.getValue());
-            if (index != MAX_SHOW_INTEREST) {
-                result.append(", ");
-            } else {
+
+            if (size > 1 && (index + 1) == size) {
+                result.append(" y ");
+            } else if (index == size) {
                 result.append(".");
+            } else {
+                result.append(", ");
             }
         }
 

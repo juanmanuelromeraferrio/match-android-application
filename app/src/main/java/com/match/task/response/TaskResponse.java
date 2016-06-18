@@ -6,6 +6,7 @@ package com.match.task.response;
 public class TaskResponse {
 
     private String error;
+    private Boolean sessionExpired = Boolean.FALSE;
     private Object response;
 
     public TaskResponse(String error) {
@@ -23,6 +24,14 @@ public class TaskResponse {
 
     public boolean hasError() {
         return !error.isEmpty();
+    }
+
+    public void setSessionExpired(Boolean sessionExpired) {
+        this.sessionExpired = sessionExpired;
+    }
+
+    public boolean sessionExpired() {
+        return sessionExpired;
     }
 
     public String getError() {

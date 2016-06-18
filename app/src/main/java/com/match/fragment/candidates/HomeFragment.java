@@ -26,6 +26,7 @@ import com.match.activity.login.LoginActivity;
 import com.match.client.entities.Candidate;
 import com.match.client.entities.User;
 import com.match.service.factory.ServiceFactory;
+import com.match.utils.UiUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -151,9 +152,10 @@ public class HomeFragment extends Fragment implements CandidatesView {
 
     private void goToChat() {
         Intent intent = new Intent(activity, ChatActivity.class);
+
         User user = ServiceFactory.getUserService().getLocalUser();
         intent.putExtra("user",user);
-        startActivity(intent);
+
     }
 
     @Override
@@ -173,6 +175,11 @@ public class HomeFragment extends Fragment implements CandidatesView {
     @Override
     public void goToNext() {
 
+    }
+
+    @Override
+    public void sessionExpired() {
+        UiUtils.showSessionExpired(activity);
     }
 
     @Override

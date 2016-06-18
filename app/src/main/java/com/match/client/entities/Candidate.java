@@ -11,12 +11,14 @@ public class Candidate implements Serializable{
 
     private String id;
     private String name;
+    private String age;
     private Bitmap photo;
     private String interests;
 
-    public Candidate(String id, String name, Bitmap photo, String interests) {
+    public Candidate(String id, String name, String age, Bitmap photo, String interests) {
         this.id = id;
         this.name = name;
+        this.age = age;
         this.photo = photo;
         this.interests = interests;
     }
@@ -37,4 +39,14 @@ public class Candidate implements Serializable{
         return interests;
     }
 
+<<<<<<< HEAD
+=======
+    public void setPhoto(Bitmap photo) {
+        this.photo = photo;
+    }
+
+    public String getAge() {
+        return age;
+    }
+>>>>>>> a7b31bd445dfa0883f1ec18b7d2c7f0087fcd181
 }

@@ -33,21 +33,17 @@ public class ServiceGenerator {
                 .build();
     }
 
-    public static Retrofit authorizationRetrofit(Token token) {
-        // add authentication header field
-        final String authStringEncoded = encode(token.getCode().getBytes());
-        final String authHeader = "Basic " + authStringEncoded;
-
+    public static Retrofit authorizationRetrofit(final String token) {
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         httpClient.readTimeout(Configuration.READ_TIMEOUT_SECONDS, TimeUnit.SECONDS);
         httpClient.connectTimeout(Configuration.CONNECTION_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+        httpClient.writeTimeout(Configuration.CONNECTION_TIMEOUT_SECONDS, TimeUnit.SECONDS);
         httpClient.addInterceptor(new Interceptor() {
             @Override
             public Response intercept(Chain chain) throws IOException {
                 Request original = chain.request();
                 Request request = original.newBuilder()
-                        .header("User-Agent", "match-android")
-                        .header("Authorization", authHeader)
+                        .header(Configuration.TOKEN_REQUEST, token)
                         .build();
 
                 return chain.proceed(request);

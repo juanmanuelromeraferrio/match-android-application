@@ -7,6 +7,7 @@ import com.match.activity.api.BaseController;
 import com.match.client.entities.Interest;
 import com.match.client.entities.Location;
 import com.match.client.entities.User;
+import com.match.error.service.ServiceException;
 import com.match.service.api.UserService;
 import com.match.task.response.TaskResponse;
 import com.match.utils.PhotoUtils;
@@ -49,8 +50,10 @@ public class UpdateUserTask extends AsyncTask<Object, Void, TaskResponse> {
             localUser.setSex(sex);
             localUser.setAge(age);
             userService.updateUser(localUser);
-        } catch (Exception e) {
-            return new TaskResponse(e.getMessage());
+        } catch (ServiceException e) {
+            TaskResponse response = new TaskResponse(e.getMessage());
+            response.setSessionExpired(e.isSessionExpired());
+            return response;
         }
 
         return new TaskResponse();

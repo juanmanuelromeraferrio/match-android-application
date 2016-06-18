@@ -19,6 +19,7 @@ public class CandidateViewHolder extends RecyclerView.ViewHolder {
 
     private ImageView image;
     private TextView name;
+    private TextView age;
     private TextView interests;
     private CardView cardView;
     private ProgressBar progressImage;
@@ -29,12 +30,14 @@ public class CandidateViewHolder extends RecyclerView.ViewHolder {
         progressImage = (ProgressBar) itemView.findViewById(R.id.progressImage);
         image = (ImageView) itemView.findViewById(R.id.candidateImage);
         name = (TextView) itemView.findViewById(R.id.candidateName);
+        age = (TextView) itemView.findViewById(R.id.candidateAge);
         interests = (TextView) itemView.findViewById(R.id.candidateInterests);
     }
 
     public void loadCandidate(Candidate candidate) {
         this.loadPhoto(candidate.getPhoto());
         name.setText(candidate.getName());
+        age.setText("Edad: " + candidate.getAge());
         interests.setText(candidate.getInterests());
     }
 

@@ -6,12 +6,14 @@ import com.match.service.api.InterestService;
 import com.match.service.api.MatchService;
 import com.match.service.api.ServiceType;
 import com.match.service.api.Services;
+import com.match.service.api.ClientService;
 import com.match.service.api.UserMatchesService;
 import com.match.service.api.UserService;
 import com.match.service.impl.CandidatesServiceImpl;
 import com.match.service.impl.CandidatesServiceMock;
 import com.match.service.impl.InterestServiceImpl;
 import com.match.service.impl.InterestServiceMock;
+import com.match.service.impl.ClientServiceImpl;
 import com.match.service.impl.UserMatchesServiceImpl;
 import com.match.service.impl.UserServiceImpl;
 import com.match.service.impl.UserServiceMock;
@@ -46,10 +48,11 @@ public class ServiceFactory {
     }
 
     private static void buildRealServices(Database database) {
-        UserService userService = new UserServiceImpl(database);
-        InterestService interestService = new InterestServiceImpl(database);
-        CandidatesService candidatesService = new CandidatesServiceImpl(database, candidateMapper);
-        UserMatchesService userMatchesService = new UserMatchesServiceImpl(database, candidateMapper);
+        ClientService tokenService = new ClientServiceImpl(database);
+        UserService userService = new UserServiceImpl(database, tokenService);
+        InterestService interestService = new InterestServiceImpl(database, tokenService);
+        CandidatesService candidatesService = new CandidatesServiceImpl(database, tokenService, candidateMapper);
+        UserMatchesService userMatchesService = new UserMatchesServiceImpl(database, tokenService, candidateMapper);
         save(userService);
         save(interestService);
         save(candidatesService);

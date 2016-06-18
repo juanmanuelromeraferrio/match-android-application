@@ -35,7 +35,6 @@ public class CandidatesServiceMock extends CandidatesService {
         interestsErica.add(new Interest("Bandas", "The Strokes"));
         interestsErica.add(new Interest("Hobby", "Viajar"));
         User erica = new User("Erica Atanasoff");
-        erica.setPhoto(MatchApplication.getContext().getResources().getString(R.string.photo_erica));
         erica.setInterests(interestsErica);
         users.add(erica);
 
@@ -45,7 +44,6 @@ public class CandidatesServiceMock extends CandidatesService {
         interestsJuan.add(new Interest("Clubs", "Independiente"));
         interestsJuan.add(new Interest("Hobby", "Viajar"));
         User juan = new User("Juan Manuel Romera");
-        juan.setPhoto(MatchApplication.getContext().getResources().getString(R.string.photo_juan));
         juan.setInterests(interestsJuan);
         users.add(juan);
 
@@ -55,7 +53,6 @@ public class CandidatesServiceMock extends CandidatesService {
         interestsAgustin.add(new Interest("Juegos", "Dota"));
         interestsAgustin.add(new Interest("Deporte", "Tenis"));
         User agustin = new User("Agustin Linari");
-        agustin.setPhoto(MatchApplication.getContext().getResources().getString(R.string.photo_agustin));
         agustin.setInterests(interestsAgustin);
         users.add(agustin);
 

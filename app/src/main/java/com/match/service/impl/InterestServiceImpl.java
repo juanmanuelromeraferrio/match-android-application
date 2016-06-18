@@ -7,15 +7,14 @@ import com.match.error.service.APIError;
 import com.match.error.service.ServiceException;
 import com.match.infrastructure.Database;
 import com.match.service.api.InterestService;
+import com.match.service.api.ClientService;
 import com.match.utils.ErrorUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.concurrent.TimeUnit;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -25,8 +24,11 @@ import retrofit2.Response;
  */
 public class InterestServiceImpl extends InterestService {
 
-    public InterestServiceImpl(Database database) {
+    private ClientService clientService;
+
+    public InterestServiceImpl(Database database, ClientService clientService) {
         super(database);
+        this.clientService = clientService;
     }
 
     @Override
@@ -37,18 +39,21 @@ public class InterestServiceImpl extends InterestService {
             return localInterests;
         }
 
-        MatchClient matchClient = new MatchClient();
+        MatchClient matchClient = clientService.getAuthClient();
         Call<InterestResponse> call = matchClient.interests.getInterests();
         try {
             Response<InterestResponse> response = call.execute();
             if (response.isSuccessful()) {
+                //Save Interests
                 InterestResponse interestResponse = response.body();
                 Map<String, List<String>> map = convertToMap(interestResponse.getInterests());
                 this.database.setInterests(map);
+                //Save Token
+                clientService.saveToken(response.headers());
                 return map;
             } else {
                 APIError error = ErrorUtils.parseError(response);
-                throw new ServiceException(error.getData());
+                throw new ServiceException(error);
             }
         } catch (IOException e) {
             throw new ServiceException(e.getLocalizedMessage());

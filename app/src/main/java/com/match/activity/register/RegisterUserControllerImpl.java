@@ -7,8 +7,9 @@ import com.match.client.entities.Location;
 import com.match.service.api.InterestService;
 import com.match.service.api.UserService;
 import com.match.service.factory.ServiceFactory;
-import com.match.task.response.TaskResponse;
+import com.match.task.response.CreateUserTaskResponse;
 import com.match.task.UpdateUserTask;
+import com.match.task.response.TaskResponse;
 import com.match.utils.Validator;
 
 import java.util.ArrayList;
@@ -97,7 +98,9 @@ public class RegisterUserControllerImpl implements RegisterUserController {
     @Override
     public void onResult(Object result) {
         TaskResponse response = (TaskResponse) result;
-        if (response.hasError()) {
+        if (response.sessionExpired()) {
+            view.sessionExpired();
+        } else if (response.hasError()) {
             view.onError(response.getError());
         } else {
             view.goToNext();

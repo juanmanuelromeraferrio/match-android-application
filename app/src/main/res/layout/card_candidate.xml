@@ -24,7 +24,7 @@
             <ImageView
                 android:id="@+id/candidateImage"
                 android:layout_width="match_parent"
-                android:layout_height="240dp"
+                android:layout_height="190dp"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentTop="true"
                 android:scaleType="centerCrop" />
@@ -39,7 +39,7 @@
 
             <RelativeLayout
                 android:layout_width="fill_parent"
-                android:layout_height="56dp"
+                android:layout_height="72dp"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentEnd="true"
                 android:background="@android:drawable/screen_background_dark_transparent">
@@ -58,12 +58,25 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/candidateAge"
+                    android:layout_width="fill_parent"
+                    android:layout_height="16dp"
+                    android:layout_below="@+id/candidateName"
+                    android:drawableEnd="@null"
+                    android:drawableStart="@null"
+                    android:paddingEnd="8dp"
+                    android:paddingStart="8dp"
+                    android:text="Edad"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
+
+                <TextView
                     android:id="@+id/candidateInterests"
                     android:layout_width="fill_parent"
                     android:layout_height="22dp"
                     android:layout_alignParentBottom="true"
                     android:layout_alignParentStart="true"
-                    android:layout_below="@+id/candidateName"
+                    android:layout_below="@+id/candidateAge"
                     android:drawableEnd="@null"
                     android:drawableStart="@null"
                     android:paddingEnd="8dp"

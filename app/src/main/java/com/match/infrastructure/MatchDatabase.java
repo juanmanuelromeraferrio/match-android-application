@@ -21,12 +21,12 @@ public class MatchDatabase implements Database {
     private static final String TOKEN = "TOKEN";
 
     private User user;
-    private Token token;
+    private String token;
     private Map<String, List<String>> interests = null;
 
     public MatchDatabase() {
         user = get(USER, User.class);
-        token = get(TOKEN, Token.class);
+        token = get(TOKEN, String.class);
     }
 
     public User getUser() {
@@ -38,7 +38,7 @@ public class MatchDatabase implements Database {
         return interests;
     }
 
-    public Token getToken() {
+    public String getToken() {
         return token;
     }
 
@@ -47,7 +47,7 @@ public class MatchDatabase implements Database {
         save(USER, user);
     }
 
-    public void setToken(Token token) {
+    public void setToken(String token) {
         this.token = token;
         save(TOKEN, token);
     }

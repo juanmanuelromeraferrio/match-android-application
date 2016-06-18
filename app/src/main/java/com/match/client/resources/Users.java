@@ -37,4 +37,7 @@ public interface Users {
 
     @GET("user/photo")
     Call<PhotoResponse> getPhoto(@Query("id") String id);
+
+    @GET("valid_session")
+    Call<MatchResponse> isUserLogged();
 }
