@@ -169,6 +169,7 @@ public class HomeFragment extends Fragment implements CandidatesView {
 
     @Override
     public void addCandidatesMatches(List<Candidate> listMatches){
+        this.listMatches.clear();
         this.listMatches.addAll(listMatches);
     }
 
