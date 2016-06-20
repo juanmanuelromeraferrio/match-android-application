@@ -32,8 +32,6 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     Button _loginButton;
     @InjectView(R.id.btn_signup)
     TextView _signUpButton;
-    @InjectView(R.id.link_forget_password)
-    TextView _forgetPassword;
 
     private ProgressDialog progressDialog;
     private LoginController controller;
@@ -61,13 +59,6 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
                 signUp();
             }
         });
-        _forgetPassword.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                forgetPassword();
-            }
-        });
     }
 
     private void login() {
@@ -80,10 +71,6 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         Intent intent = new Intent(LoginActivity.this, RegistarAccountActivity.class);
         startActivityForResult(intent, REQUEST_SIGNUP);
     }
-
-    private void forgetPassword() {
-    }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

@@ -56,7 +56,6 @@ public class HomeFragment extends Fragment implements CandidatesView {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         activity = getActivity();
         controller = new CandidatesControllerImpl(this);
-        ((AppCompatActivity) activity).getSupportActionBar().setSubtitle(R.string.matching_app);
         // Toolbar:
         setHasOptionsMenu(true);
 
