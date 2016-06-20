@@ -9,28 +9,33 @@ import java.util.TimerTask;
 
 import com.match.*;
 
-/**
- * Created by nicolas on 13/09/15.
- */
-public class SplashScreenActivity extends AppCompatActivity {
+
+public class SplashScreenActivity extends AppCompatActivity implements DispatchView {
 
     private static final long SPLASH_SCREEN_DELAY = 1200;
+    private DispatchView view;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash_screen);
+        view = this;
 
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
-                Intent mainIntent = new Intent(SplashScreenActivity.this, DispatchActivity.class);
-                startActivity(mainIntent);
-                finish();
+                DispatchController controller = new DispatchControllerImpl(view);
+                controller.dispatch();
             }
         };
 
         Timer timer = new Timer();
         timer.schedule(task, SPLASH_SCREEN_DELAY);
+    }
+
+
+    @Override
+    public void goToNext(Class<?> nextActivityClass) {
+        startActivity(new Intent(this, nextActivityClass));
     }
 }

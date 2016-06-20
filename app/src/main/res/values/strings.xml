@@ -166,7 +166,7 @@
         "when a user tries to pick up one of cards.\n\n"
     </string>
     <string name="action_settings">Settings</string>
-    <string name="session_expired_message">La sesion ha expirado\\nIngrese nuevamente.</string>
+    <string name="session_expired_message">La sesion ha expirado\nIngrese nuevamente.</string>
     <string name="session_expired_title">Sesion Expirada</string>
     <string name="update_profile">Actualizar</string>
     <string name="updating_profile_info">Actualizando datos de usuario ...</string>

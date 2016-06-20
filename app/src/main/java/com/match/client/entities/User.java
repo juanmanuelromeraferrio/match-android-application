@@ -18,7 +18,7 @@ public class User implements Serializable {
     private String sex;
     private String age;
     private List<Interest> interests;
-    private volatile List<Candidate> userMatches;
+    //private List<Candidate> userMatches;
     private Location location;
     private String photo;
 
@@ -31,7 +31,7 @@ public class User implements Serializable {
         this.password = password;
         this.interests = new Vector<>();
         this.location = new Location();
-        this.userMatches = new Vector<>();
+        //this.userMatches = new Vector<>();
     }
 
     public User(String name) {
@@ -39,16 +39,16 @@ public class User implements Serializable {
         this.name = name;
         this.alias = email;
         this.interests = new Vector<>();
-        this.userMatches = new Vector<>();
+       // this.userMatches = new Vector<>();
         this.location = new Location();
     }
 
     public List<Candidate> getUserMatches() {
-        return userMatches;
+        return new ArrayList<>();
     }
 
     public void setUserMatches(List<Candidate> userMatches) {
-        this.userMatches = userMatches;
+       // this.userMatches = userMatches;
     }
 
     public String getId() {

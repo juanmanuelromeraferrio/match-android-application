@@ -57,11 +57,7 @@ public class UserServiceImpl extends UserService {
 
     @Override
     public void updateUser(User user) throws ServiceException {
-        String token = database.getToken();
-        MatchClient matchClient = new MatchClient();
-        matchClient.setToken(token);
-        matchClient.build();
-
+        MatchClient matchClient = clientService.getAuthClient();
         Call<MatchResponse> call = matchClient.users.updateUser(new UserRequest(user));
         try {
             Response<MatchResponse> response = call.execute();
@@ -82,8 +78,8 @@ public class UserServiceImpl extends UserService {
 
     @Override
     public boolean isUserLogged() throws ServiceException {
-/*        String token = database.getToken();
-        if (token == null && token.isEmpty()) {
+        String token = database.getToken();
+        if (token == null || token.isEmpty()) {
             return false;
         }
 
@@ -92,18 +88,15 @@ public class UserServiceImpl extends UserService {
         try {
             Response<MatchResponse> response = call.execute();
             if (response.isSuccessful()) {
-                MatchResponse matchResponse = response.body();
-                if (!matchResponse.getData().equals(Configuration.FORBIDDEN)) {
-                    //Save Token
-                    clientService.saveToken(response.headers());
-                    return Boolean.TRUE;
-                }
+                //Save Token
+                clientService.saveToken(response.headers());
+                return Boolean.TRUE;
             } else {
                 Log.e(Configuration.LOG, response.errorBody().toString());
             }
         } catch (IOException e) {
             Log.e(Configuration.LOG, e.getLocalizedMessage());
-        }*/
+        }
 
         return Boolean.FALSE;
     }

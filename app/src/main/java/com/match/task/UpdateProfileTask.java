@@ -31,17 +31,26 @@ public class UpdateProfileTask extends AsyncTask<Object, Void, TaskResponse> {
 
     @Override
     protected TaskResponse doInBackground(Object... params) {
+        User localUser = userService.getLocalUser();
+
         String name = (String) params[0];
         String age = (String) params[1];
         Bitmap bitmap = (Bitmap) params[2];
+
+        String oldName = localUser.getName();
+        String oldAge = localUser.getAge();
+        String oldPhoto = localUser.getPhoto();
+
         try {
 
-            User localUser = userService.getLocalUser();
             localUser.setName(name);
             localUser.setAge(age);
             localUser.setPhoto(PhotoUtils.bitmapToBase64(bitmap));
             userService.updateUser(localUser);
         } catch (ServiceException e) {
+            localUser.setName(oldName);
+            localUser.setAge(oldAge);
+            localUser.setPhoto(oldPhoto);
             TaskResponse response = new TaskResponse(e.getMessage());
             response.setSessionExpired(e.isSessionExpired());
             return response;
