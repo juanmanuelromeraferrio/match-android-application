@@ -2,7 +2,6 @@ package com.match.service.impl;
 
 import android.graphics.Bitmap;
 import android.util.Log;
-
 import com.match.client.MatchClient;
 import com.match.client.entities.Candidate;
 import com.match.client.entities.User;
@@ -42,7 +41,9 @@ public class CandidatesServiceImpl extends CandidatesService {
 
     @Override
     public List<Candidate> findCandidates(User user) throws ServiceException {
+
         MatchClient matchClient = clientService.getAuthClient();
+
         Call<CandidatesResponse> call = matchClient.candidates.findCandidates(user.getId());
         try {
             Response<CandidatesResponse> response = call.execute();
@@ -75,7 +76,9 @@ public class CandidatesServiceImpl extends CandidatesService {
 
     @Override
     public Boolean voteYes(String userId, String candidateID) throws ServiceException {
+
         MatchClient matchClient = clientService.getAuthClient();
+
         Call<MatchResponse> call = matchClient.candidates.voteYes(new VoteRequest(userId, candidateID));
         try {
             Response<MatchResponse> response = call.execute();

@@ -2,10 +2,12 @@ package com.match.client.entities;
 
 import android.graphics.Bitmap;
 
+import java.io.Serializable;
+
 /**
  * Created by Juan Manuel Romera on 25/5/2016.
  */
-public class Candidate {
+public class Candidate implements Serializable{
 
     private String id;
     private String name;
@@ -44,4 +46,5 @@ public class Candidate {
     public String getAge() {
         return age;
     }
+
 }

@@ -20,12 +20,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.match.R;
+import com.match.activity.HomeActivity;
 import com.match.activity.chat.ChatActivity;
 import com.match.activity.login.LoginActivity;
 import com.match.client.entities.Candidate;
+import com.match.client.entities.User;
 import com.match.service.factory.ServiceFactory;
 import com.match.utils.UiUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
@@ -53,7 +56,7 @@ public class HomeFragment extends Fragment implements CandidatesView {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         activity = getActivity();
         controller = new CandidatesControllerImpl(this);
-        ((AppCompatActivity) activity).getSupportActionBar().setSubtitle(null);
+        ((AppCompatActivity) activity).getSupportActionBar().setSubtitle(R.string.matching_app);
         // Toolbar:
         setHasOptionsMenu(true);
 
@@ -149,8 +152,9 @@ public class HomeFragment extends Fragment implements CandidatesView {
 
     private void goToChat() {
         Intent intent = new Intent(activity, ChatActivity.class);
-        intent.putExtra("user", ServiceFactory.getUserService().getLocalUser());
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+       // User user = ServiceFactory.getUserService().getLocalUser();
+       // intent.putExtra("user",user);
         startActivity(intent);
     }
 
@@ -170,6 +174,7 @@ public class HomeFragment extends Fragment implements CandidatesView {
 
     @Override
     public void goToNext() {
+
     }
 
     @Override
@@ -217,7 +222,6 @@ public class HomeFragment extends Fragment implements CandidatesView {
         }
 
     }
-
 
     @Override
     public void onError(String errorMsg) {
