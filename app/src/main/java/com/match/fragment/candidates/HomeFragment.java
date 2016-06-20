@@ -154,23 +154,23 @@ public class HomeFragment extends Fragment implements CandidatesView {
         startActivity(intent);
     }
 
+    private void goToChat() {
+        this.controller.findCandidatesMatch();
+    }
+
     /**
      * Actualiza el usuario con los matches realizados y lo guarda en la db antes de llamar a la
      * actividad donde se mostraran (ChatActivity). Luego inicia la actividad.
      */
-    private void goToChat() {
-        Intent intent = new Intent(activity, ChatActivity.class);
-        this.controller.findCandidatesMatch();
-        User user = ServiceFactory.getUserService().getLocalUser();
-        user.setUserMatches(listMatches);
-        ServiceFactory.getUserService().saveUser(user);
-        startActivity(intent);
-    }
-
     @Override
-    public void addCandidatesMatches(List<Candidate> listMatches){
+    public void startActivityListViewMatches(List<Candidate> listMatches){
+        Intent intent = new Intent(activity, ChatActivity.class);
+        User user = ServiceFactory.getUserService().getLocalUser();
         this.listMatches.clear();
         this.listMatches.addAll(listMatches);
+        user.getUserMatches().addAll(listMatches);
+        ServiceFactory.getUserService().saveUser(user);
+        startActivity(intent);
     }
 
     @Override

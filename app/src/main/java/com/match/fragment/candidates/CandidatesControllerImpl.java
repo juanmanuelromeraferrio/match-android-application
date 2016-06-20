@@ -135,7 +135,7 @@ public class CandidatesControllerImpl implements CandidatesController {
             this.view.onError(response.getError());
         }else{
             List<Candidate> listMatches = (List<Candidate>) response.getResponse();
-            this.view.addCandidatesMatches(listMatches);
+            this.view.startActivityListViewMatches(listMatches);
         }
     }
 
@@ -144,10 +144,6 @@ public class CandidatesControllerImpl implements CandidatesController {
             view.sessionExpired();
         } else if (response.hasError()) {
             this.view.onError(response.getError());
-        } else{
-            List<Candidate> candidates = new ArrayList<>();
-            candidates.add((Candidate)response.getResponse());
-            this.view.addCandidatesMatches(candidates);
         }
     }
 

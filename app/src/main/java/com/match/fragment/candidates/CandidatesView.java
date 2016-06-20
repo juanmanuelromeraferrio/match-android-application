@@ -21,7 +21,7 @@ public interface CandidatesView extends BaseView {
 
     void finishLoadingCandidates();
 
-    void addCandidatesMatches(List<Candidate> listMatches);
+    void startActivityListViewMatches(List<Candidate> listMatches);
 
     void onError(String errorMsg);
 
