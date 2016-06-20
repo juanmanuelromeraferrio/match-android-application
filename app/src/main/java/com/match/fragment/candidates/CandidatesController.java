@@ -19,7 +19,7 @@ public interface CandidatesController extends BaseController {
 
     void acceptMatch(Candidate user);
 
-    ArrayList<Candidate> getCandidatesMatch(User user);
+    void findCandidatesMatch();
 
     void getPhoto(Candidate candidate);
 

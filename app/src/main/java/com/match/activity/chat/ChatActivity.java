@@ -10,15 +10,17 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.match.R;
+import com.match.client.entities.Candidate;
 import com.match.client.entities.User;
 import com.match.service.factory.ServiceFactory;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class ChatActivity extends AppCompatActivity {
 
-    private ArrayList<String> candidatesNameList;
+    private List<Candidate> candidatesNameList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,18 +30,18 @@ public class ChatActivity extends AppCompatActivity {
         User localUser = ServiceFactory.getUserService().getLocalUser();
 
         ListView listMatches = (ListView) findViewById(R.id.listViewCandidates);
-        candidatesNameList = new ArrayList<String>();
-        candidatesNameList.add("Candidato1");
-        candidatesNameList.add("Candidato2");
-        ArrayAdapter<String> arrayAdapter =
-                new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, candidatesNameList);
+        candidatesNameList = new ArrayList<Candidate>();
+        candidatesNameList.add(new Candidate("234","Pablo Sívori","32",null,"futbol"));
+        candidatesNameList.add(new Candidate("235","Paola Ferrero","32",null,"Handball"));
+        ArrayAdapter<List<Candidate>> arrayAdapter =
+                new ArrayAdapter(this, android.R.layout.simple_list_item_1, candidatesNameList);
         listMatches.setAdapter(arrayAdapter);
 
         listMatches.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             // argument position gives the index of item which is clicked
             public void onItemClick(AdapterView<?> arg0, View v, int position, long arg3) {
 
-                String selectedAnimal = candidatesNameList.get(position);
+                Candidate selectedCandidate = candidatesNameList.get(position);
                 Toast.makeText(ChatActivity.this, "", Toast.LENGTH_SHORT).show();
                 //st.makeText(getApplicationContext(), "Animal Selected : " + selectedAnimal, Toast.LENGTH_LONG).show();
             }

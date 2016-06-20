@@ -7,6 +7,7 @@ import com.match.infrastructure.Database;
 import com.match.utils.mapper.CandidateMapper;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by pablo on 11/06/16.
@@ -21,7 +22,7 @@ public abstract class UserMatchesService implements MatchService{
         this.mapper = mapper;
     }
 
-    public abstract ArrayList<Candidate> findUserMatches(User user) throws ServiceException;
+    public abstract List<Candidate> findUserMatches(User user) throws ServiceException;
 
     public abstract void acceptMatch(User user, Candidate candidate) throws ServiceException;
 

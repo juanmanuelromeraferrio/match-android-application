@@ -1,5 +1,7 @@
 package com.match.service.impl;
 
+import android.util.Log;
+
 import com.match.client.MatchClient;
 import com.match.client.entities.Candidate;
 import com.match.client.entities.User;
@@ -14,6 +16,7 @@ import com.match.infrastructure.Database;
 import com.match.service.api.ClientService;
 
 import com.match.service.api.UserMatchesService;
+import com.match.utils.Configuration;
 import com.match.utils.ErrorUtils;
 import com.match.utils.mapper.CandidateMapper;
 
@@ -37,28 +40,35 @@ public class UserMatchesServiceImpl extends UserMatchesService {
     }
 
     @Override
-    public ArrayList<Candidate> findUserMatches(User user) throws ServiceException {
+    public List<Candidate> findUserMatches(User user) throws ServiceException {
         MatchClient matchClient = clientService.getAuthClient();
-
+        List<Candidate> candidates = null;
         Call<CandidatesResponse> call = matchClient.matches.findMatches(user.getId());
         try {
             Response<CandidatesResponse> response = call.execute();
             if (response.isSuccessful()) {
                 //Get Candidates
                 CandidatesResponse candidatesResponse = response.body();
-                ArrayList<Candidate> candidates = mapToCandidates(candidatesResponse);
+                candidates = mapToCandidates(candidatesResponse);
                 //Save Token
                 clientService.saveToken(response.headers());
                 return candidates;
 
             } else {
-                APIError error = ErrorUtils.parseError(response);
-                throw new ServiceException(error);
+                Boolean sessionExpired = ErrorUtils.sessionExpired(response);
+                if (sessionExpired) {
+                    APIError error = ErrorUtils.parseError(response);
+                    throw new ServiceException(error);
+                } else {
+                    Log.e(Configuration.LOG, response.errorBody().toString());
+                }
             }
 
         } catch (IOException e) {
             throw new ServiceException(e.getLocalizedMessage());
         }
+        candidates = new ArrayList<>();
+        return candidates;
     }
 
     @Override
@@ -75,22 +85,25 @@ public class UserMatchesServiceImpl extends UserMatchesService {
                 //Save Token
                 clientService.saveToken(response.headers());
             } else {
-                APIError error = ErrorUtils.parseError(response);
-                throw new ServiceException(error);
+                Boolean sessionExpired = ErrorUtils.sessionExpired(response);
+                if (sessionExpired) {
+                    APIError error = ErrorUtils.parseError(response);
+                    throw new ServiceException(error);
+                } else {
+                    Log.e(Configuration.LOG, response.errorBody().toString());
+                }
             }
-
         } catch (IOException e) {
             throw new ServiceException(e.getLocalizedMessage());
         }
     }
 
-    private ArrayList<Candidate> mapToCandidates(CandidatesResponse candidatesResponse) {
-        ArrayList<Candidate> candidates = new ArrayList<Candidate>();
+    private List<Candidate> mapToCandidates(CandidatesResponse candidatesResponse) {
+        List<Candidate> candidates = new ArrayList<Candidate>();
         for (UserResponse user_ : candidatesResponse.getUsers()) {
             Candidate candidate = mapper.map(user_.getUser());
             candidates.add(candidate);
         }
-
         return candidates;
     }
 

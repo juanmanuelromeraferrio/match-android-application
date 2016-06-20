@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -25,7 +26,9 @@ import com.match.activity.chat.ChatActivity;
 import com.match.activity.login.LoginActivity;
 import com.match.client.entities.Candidate;
 import com.match.client.entities.User;
+import com.match.error.service.ServiceException;
 import com.match.service.factory.ServiceFactory;
+import com.match.task.FindCandidatesMatchTask;
 import com.match.utils.UiUtils;
 
 import java.util.ArrayList;
@@ -40,6 +43,7 @@ public class HomeFragment extends Fragment implements CandidatesView {
     private static final String TAG = "HomeFragment";
 
     private Vector<Candidate> candidates;
+    private List<Candidate> listMatches;
 
     private CandidateViewHolder candidateViewHolder;
     private TextView emptyView;
@@ -69,6 +73,7 @@ public class HomeFragment extends Fragment implements CandidatesView {
         // ListView
         emptyView = (TextView) mainView.findViewById(R.id.empty_view);
         candidates = new Vector<>();
+        listMatches = new ArrayList<>();
 
         //Buttons
         buttonYes = (ImageButton) mainView.findViewById(R.id.yesButton);
@@ -149,12 +154,22 @@ public class HomeFragment extends Fragment implements CandidatesView {
         startActivity(intent);
     }
 
+    /**
+     * Actualiza el usuario con los matches realizados y lo guarda en la db antes de llamar a la
+     * actividad donde se mostraran (ChatActivity). Luego inicia la actividad.
+     */
     private void goToChat() {
         Intent intent = new Intent(activity, ChatActivity.class);
-
-       // User user = ServiceFactory.getUserService().getLocalUser();
-       // intent.putExtra("user",user);
+        this.controller.findCandidatesMatch();
+        User user = ServiceFactory.getUserService().getLocalUser();
+        user.setUserMatches(listMatches);
+        ServiceFactory.getUserService().saveUser(user);
         startActivity(intent);
+    }
+
+    @Override
+    public void addCandidatesMatches(List<Candidate> listMatches){
+        this.listMatches.addAll(listMatches);
     }
 
     @Override
