@@ -36,6 +36,8 @@ public class SplashScreenActivity extends AppCompatActivity implements DispatchV
 
     @Override
     public void goToNext(Class<?> nextActivityClass) {
-        startActivity(new Intent(this, nextActivityClass));
+        Intent intent = new Intent(this, nextActivityClass);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 }
