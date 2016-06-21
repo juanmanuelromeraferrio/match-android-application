@@ -33,9 +33,9 @@ public class ChatLobbyActivity extends AppCompatActivity {
 
         ListView listMatches = (ListView) findViewById(R.id.listViewCandidates);
         candidatesNameList = new ArrayList<Candidate>();
-        //candidatesNameList.addAll(localUser.getUserMatches());
-        candidatesNameList.add(new Candidate("253","Pablo Sívori","32",null,"futbol"));
-        candidatesNameList.add(new Candidate("254","Alejandra Díaz","32",null,"Handball"));
+        candidatesNameList.addAll(localUser.getUserMatches());
+        //candidatesNameList.add(new Candidate("253","Pablo Sívori","32",null,"futbol"));
+        //candidatesNameList.add(new Candidate("254","Alejandra Díaz","32",null,"Handball"));
 
         ArrayAdapter<List<Candidate>> arrayAdapter =
                 new ArrayAdapter(this, android.R.layout.simple_list_item_1, candidatesNameList);

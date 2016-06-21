@@ -32,11 +32,11 @@ public class FindCandidatesMatchTask extends AsyncTask<User,Void, TaskResponse> 
         User loggedUser = (User) params[0];
 
         try {
-            List<Candidate> listCandidatesMatches = new ArrayList<Candidate>();//userMatchesService.findUserMatches(loggedUser);
+            List<Candidate> listCandidatesMatches = userMatchesService.findUserMatches(loggedUser);
             response.setResponse(listCandidatesMatches);
-        } catch (/*Service*/Exception e) {
+        } catch (ServiceException e) {
             response.setError(e.getMessage());
-            response.setSessionExpired(false/*e.isSessionExpired()*/);
+            response.setSessionExpired(e.isSessionExpired());
             return response;
         }
         return response;
