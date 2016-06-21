@@ -2,6 +2,7 @@ package com.match.service.factory;
 
 import com.match.infrastructure.Database;
 import com.match.service.api.CandidatesService;
+import com.match.service.api.ChatService;
 import com.match.service.api.InterestService;
 import com.match.service.api.MatchService;
 import com.match.service.api.ServiceType;
@@ -11,6 +12,7 @@ import com.match.service.api.UserMatchesService;
 import com.match.service.api.UserService;
 import com.match.service.impl.CandidatesServiceImpl;
 import com.match.service.impl.CandidatesServiceMock;
+import com.match.service.impl.ChatServiceImpl;
 import com.match.service.impl.InterestServiceImpl;
 import com.match.service.impl.InterestServiceMock;
 import com.match.service.impl.ClientServiceImpl;
@@ -53,10 +55,12 @@ public class ServiceFactory {
         InterestService interestService = new InterestServiceImpl(database, tokenService);
         CandidatesService candidatesService = new CandidatesServiceImpl(database, tokenService, candidateMapper);
         UserMatchesService userMatchesService = new UserMatchesServiceImpl(database, tokenService, candidateMapper);
+        ChatService chatService = new ChatServiceImpl(tokenService);
         save(userService);
         save(interestService);
         save(candidatesService);
         save(userMatchesService);
+        save(chatService);
     }
 
     private static void buildMockServices(Database database) {
@@ -87,5 +91,9 @@ public class ServiceFactory {
 
     public static UserMatchesService getUserMatchesService() {
         return (UserMatchesService) services.get(ServiceType.USER_MATCHES);
+    }
+
+    public static ChatService getChatService(){
+        return (ChatService) services.get(ServiceType.CHAT);
     }
 }

@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.match.R;
 import com.match.activity.HomeActivity;
 import com.match.activity.chat.ChatActivity;
+import com.match.activity.chat.ChatLobbyActivity;
 import com.match.activity.login.LoginActivity;
 import com.match.client.entities.Candidate;
 import com.match.client.entities.User;
@@ -164,7 +165,7 @@ public class HomeFragment extends Fragment implements CandidatesView {
      */
     @Override
     public void startActivityListViewMatches(List<Candidate> listMatches){
-        Intent intent = new Intent(activity, ChatActivity.class);
+        Intent intent = new Intent(activity, ChatLobbyActivity.class);
         User user = ServiceFactory.getUserService().getLocalUser();
         this.listMatches.clear();
         this.listMatches.addAll(listMatches);

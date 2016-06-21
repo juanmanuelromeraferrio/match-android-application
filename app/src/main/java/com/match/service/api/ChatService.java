@@ -10,7 +10,7 @@ import java.util.List;
  */
 public abstract class ChatService implements MatchService {
 
-    public abstract List<User> getUsersMatch(String id) throws ServiceException;
+    public abstract void sendMessage(String idUserLocal, String idUserMatch, String msg) throws ServiceException;
 
     public ServiceType getType() {
         return ServiceType.CHAT;

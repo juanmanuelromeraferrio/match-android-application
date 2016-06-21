@@ -10,6 +10,7 @@ import com.match.service.api.UserMatchesService;
 import com.match.task.response.CandidateTaskResponse;
 import com.match.task.response.TaskResponse;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,11 +32,11 @@ public class FindCandidatesMatchTask extends AsyncTask<User,Void, TaskResponse> 
         User loggedUser = (User) params[0];
 
         try {
-            List<Candidate> listCandidatesMatches = userMatchesService.findUserMatches(loggedUser);
+            List<Candidate> listCandidatesMatches = new ArrayList<Candidate>();//userMatchesService.findUserMatches(loggedUser);
             response.setResponse(listCandidatesMatches);
-        } catch (ServiceException e) {
+        } catch (/*Service*/Exception e) {
             response.setError(e.getMessage());
-            response.setSessionExpired(e.isSessionExpired());
+            response.setSessionExpired(false/*e.isSessionExpired()*/);
             return response;
         }
         return response;

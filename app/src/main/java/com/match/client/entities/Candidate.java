@@ -47,4 +47,9 @@ public class Candidate implements Serializable{
         return age;
     }
 
+    @Override
+    public String toString(){
+        return getName();
+    }
+
 }

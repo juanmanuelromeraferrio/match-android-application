@@ -1,81 +1,62 @@
 package com.match.activity.chat;
 
 import android.os.Bundle;
-
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.Button;
+import android.widget.EditText;
+
 
 import com.match.R;
-import com.match.client.entities.Candidate;
-import com.match.client.entities.User;
-import com.match.service.factory.ServiceFactory;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
+/**
+ * Created by pablo on 20/06/16.
+ */
 public class ChatActivity extends AppCompatActivity {
 
-    private List<Candidate> candidatesNameList;
+    private Button sendMessageButton;
+    private EditText msgText;
+    private ChatController controller;
+
+    private String candidateName;
+    private String idTo;
+    private String idFrom;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        candidateName = getIntent().getExtras().getString("candidateName");
+        idTo = getIntent().getExtras().getString("idTo");
+        idFrom = getIntent().getExtras().getString("idFrom");
         setContentView(R.layout.activity_chat);
+        controller = new ChatControllerImpl(this);
+        EditText matchName=(EditText)findViewById(R.id.matchName);
+        msgText = (EditText)findViewById(R.id.msgText);
+        sendMessageButton=(Button)findViewById(R.id.sendMessageButton);
+        sendMessageButton.setOnClickListener(new View.OnClickListener() {
 
-        User localUser = ServiceFactory.getUserService().getLocalUser();
-
-        ListView listMatches = (ListView) findViewById(R.id.listViewCandidates);
-        candidatesNameList = new ArrayList<Candidate>();
-        candidatesNameList.add(new Candidate("234","Pablo Sívori","32",null,"futbol"));
-        candidatesNameList.add(new Candidate("235","Paola Ferrero","32",null,"Handball"));
-        ArrayAdapter<List<Candidate>> arrayAdapter =
-                new ArrayAdapter(this, android.R.layout.simple_list_item_1, candidatesNameList);
-        listMatches.setAdapter(arrayAdapter);
-
-        listMatches.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            // argument position gives the index of item which is clicked
-            public void onItemClick(AdapterView<?> arg0, View v, int position, long arg3) {
-
-                Candidate selectedCandidate = candidatesNameList.get(position);
-                Toast.makeText(ChatActivity.this, "", Toast.LENGTH_SHORT).show();
-                //st.makeText(getApplicationContext(), "Animal Selected : " + selectedAnimal, Toast.LENGTH_LONG).show();
+            @Override
+            public void onClick(View v) {
+                sendMessage();
             }
         });
-
-
-
-        // Get the reference of ListViewAnimals
-      /*  ListView animalList = (ListView) findViewById(R.id.listViewCandidates);
-
-
-        candidatesNameList = new ArrayList<String>();
-        getAnimalNames();
-        // Create The Adapter with passing ArrayList as 3rd parameter
-        ArrayAdapter<String> arrayAdapter =
-                new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, candidatesNameList);
-        // Set The Adapter
-        animalList.setAdapter(arrayAdapter);
-
-        // register onClickListener to handle click events on each item
-        animalList.setOnItemClickListener(new OnItemClickListener() {
-            // argument position gives the index of item which is clicked
-            public void onItemClick(AdapterView<?> arg0, View v, int position, long arg3) {
-
-                String selectedAnimal = animalsNameList.get(position);
-                Toast.makeText(getApplicationContext(), "Animal Selected : " + selectedAnimal, Toast.LENGTH_LONG).show();
-            }
-        });
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();*/
+        matchName.setText(candidateName);
     }
 
+    private void sendMessage() {
+        controller.sendMessage(idFrom,idTo,msgText.getText().toString());
+    }
 
+    public void clearMessage(){
+        msgText.setText("");
+    }
 
+    public void disableSendButton() {
+        sendMessageButton.setEnabled(false);
+    }
+
+    public void enableSendButton() {
+        sendMessageButton.setEnabled(true);
+    }
 }

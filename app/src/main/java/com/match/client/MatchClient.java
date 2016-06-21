@@ -1,6 +1,7 @@
 package com.match.client;
 
 import com.match.client.resources.Candidates;
+import com.match.client.resources.Chat;
 import com.match.client.resources.Interests;
 import com.match.client.resources.Matches;
 import com.match.client.resources.Users;
@@ -18,6 +19,7 @@ public class MatchClient {
     public Users users;
     public Candidates candidates;
     public Matches matches;
+    public Chat chat;
     private Boolean auth = Boolean.FALSE;
     private String token;
 
@@ -37,6 +39,7 @@ public class MatchClient {
         users = retrofit.create(Users.class);
         candidates = retrofit.create(Candidates.class);
         matches = retrofit.create(Matches.class);
+        chat = retrofit.create(Chat.class);
     }
 
     private Retrofit getRetrofit() {
