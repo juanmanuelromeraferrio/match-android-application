@@ -30,6 +30,18 @@ public class UserMatchesServiceMock extends UserMatchesService {
 
         List<Chat> list = new ArrayList<>();
         list.add(erica);
+        list.add(erica);
+        list.add(erica);
+        list.add(agus);
+        list.add(agus);
+        list.add(agus);
+        list.add(agus);
+        list.add(agus);
+        list.add(erica);
+        list.add(agus);
+        list.add(agus);
+        list.add(agus);
+        list.add(agus);
         list.add(agus);
 
         try {
