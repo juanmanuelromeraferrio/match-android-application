@@ -45,9 +45,6 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
 
         controller = new LoginControllerImpl(this);
 
-        _emailText.setText("chachi@gmail.com");
-        _passwordText.setText("1234");
-
         _loginButton.setOnClickListener(new View.OnClickListener() {
 
             @Override

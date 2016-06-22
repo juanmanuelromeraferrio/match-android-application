@@ -42,6 +42,7 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
         matchName.setText(candidateName);
+        controller.pullHistory(idFrom,idTo);
     }
 
     private void sendMessage() {

@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -115,6 +116,10 @@ public class RegisterUserActivity extends AppCompatActivity implements RegisterU
     public void saveUser(View view) {
         String sex = getSex();
         String age = _ageEditText.getText().toString();
+        Bitmap.Config conf = Bitmap.Config.ARGB_4444; // see other conf types
+        Bitmap bmp = Bitmap.createBitmap(50,50, conf); // this creates a MUTABLE bitmap
+        Canvas canvas = new Canvas(bmp);
+        photo = bmp;
         controller.saveUser(photo, sex, age, location, interests);
     }
 
