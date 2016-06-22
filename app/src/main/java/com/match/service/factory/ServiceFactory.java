@@ -13,10 +13,12 @@ import com.match.service.api.UserService;
 import com.match.service.impl.CandidatesServiceImpl;
 import com.match.service.impl.CandidatesServiceMock;
 import com.match.service.impl.ChatServiceImpl;
+import com.match.service.impl.ChatServiceMock;
 import com.match.service.impl.InterestServiceImpl;
 import com.match.service.impl.InterestServiceMock;
 import com.match.service.impl.ClientServiceImpl;
 import com.match.service.impl.UserMatchesServiceImpl;
+import com.match.service.impl.UserMatchesServiceMock;
 import com.match.service.impl.UserServiceImpl;
 import com.match.service.impl.UserServiceMock;
 import com.match.utils.mapper.CandidateMapper;
@@ -67,10 +69,13 @@ public class ServiceFactory {
         UserService userService = new UserServiceMock(database);
         InterestService interestService = new InterestServiceMock(database);
         CandidatesService candidatesService = new CandidatesServiceMock(database, candidateMapper);
-
+        UserMatchesService userMatchesService = new UserMatchesServiceMock(database, candidateMapper);
+        ChatService chatService = new ChatServiceMock();
         save(userService);
         save(interestService);
         save(candidatesService);
+        save(userMatchesService);
+        save(chatService);
     }
 
     private static void save(MatchService service) {
@@ -93,7 +98,7 @@ public class ServiceFactory {
         return (UserMatchesService) services.get(ServiceType.USER_MATCHES);
     }
 
-    public static ChatService getChatService(){
+    public static ChatService getChatService() {
         return (ChatService) services.get(ServiceType.CHAT);
     }
 }
