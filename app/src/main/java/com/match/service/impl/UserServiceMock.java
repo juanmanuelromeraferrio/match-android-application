@@ -50,7 +50,7 @@ public class UserServiceMock extends UserService {
 
     @Override
     public void loginUser(String email, String password) throws ServiceException {
-        User user = new User("Name", email, password);
+        User user = new User("Juan Manuel Romera Ferrio", email, password);
         saveUser(user);
     }
 
@@ -71,6 +71,7 @@ public class UserServiceMock extends UserService {
     }
 
     private void saveUser(String userID, User user) {
+        user.setId(userID);
         users.put(userID, user);
         database.setUser(user);
     }

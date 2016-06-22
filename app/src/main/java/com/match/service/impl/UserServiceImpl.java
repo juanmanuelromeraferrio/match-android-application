@@ -78,8 +78,9 @@ public class UserServiceImpl extends UserService {
 
     @Override
     public boolean isUserLogged() throws ServiceException {
+        User user = database.getUser();
         String token = database.getToken();
-        if (token == null || token.isEmpty()) {
+        if (user == null || token == null || token.isEmpty()) {
             return false;
         }
 

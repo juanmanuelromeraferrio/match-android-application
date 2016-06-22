@@ -212,7 +212,6 @@ public class HomeFragment extends Fragment implements CandidatesView {
     @Override
     public void removeCurrentCandidate() {
         this.candidates.remove(0);
-        //reloadCandidates();
         refreshCandidate();
 
     }

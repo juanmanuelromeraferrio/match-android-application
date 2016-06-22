@@ -172,4 +172,6 @@
     <string name="session_expired_title">Sesion Expirada</string>
     <string name="update_profile">Actualizar</string>
     <string name="updating_profile_info">Actualizando datos de usuario ...</string>
+    <string name="send">Enviar</string>
+    <string name="message_hint">Escribe un mensaje</string>
 </resources>

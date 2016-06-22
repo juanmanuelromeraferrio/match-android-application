@@ -1,7 +1,9 @@
 package com.match.activity.chat;
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,7 +17,7 @@ import com.match.R;
  */
 public class ChatActivity extends AppCompatActivity {
 
-    private Button sendMessageButton;
+    private FloatingActionButton sendMessageButton;
     private EditText msgText;
     private ChatController controller;
 
@@ -26,30 +28,18 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        candidateName = getIntent().getExtras().getString("candidateName");
-        idTo = getIntent().getExtras().getString("idTo");
-        idFrom = getIntent().getExtras().getString("idFrom");
-        setContentView(R.layout.activity_chat);
         controller = new ChatControllerImpl(this);
-        EditText matchName=(EditText)findViewById(R.id.matchName);
-        msgText = (EditText)findViewById(R.id.msgText);
-        sendMessageButton=(Button)findViewById(R.id.sendMessageButton);
-        sendMessageButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                sendMessage();
-            }
-        });
-        matchName.setText(candidateName);
+        loadChatParameters();
+        createGUI();
         controller.pullHistory(idFrom,idTo);
+
     }
 
     private void sendMessage() {
-        controller.sendMessage(idFrom,idTo,msgText.getText().toString());
+        controller.sendMessage(idFrom, idTo, msgText.getText().toString());
     }
 
-    public void clearMessage(){
+    public void clearMessage() {
         msgText.setText("");
     }
 
@@ -59,5 +49,29 @@ public class ChatActivity extends AppCompatActivity {
 
     public void enableSendButton() {
         sendMessageButton.setEnabled(true);
+    }
+
+    private void loadChatParameters() {
+        this.candidateName = getIntent().getExtras().getString("candidateName");
+        this.idTo = getIntent().getExtras().getString("idTo");
+        this.idFrom = getIntent().getExtras().getString("idFrom");
+    }
+
+    private void createGUI() {
+        setContentView(R.layout.activity_chat);
+        // Set Title Chat
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarChat);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(candidateName);
+        //Get Buttons
+        this.msgText = (EditText) findViewById(R.id.msgText);
+        this.sendMessageButton = (FloatingActionButton) findViewById(R.id.sendMessageButton);
+        this.sendMessageButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                sendMessage();
+            }
+        });
     }
 }
