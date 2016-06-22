@@ -12,4 +12,9 @@ public class ChatServiceMock extends ChatService {
     public void sendMessage(String idUserLocal, String idUserMatch, String msg) throws ServiceException {
 
     }
+
+    @Override
+    public void pullHistory(String idFrom, String idTo) throws ServiceException {
+
+    }
 }

@@ -24,7 +24,7 @@ public class MatchApplication extends Application {
 
     private void initConfiguration() {
         Database database = new MatchDatabase();
-        ServiceFactory.init(Services.REAL, database);
+        ServiceFactory.init(Services.MOCK, database);
     }
 
     public static Context getContext() {

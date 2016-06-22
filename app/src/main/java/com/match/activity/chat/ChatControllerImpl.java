@@ -7,6 +7,7 @@ import com.match.service.factory.ServiceFactory;
 import com.match.service.impl.ChatServiceImpl;
 import com.match.task.PullHistoryTask;
 import com.match.task.SendMessageTask;
+import com.match.task.response.ChatTaskResponse;
 
 /**
  * Created by pablo on 20/06/16.
@@ -45,7 +46,7 @@ public class ChatControllerImpl implements ChatController{
 
     @Override
     public void onResult(Object result) {
-        String msgPull = (String) result;
+        ChatTaskResponse msgPull = (ChatTaskResponse) result;
         activity.enableSendButton();
     }
 }
