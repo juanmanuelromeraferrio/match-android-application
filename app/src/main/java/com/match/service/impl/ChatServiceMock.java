@@ -22,7 +22,7 @@ public class ChatServiceMock extends ChatService {
     }
 
     public void setLastMessage(String idFrom, String idTo, String idMsg) throws ServiceException {
-        
+
     }
 
 }
