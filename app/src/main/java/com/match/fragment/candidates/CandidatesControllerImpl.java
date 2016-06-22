@@ -10,7 +10,6 @@ import com.match.service.api.CandidatesService;
 import com.match.service.api.UserMatchesService;
 import com.match.service.api.UserService;
 import com.match.service.factory.ServiceFactory;
-import com.match.task.FindCandidatesMatchTask;
 import com.match.task.FindCandidatesTask;
 import com.match.task.GetPhotoTask;
 import com.match.task.SendCandidateAcceptMatchTask;
@@ -18,7 +17,6 @@ import com.match.task.SendCandidateVoteTask;
 import com.match.task.response.CandidateTaskResponse;
 import com.match.task.response.PhotoTaskResponse;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -66,15 +64,10 @@ public class CandidatesControllerImpl implements CandidatesController {
     }
 
     private void executeSendAcceptMatch(Candidate candidate) {
-        SendCandidateAcceptMatchTask sendCandidateAcceptMatchTask = new SendCandidateAcceptMatchTask(userMatchesService,this);
-        sendCandidateAcceptMatchTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,userService.getLocalUser(),candidate);
+        SendCandidateAcceptMatchTask sendCandidateAcceptMatchTask = new SendCandidateAcceptMatchTask(userMatchesService, this);
+        sendCandidateAcceptMatchTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, userService.getLocalUser(), candidate);
     }
 
-    @Override
-    public void findCandidatesMatch(){
-        FindCandidatesMatchTask task = new FindCandidatesMatchTask(userMatchesService,this);
-        task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, userService.getLocalUser());
-    }
 
     public void getPhoto(Candidate candidate) {
         GetPhotoTask task = new GetPhotoTask(candidatesService, this);
@@ -120,23 +113,8 @@ public class CandidatesControllerImpl implements CandidatesController {
             case MATCHED:
                 acceptMatchResult(response);
                 break;
-            case LIST_MATCHS:
-                listMatchResult(response);
-                break;
-
         }
 
-    }
-
-    private void listMatchResult(CandidateTaskResponse response) {
-        if (response.sessionExpired()) {
-            view.sessionExpired();
-        } else if (response.hasError()) {
-            this.view.onError(response.getError());
-        }else{
-            List<Candidate> listMatches = (List<Candidate>) response.getResponse();
-            this.view.startActivityListViewMatches(listMatches);
-        }
     }
 
     private void acceptMatchResult(CandidateTaskResponse response) {

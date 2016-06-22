@@ -8,6 +8,7 @@ import com.match.service.impl.ChatServiceImpl;
 import com.match.task.PullHistoryTask;
 import com.match.task.PullNewMessagesTask;
 import com.match.task.SendMessageTask;
+import com.match.task.response.ChatTaskResponse;
 import com.match.task.SetLastMessageTask;
 
 /**
@@ -61,7 +62,7 @@ public class ChatControllerImpl implements ChatController{
 
     @Override
     public void onResult(Object result) {
-        String msgPull = (String) result;
+        ChatTaskResponse msgPull = (ChatTaskResponse) result;
         activity.enableSendButton();
     }
 }

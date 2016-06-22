@@ -1,92 +1,133 @@
 package com.match.activity.chat;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.match.R;
-import com.match.client.entities.Candidate;
+import com.match.client.entities.Chat;
 import com.match.client.entities.User;
 import com.match.service.factory.ServiceFactory;
+import com.match.utils.UiUtils;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 
-public class ChatLobbyActivity extends AppCompatActivity {
+public class ChatLobbyActivity extends AppCompatActivity implements ChatLobbyView {
 
-    private List<Candidate> candidatesNameList;
+    private RecyclerView listView;
+    private ChatAdapter listAdapter;
+    private List<Chat> chatList;
+    private TextView emptyView;
+    private LinearLayout linearLayoutHeaderProgress;
+
+
+    private ChatControllerLobby controller;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        chatList = new Vector<>();
+
+        createGUI();
+        controller = new ChatControllerLobbyImpl(this);
+        controller.findChats();
+    }
+
+    private void initChat(Chat chat) {
+        User localUser = ServiceFactory.getUserService().getLocalUser();
+        Intent intent = new Intent(ChatLobbyActivity.this, ChatActivity.class);
+        intent.putExtra("candidateName", chat.getName());
+        intent.putExtra("idTo", chat.getId());
+        intent.putExtra("idFrom", localUser.getId());
+        startActivity(intent);
+    }
+
+    private void createGUI() {
         setContentView(R.layout.activity_chat_lobby);
 
-        final User localUser = ServiceFactory.getUserService().getLocalUser();
-
-        ListView listMatches = (ListView) findViewById(R.id.listViewCandidates);
-        candidatesNameList = new ArrayList<Candidate>();
-        candidatesNameList.addAll(localUser.getUserMatches());
-        //candidatesNameList.add(new Candidate("253","Pablo Sívori","32",null,"futbol"));
-        //candidatesNameList.add(new Candidate("254","Alejandra Díaz","32",null,"Handball"));
-
-        ArrayAdapter<List<Candidate>> arrayAdapter =
-                new ArrayAdapter(this, android.R.layout.simple_list_item_1, candidatesNameList);
-        listMatches.setAdapter(arrayAdapter);
+        // Set Title Chat
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarChatLobby);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(getResources().getString(R.string.title_activity_chat_lobby));
 
 
-        listMatches.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            // argument position gives the index of item which is clicked
-            public void onItemClick(AdapterView<?> arg0, View v, int position, long arg3) {
+        emptyView = (TextView) findViewById(R.id.empty_view);
+        linearLayoutHeaderProgress = (LinearLayout) findViewById(R.id.linlaHeaderProgress);
 
-                Candidate selectedCandidate = candidatesNameList.get(position);
-                Toast.makeText(ChatLobbyActivity.this, "Selected candidate "+selectedCandidate.toString(), Toast.LENGTH_SHORT).show();
+        listView = (RecyclerView) findViewById(R.id.listChatLobby);
+        listView.setLayoutManager(new LinearLayoutManager(this));
+        listView.setItemAnimator(new DefaultItemAnimator());
+        listView.setHasFixedSize(true);
 
-                Intent intent = new Intent(ChatLobbyActivity.this, ChatActivity.class);
-                intent.putExtra("candidateName",selectedCandidate.getName());
-                intent.putExtra("idTo",selectedCandidate.getId());
-                intent.putExtra("idFrom",localUser.getId());
-                startActivity(intent);
-                //st.makeText(getApplicationContext(), "Animal Selected : " + selectedAnimal, Toast.LENGTH_LONG).show();
-            }
-        });
+        listAdapter = new ChatAdapter(this, chatList);
+        listAdapter.setOnItemClickListener(new ChatAdapter.OnItemClickListener() {
+                                               @Override
+                                               public void onItemClick(View itemView, int position) {
+                                                   Chat chat = chatList.get(position);
+                                                   initChat(chat);
+                                               }
+                                           }
+        );
 
-
-
-        // Get the reference of ListViewAnimals
-      /*  ListView animalList = (ListView) findViewById(R.id.listViewCandidates);
-
-
-        candidatesNameList = new ArrayList<String>();
-        getAnimalNames();
-        // Create The Adapter with passing ArrayList as 3rd parameter
-        ArrayAdapter<String> arrayAdapter =
-                new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, candidatesNameList);
-        // Set The Adapter
-        animalList.setAdapter(arrayAdapter);
-
-        // register onClickListener to handle click events on each item
-        animalList.setOnItemClickListener(new OnItemClickListener() {
-            // argument position gives the index of item which is clicked
-            public void onItemClick(AdapterView<?> arg0, View v, int position, long arg3) {
-
-                String selectedAnimal = animalsNameList.get(position);
-                Toast.makeText(getApplicationContext(), "Animal Selected : " + selectedAnimal, Toast.LENGTH_LONG).show();
-            }
-        });
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();*/
+        listView.setAdapter(listAdapter);
     }
 
 
+    @Override
+    public void onError(String error) {
 
+    }
+
+    @Override
+    public void addChats(List<Chat> chats) {
+        if (!chats.isEmpty()) {
+            this.chatList.addAll(chats);
+            this.listView.setVisibility(View.VISIBLE);
+            this.listAdapter.notifyDataSetChanged();
+        }
+    }
+
+
+    @Override
+    public void showProgress() {
+        if (chatList.isEmpty()) {
+            this.listView.setVisibility(View.GONE);
+            this.emptyView.setVisibility(View.GONE);
+            this.linearLayoutHeaderProgress.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void hideProgress() {
+        this.linearLayoutHeaderProgress.setVisibility(View.GONE);
+        if (this.chatList.isEmpty()) {
+            this.listView.setVisibility(View.GONE);
+            this.emptyView.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void goToNext() {
+
+    }
+
+    @Override
+    public void sessionExpired() {
+        UiUtils.showSessionExpired(this);
+    }
+
+    @Override
+    public Context getContext() {
+        return this;
+    }
 }

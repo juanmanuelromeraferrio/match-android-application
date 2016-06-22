@@ -17,4 +17,12 @@ public class ChatServiceMock extends ChatService {
 
     }
 
+    public void pullNewMessages(String idFrom, String idTo) throws ServiceException {
+
+    }
+
+    public void setLastMessage(String idFrom, String idTo, String idMsg) throws ServiceException {
+        
+    }
+
 }

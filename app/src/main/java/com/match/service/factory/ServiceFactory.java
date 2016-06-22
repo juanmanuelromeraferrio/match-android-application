@@ -22,7 +22,9 @@ import com.match.service.impl.UserMatchesServiceMock;
 import com.match.service.impl.UserServiceImpl;
 import com.match.service.impl.UserServiceMock;
 import com.match.utils.mapper.CandidateMapper;
+import com.match.utils.mapper.ChatMapper;
 import com.match.utils.mapper.MatchCandidateMapper;
+import com.match.utils.mapper.MatchChatMapper;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,12 +36,15 @@ public class ServiceFactory {
 
     private static Map<ServiceType, MatchService> services = new HashMap<>();
     private static CandidateMapper candidateMapper;
+    private static ChatMapper chatMapper;
+
 
     private ServiceFactory() {
     }
 
     public static void init(Services type, Database database) {
         candidateMapper = new MatchCandidateMapper();
+        chatMapper = new MatchChatMapper();
         buildServices(type, database);
     }
 
@@ -56,7 +61,7 @@ public class ServiceFactory {
         UserService userService = new UserServiceImpl(database, tokenService);
         InterestService interestService = new InterestServiceImpl(database, tokenService);
         CandidatesService candidatesService = new CandidatesServiceImpl(database, tokenService, candidateMapper);
-        UserMatchesService userMatchesService = new UserMatchesServiceImpl(database, tokenService, candidateMapper);
+        UserMatchesService userMatchesService = new UserMatchesServiceImpl(database, tokenService, chatMapper);
         ChatService chatService = new ChatServiceImpl(tokenService);
         save(userService);
         save(interestService);
@@ -69,7 +74,7 @@ public class ServiceFactory {
         UserService userService = new UserServiceMock(database);
         InterestService interestService = new InterestServiceMock(database);
         CandidatesService candidatesService = new CandidatesServiceMock(database, candidateMapper);
-        UserMatchesService userMatchesService = new UserMatchesServiceMock(database, candidateMapper);
+        UserMatchesService userMatchesService = new UserMatchesServiceMock(database, chatMapper);
         ChatService chatService = new ChatServiceMock();
         save(userService);
         save(interestService);

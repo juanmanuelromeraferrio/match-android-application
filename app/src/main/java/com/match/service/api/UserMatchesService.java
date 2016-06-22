@@ -1,10 +1,13 @@
 package com.match.service.api;
 
 import com.match.client.entities.Candidate;
+import com.match.client.entities.Chat;
 import com.match.client.entities.User;
 import com.match.error.service.ServiceException;
 import com.match.infrastructure.Database;
 import com.match.utils.mapper.CandidateMapper;
+import com.match.utils.mapper.ChatMapper;
+import com.match.utils.mapper.MatchChatMapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,14 +18,14 @@ import java.util.List;
 public abstract class UserMatchesService implements MatchService{
 
     protected Database database;
-    protected CandidateMapper mapper;
+    protected ChatMapper mapper;
 
-    protected UserMatchesService(Database database, CandidateMapper mapper) {
+    protected UserMatchesService(Database database, ChatMapper mapper) {
         this.database = database;
         this.mapper = mapper;
     }
 
-    public abstract List<Candidate> findUserMatches(User user) throws ServiceException;
+    public abstract List<Chat> findUserMatches(User user) throws ServiceException;
 
     public abstract void acceptMatch(User user, Candidate candidate) throws ServiceException;
 

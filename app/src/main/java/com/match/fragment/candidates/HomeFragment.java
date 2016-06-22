@@ -4,11 +4,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,15 +19,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.match.R;
-import com.match.activity.HomeActivity;
-import com.match.activity.chat.ChatActivity;
 import com.match.activity.chat.ChatLobbyActivity;
 import com.match.activity.login.LoginActivity;
 import com.match.client.entities.Candidate;
-import com.match.client.entities.User;
-import com.match.error.service.ServiceException;
 import com.match.service.factory.ServiceFactory;
-import com.match.task.FindCandidatesMatchTask;
 import com.match.utils.UiUtils;
 
 import java.util.ArrayList;
@@ -44,7 +37,6 @@ public class HomeFragment extends Fragment implements CandidatesView {
     private static final String TAG = "HomeFragment";
 
     private Vector<Candidate> candidates;
-    private List<Candidate> listMatches;
 
     private CandidateViewHolder candidateViewHolder;
     private TextView emptyView;
@@ -74,7 +66,6 @@ public class HomeFragment extends Fragment implements CandidatesView {
         // ListView
         emptyView = (TextView) mainView.findViewById(R.id.empty_view);
         candidates = new Vector<>();
-        listMatches = new ArrayList<>();
 
         //Buttons
         buttonYes = (ImageButton) mainView.findViewById(R.id.yesButton);
@@ -156,21 +147,7 @@ public class HomeFragment extends Fragment implements CandidatesView {
     }
 
     private void goToChat() {
-        this.controller.findCandidatesMatch();
-    }
-
-    /**
-     * Actualiza el usuario con los matches realizados y lo guarda en la db antes de llamar a la
-     * actividad donde se mostraran (ChatActivity). Luego inicia la actividad.
-     */
-    @Override
-    public void startActivityListViewMatches(List<Candidate> listMatches){
         Intent intent = new Intent(activity, ChatLobbyActivity.class);
-        User user = ServiceFactory.getUserService().getLocalUser();
-        this.listMatches.clear();
-        this.listMatches.addAll(listMatches);
-        user.getUserMatches().addAll(listMatches);
-        ServiceFactory.getUserService().saveUser(user);
         startActivity(intent);
     }
 
@@ -196,11 +173,6 @@ public class HomeFragment extends Fragment implements CandidatesView {
     @Override
     public void sessionExpired() {
         UiUtils.showSessionExpired(activity);
-    }
-
-    @Override
-    public void clearCandidates() {
-        this.candidates.clear();
     }
 
     @Override
