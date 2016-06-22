@@ -31,6 +31,8 @@ public class ChatActivity extends AppCompatActivity {
         controller = new ChatControllerImpl(this);
         loadChatParameters();
         createGUI();
+        controller.pullHistory(idFrom,idTo);
+
     }
 
     private void sendMessage() {

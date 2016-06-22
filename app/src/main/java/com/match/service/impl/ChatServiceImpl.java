@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.match.client.MatchClient;
 import com.match.client.entities.User;
+import com.match.client.entities.request.ChatPullRequest;
 import com.match.client.entities.request.ChatRequest;
 import com.match.client.entities.response.ChatResponse;
 import com.match.error.service.APIError;
@@ -37,6 +38,28 @@ public class ChatServiceImpl extends ChatService{
     public void sendMessage(String idUserLocal, String idUserMatch, String msg) throws ServiceException {
         MatchClient matchClient = clientService.getAuthClient();
         Call<ChatResponse> call = matchClient.chat.sendMessage(new ChatRequest(idUserLocal,idUserMatch,msg));
+        try {
+            Response<ChatResponse> response = call.execute();
+            if (!response.isSuccessful()) {
+                Boolean sessionExpired = ErrorUtils.sessionExpired(response);
+                if (sessionExpired) {
+                    APIError error = ErrorUtils.parseError(response);
+                    throw new ServiceException(error);
+                } else {
+                    Log.e(Configuration.LOG, response.errorBody().toString());
+                }
+            } else {
+                //Save Token
+                clientService.saveToken(response.headers());
+            }
+        } catch (IOException e) {
+            Log.e(Configuration.LOG, e.getLocalizedMessage());
+        }
+    }
+
+    public void pullHistory(String idFrom, String idTo) throws ServiceException{
+        MatchClient matchClient = clientService.getAuthClient();
+        Call<ChatResponse> call = matchClient.chat.pullHistory(idFrom,idTo);
         try {
             Response<ChatResponse> response = call.execute();
             if (!response.isSuccessful()) {

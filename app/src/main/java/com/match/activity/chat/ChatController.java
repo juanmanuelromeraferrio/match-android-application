@@ -9,4 +9,5 @@ public interface ChatController extends BaseController {
 
     void sendMessage(String idFrom, String idUTo,String msg);
 
+    void pullHistory(String idFrom, String idTo);
 }

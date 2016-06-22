@@ -1,5 +1,6 @@
 package com.match.client.resources;
 
+import com.match.client.entities.request.ChatPullRequest;
 import com.match.client.entities.request.ChatRequest;
 import com.match.client.entities.response.ChatResponse;
 
@@ -17,4 +18,6 @@ public interface Chat {
     @POST("chat/message")
     Call<ChatResponse> sendMessage(@Body ChatRequest chatRequest);
 
+    @GET("chat/message")
+    Call<ChatResponse> pullHistory(@Query("idFrom")String idFrom,@Query("idTo") String idTo);
 }

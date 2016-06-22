@@ -16,4 +16,6 @@ public abstract class ChatService implements MatchService {
         return ServiceType.CHAT;
     }
 
+    public abstract void pullHistory(String idFrom, String idTo) throws ServiceException;
+
 }
