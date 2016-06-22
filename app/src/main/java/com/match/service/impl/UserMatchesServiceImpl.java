@@ -13,18 +13,19 @@ import com.match.client.entities.response.UserResponse;
 import com.match.error.service.APIError;
 import com.match.error.service.ServiceException;
 import com.match.infrastructure.Database;
-
 import com.match.service.api.ClientService;
-
 import com.match.service.api.UserMatchesService;
 import com.match.utils.Configuration;
 import com.match.utils.ErrorUtils;
-import com.match.utils.mapper.CandidateMapper;
+import com.match.utils.PhotoUtils;
 import com.match.utils.mapper.ChatMapper;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.Vector;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -42,9 +43,9 @@ public class UserMatchesServiceImpl extends UserMatchesService {
     }
 
     @Override
-    public List<Chat> findUserMatches(User user) throws ServiceException {
+    public List<Chat> findChats(User user) throws ServiceException {
         MatchClient matchClient = clientService.getAuthClient();
-        List<Chat> chats = null;
+        List<Chat> chats = new Vector<>();
         Call<CandidatesResponse> call = matchClient.matches.findMatches(user.getId());
         try {
             Response<CandidatesResponse> response = call.execute();
@@ -52,6 +53,14 @@ public class UserMatchesServiceImpl extends UserMatchesService {
                 //Get Candidates
                 CandidatesResponse candidatesResponse = response.body();
                 chats = mapToChats(candidatesResponse);
+                chats = filterChats(user, chats);
+
+                //Save Chats
+                List<Chat> userChats = user.getChats();
+                if (userChats != null) {
+                    userChats.addAll(chats);
+                }
+                database.setUser(user);
                 //Save Token
                 clientService.saveToken(response.headers());
                 return chats;
@@ -69,9 +78,9 @@ public class UserMatchesServiceImpl extends UserMatchesService {
         } catch (IOException e) {
             throw new ServiceException(e.getLocalizedMessage());
         }
-        chats = new ArrayList<>();
         return chats;
     }
+
 
     @Override
     public void acceptMatch(User user, Candidate candidate) throws ServiceException {
@@ -82,7 +91,10 @@ public class UserMatchesServiceImpl extends UserMatchesService {
             Response<MatchResponse> response = call.execute();
             if (response.isSuccessful()) {
                 //Save Candidates
-                user.getUserMatches().add(candidate);
+                List<Chat> chats = user.getChats();
+                if (chats != null) {
+                    chats.add(new Chat(candidate.getId(), candidate.getName(), candidate.getAge(), PhotoUtils.bitmapToBase64(candidate.getPhoto())));
+                }
                 this.database.setUser(user);
                 //Save Token
                 clientService.saveToken(response.headers());
@@ -98,6 +110,25 @@ public class UserMatchesServiceImpl extends UserMatchesService {
         } catch (IOException e) {
             throw new ServiceException(e.getLocalizedMessage());
         }
+    }
+
+    private List<Chat> filterChats(User user, List<Chat> chats) {
+        List<Chat> localChats = user.getChats();
+        if (localChats.isEmpty() || chats.isEmpty()) {
+            return chats;
+        }
+        List<Chat> result = new Vector<>();
+        Set<String> localChatsId = new HashSet<>();
+        for (Chat chat : localChats) {
+            localChatsId.add(chat.getId());
+        }
+
+        for (Chat chat : chats) {
+            if (!localChatsId.contains(chat.getId())) {
+                result.add(chat);
+            }
+        }
+        return result;
     }
 
     private List<Chat> mapToChats(CandidatesResponse candidatesResponse) {

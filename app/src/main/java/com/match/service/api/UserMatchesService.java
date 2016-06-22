@@ -25,7 +25,7 @@ public abstract class UserMatchesService implements MatchService{
         this.mapper = mapper;
     }
 
-    public abstract List<Chat> findUserMatches(User user) throws ServiceException;
+    public abstract List<Chat> findChats(User user) throws ServiceException;
 
     public abstract void acceptMatch(User user, Candidate candidate) throws ServiceException;
 

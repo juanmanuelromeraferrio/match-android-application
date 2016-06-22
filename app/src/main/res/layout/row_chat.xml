@@ -23,6 +23,7 @@
                 android:layout_marginTop="10dp"
                 android:background="@drawable/profile" />
 
+
             <TextView
                 android:id="@+id/nameChat"
                 android:layout_width="0dp"

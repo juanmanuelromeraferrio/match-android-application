@@ -23,7 +23,7 @@ public class UserMatchesServiceMock extends UserMatchesService {
     }
 
     @Override
-    public List<Chat> findUserMatches(User user) throws ServiceException {
+    public List<Chat> findChats(User user) throws ServiceException {
         //String id, String name, String age, Bitmap photo, String interests
         Chat erica = new Chat("1", "Erica Atanasoff", "27", null);
         Chat agus = new Chat("2", "Agustin Linari", "34", null);

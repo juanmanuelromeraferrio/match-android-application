@@ -47,8 +47,6 @@ public class LoginUserTask extends AsyncTask<String, Void, LoginTaskResponse> {
         try {
             userService.loginUser(email, password);
             User user = userService.getLocalUser();
-/*            List<Candidate> userMatches = userMatchesService.findUserMatches(user);
-            user.setUserMatches(userMatches);*/
             userService.saveUser(user);
 
             if (!userService.hasSavedInformation()) {

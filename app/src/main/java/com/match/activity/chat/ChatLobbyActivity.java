@@ -36,11 +36,11 @@ public class ChatLobbyActivity extends AppCompatActivity implements ChatLobbyVie
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        chatList = new Vector<>();
+        this.controller = new ChatControllerLobbyImpl(this);
+        this.chatList =  this.controller.getChats();
 
         createGUI();
-        controller = new ChatControllerLobbyImpl(this);
-        controller.findChats();
+        this.controller.findChats();
     }
 
     private void initChat(Chat chat) {
@@ -92,7 +92,6 @@ public class ChatLobbyActivity extends AppCompatActivity implements ChatLobbyVie
     @Override
     public void addChats(List<Chat> chats) {
         if (!chats.isEmpty()) {
-            this.chatList.addAll(chats);
             this.listView.setVisibility(View.VISIBLE);
             this.listAdapter.notifyDataSetChanged();
         }

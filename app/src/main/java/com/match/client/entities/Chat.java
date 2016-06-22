@@ -2,6 +2,8 @@ package com.match.client.entities;
 
 import android.graphics.Bitmap;
 
+import com.match.utils.PhotoUtils;
+
 /**
  * Created by Juan Manuel Romera on 21/6/2016.
  */
@@ -10,9 +12,9 @@ public class Chat {
     private String id;
     private String name;
     private String age;
-    private Bitmap photo;
+    private String photo;
 
-    public Chat(String id, String name, String age, Bitmap photo) {
+    public Chat(String id, String name, String age, String photo) {
         this.id = id;
         this.name = name;
         this.age = age;
@@ -36,10 +38,13 @@ public class Chat {
     }
 
     public Bitmap getPhoto() {
-        return photo;
+        if (photo != null)
+            return PhotoUtils.base64ToBitmap(photo);
+        else
+            return null;
     }
 
-    public void setPhoto(Bitmap photo) {
+    public void setPhoto(String photo) {
         this.photo = photo;
     }
 

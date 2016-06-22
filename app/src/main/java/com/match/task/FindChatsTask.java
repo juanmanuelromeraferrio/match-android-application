@@ -3,7 +3,6 @@ package com.match.task;
 import android.os.AsyncTask;
 
 import com.match.activity.api.BaseController;
-import com.match.client.entities.Candidate;
 import com.match.client.entities.Chat;
 import com.match.client.entities.User;
 import com.match.error.service.ServiceException;
@@ -38,8 +37,8 @@ public class FindChatsTask extends AsyncTask<User, Void, TaskResponse> {
         User loggedUser = (User) params[0];
 
         try {
-            List<Chat> listCandidatesMatches = userMatchesService.findUserMatches(loggedUser);
-            response.setResponse(listCandidatesMatches);
+            List<Chat> chatList = userMatchesService.findChats(loggedUser);
+            response.setResponse(chatList);
         } catch (ServiceException e) {
             response.setError(e.getMessage());
             response.setSessionExpired(e.isSessionExpired());

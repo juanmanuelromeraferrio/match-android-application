@@ -1,7 +1,6 @@
 package com.match.client.entities;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
@@ -18,7 +17,7 @@ public class User implements Serializable {
     private String sex;
     private String age;
     private List<Interest> interests;
-    private List<Candidate> userMatches;
+    private List<Chat> chats;
     private Location location;
     private String photo;
 
@@ -31,7 +30,7 @@ public class User implements Serializable {
         this.password = password;
         this.interests = new Vector<>();
         this.location = new Location();
-        this.userMatches = new Vector<>();
+        this.chats = new Vector<>();
     }
 
     public User(String name) {
@@ -39,16 +38,15 @@ public class User implements Serializable {
         this.name = name;
         this.alias = email;
         this.interests = new Vector<>();
-        this.userMatches = new Vector<>();
+        this.chats = new Vector<>();
         this.location = new Location();
     }
 
-    public List<Candidate> getUserMatches() {
-        return userMatches;
-    }
-
-    public void setUserMatches(List<Candidate> userMatches) {
-       this.userMatches = userMatches;
+    public List<Chat> getChats() {
+        if (this.chats == null) {
+            this.chats = new Vector<>();
+        }
+        return this.chats;
     }
 
     public String getId() {
@@ -63,10 +61,6 @@ public class User implements Serializable {
         return email;
     }
 
-    public String getAlias() {
-        return alias;
-    }
-
     public List<Interest> getInterests() {
         return interests;
     }
@@ -77,10 +71,6 @@ public class User implements Serializable {
 
     public String getPhoto() {
         return photo;
-    }
-
-    public String getSex() {
-        return sex;
     }
 
     public String getAge() {
@@ -97,10 +87,6 @@ public class User implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public void setAlias(String alias) {
-        this.alias = alias;
     }
 
     public void setPassword(String password) {

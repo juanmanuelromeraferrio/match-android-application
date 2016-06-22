@@ -11,6 +11,6 @@ public class MatchChatMapper implements ChatMapper {
 
     @Override
     public Chat map(User user) {
-        return new Chat(user.getId(), user.getName(), user.getAge(), PhotoUtils.base64ToBitmap(user.getPhoto()));
+        return new Chat(user.getId(), user.getName(), user.getAge(), user.getPhoto());
     }
 }
