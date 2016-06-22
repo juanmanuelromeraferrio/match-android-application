@@ -13,8 +13,16 @@ public class ChatServiceMock extends ChatService {
 
     }
 
-    @Override
     public void pullHistory(String idFrom, String idTo) throws ServiceException {
 
     }
+
+    public void pullNewMessages(String idFrom, String idTo) throws ServiceException {
+
+    }
+
+    public void setLastMessage(String idFrom, String idTo, String idMsg) throws ServiceException {
+
+    }
+
 }

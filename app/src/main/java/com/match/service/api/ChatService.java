@@ -18,4 +18,8 @@ public abstract class ChatService implements MatchService {
 
     public abstract void pullHistory(String idFrom, String idTo) throws ServiceException;
 
+    public abstract void pullNewMessages(String idFrom, String idTo) throws ServiceException;
+
+    public abstract void setLastMessage(String idFrom, String idTo, String idMsg) throws ServiceException;
+
 }
