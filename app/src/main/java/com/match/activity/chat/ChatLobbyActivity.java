@@ -49,6 +49,7 @@ public class ChatLobbyActivity extends AppCompatActivity implements ChatLobbyVie
         intent.putExtra("candidateName", chat.getName());
         intent.putExtra("idTo", chat.getId());
         intent.putExtra("idFrom", localUser.getId());
+        intent.putExtra("photo", localUser.getPhoto());
         startActivity(intent);
     }
 

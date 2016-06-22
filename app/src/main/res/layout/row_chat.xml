@@ -15,14 +15,13 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/photoChat"
-                android:layout_width="61dp"
-                android:layout_height="53dp"
-                android:layout_gravity="center_vertical"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_gravity="center"
                 android:layout_marginLeft="15dp"
                 android:layout_marginBottom="10dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/profile" />
-
 
             <TextView
                 android:id="@+id/nameChat"
@@ -44,8 +43,8 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/none"
-                android:layout_width="61dp"
-                android:layout_height="53dp"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginBottom="10dp"
                 android:layout_marginLeft="15dp"

@@ -34,13 +34,13 @@
     </style>
 
     <!-- Los colores de la action bar y sus elementos -->
-    <style name="Widget.Mascota.ActionBar" parent="Widget.AppCompat.ActionBar">
+    <style name="Widget.Match.ActionBar" parent="Widget.AppCompat.ActionBar">
         <item name="android:background">@color/ColorPrimary</item>
-        <item name="theme">@style/ThemeOverlay.Mascota.ActionBar</item>
+        <item name="theme">@style/ThemeOverlay.Match.ActionBar</item>
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
     </style>
 
-    <style name="ThemeOverlay.Mascota.ActionBar" parent="ThemeOverlay.AppCompat.ActionBar">
+    <style name="ThemeOverlay.Match.ActionBar" parent="ThemeOverlay.AppCompat.ActionBar">
         <item name="android:textColorPrimary">@color/ColorPrimaryLight</item>
         <item name="android:textColorSecondary">@color/ColorPrimaryLight</item>
     </style>
