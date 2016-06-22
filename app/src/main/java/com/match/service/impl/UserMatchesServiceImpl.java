@@ -93,7 +93,7 @@ public class UserMatchesServiceImpl extends UserMatchesService {
                 //Save Candidates
                 List<Chat> chats = user.getChats();
                 if (chats != null) {
-                    chats.add(new Chat(candidate.getId(), candidate.getName(), candidate.getAge(), PhotoUtils.bitmapToBase64(candidate.getPhoto())));
+                    chats.add(new Chat(candidate.getId(),candidate.getName(), candidate.getAge(), PhotoUtils.bitmapToBase64(candidate.getPhoto())));
                 }
                 this.database.setUser(user);
                 //Save Token

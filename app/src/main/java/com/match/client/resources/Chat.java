@@ -4,6 +4,7 @@ import com.match.client.entities.request.ChatPullRequest;
 import com.match.client.entities.request.ChatRequest;
 import com.match.client.entities.request.ChatSetLastMessageRequest;
 import com.match.client.entities.response.ChatResponse;
+import com.match.client.entities.response.ChatsResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -20,8 +21,8 @@ public interface Chat {
     @POST("chat/message")
     Call<ChatResponse> sendMessage(@Body ChatRequest request);
 
-    @GET("chat/message")
-    Call<ChatResponse> pullHistory(@Query("idFrom")String idFrom,@Query("idTo") String idTo);
+    @GET("/chat")
+    Call<ChatsResponse> pullHistory(@Query("idUser1")String idFrom, @Query("idUser2") String idTo);
 
     @GET("chat/new")
     Call<ChatResponse> pullNewMessages(@Query("idFrom")String idFrom,@Query("idTo") String idTo);

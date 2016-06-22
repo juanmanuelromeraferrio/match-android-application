@@ -2,6 +2,7 @@ package com.match.activity.chat;
 
 import android.app.Activity;
 
+import com.match.client.entities.ChatMessage;
 import com.match.service.api.ChatService;
 import com.match.service.factory.ServiceFactory;
 import com.match.service.impl.ChatServiceImpl;
@@ -10,6 +11,8 @@ import com.match.task.PullNewMessagesTask;
 import com.match.task.SendMessageTask;
 import com.match.task.response.ChatTaskResponse;
 import com.match.task.SetLastMessageTask;
+
+import java.util.List;
 
 /**
  * Created by pablo on 20/06/16.
@@ -63,6 +66,7 @@ public class ChatControllerImpl implements ChatController{
     @Override
     public void onResult(Object result) {
         ChatTaskResponse msgPull = (ChatTaskResponse) result;
+        List<ChatMessage> msgs = (List<ChatMessage>) msgPull.getResponse();
         activity.enableSendButton();
     }
 }

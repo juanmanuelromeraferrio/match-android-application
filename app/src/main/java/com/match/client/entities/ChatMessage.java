@@ -4,22 +4,34 @@ import java.io.Serializable;
 
 public class ChatMessage implements Serializable {
 
-    private String idMsg;
-    private String idUser;
+    private String id;
+    private String user;
     private String content;
 
-    public ChatMessage(String idMsg, String idUser, String content) {
-        this.idMsg = idMsg;
-        this.idUser = idUser;
+    public ChatMessage(String id, String user, String content) {
+        this.id = id;
+        this.user = user;
         this.content = content;
     }
 
-    public String getIdMsg() {
-        return idMsg;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public String getIdUser() {
-        return idUser;
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getUser() {
+        return user;
     }
 
     public String getContent() {

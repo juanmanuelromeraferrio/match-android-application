@@ -1,5 +1,6 @@
 package com.match.service.api;
 
+import com.match.client.entities.ChatMessage;
 import com.match.client.entities.User;
 import com.match.error.service.ServiceException;
 
@@ -16,7 +17,7 @@ public abstract class ChatService implements MatchService {
         return ServiceType.CHAT;
     }
 
-    public abstract void pullHistory(String idFrom, String idTo) throws ServiceException;
+    public abstract List<ChatMessage> pullHistory(String idFrom, String idTo) throws ServiceException;
 
     public abstract void pullNewMessages(String idFrom, String idTo) throws ServiceException;
 
