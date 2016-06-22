@@ -19,8 +19,6 @@ public interface CandidatesController extends BaseController {
 
     void acceptMatch(Candidate user);
 
-    void findCandidatesMatch();
-
     void getPhoto(Candidate candidate);
 
     boolean isFindingCandidates();

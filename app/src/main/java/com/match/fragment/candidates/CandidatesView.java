@@ -13,15 +13,11 @@ import java.util.List;
  */
 public interface CandidatesView extends BaseView {
 
-    void clearCandidates();
-
     void addCandidates(List<Candidate> user);
 
     void removeCurrentCandidate();
 
     void finishLoadingCandidates();
-
-    void startActivityListViewMatches(List<Candidate> listMatches);
 
     void onError(String errorMsg);
 

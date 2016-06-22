@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.match.client.MatchClient;
 import com.match.client.entities.Candidate;
+import com.match.client.entities.Chat;
 import com.match.client.entities.User;
 import com.match.client.entities.request.MatchRequest;
 import com.match.client.entities.response.CandidatesResponse;
@@ -19,6 +20,7 @@ import com.match.service.api.UserMatchesService;
 import com.match.utils.Configuration;
 import com.match.utils.ErrorUtils;
 import com.match.utils.mapper.CandidateMapper;
+import com.match.utils.mapper.ChatMapper;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,25 +36,25 @@ public class UserMatchesServiceImpl extends UserMatchesService {
 
     private ClientService clientService;
 
-    public UserMatchesServiceImpl(Database database, ClientService clientService, CandidateMapper mapper) {
+    public UserMatchesServiceImpl(Database database, ClientService clientService, ChatMapper mapper) {
         super(database, mapper);
         this.clientService = clientService;
     }
 
     @Override
-    public List<Candidate> findUserMatches(User user) throws ServiceException {
+    public List<Chat> findUserMatches(User user) throws ServiceException {
         MatchClient matchClient = clientService.getAuthClient();
-        List<Candidate> candidates = null;
+        List<Chat> chats = null;
         Call<CandidatesResponse> call = matchClient.matches.findMatches(user.getId());
         try {
             Response<CandidatesResponse> response = call.execute();
             if (response.isSuccessful()) {
                 //Get Candidates
                 CandidatesResponse candidatesResponse = response.body();
-                candidates = mapToCandidates(candidatesResponse);
+                chats = mapToChats(candidatesResponse);
                 //Save Token
                 clientService.saveToken(response.headers());
-                return candidates;
+                return chats;
 
             } else {
                 Boolean sessionExpired = ErrorUtils.sessionExpired(response);
@@ -67,14 +69,14 @@ public class UserMatchesServiceImpl extends UserMatchesService {
         } catch (IOException e) {
             throw new ServiceException(e.getLocalizedMessage());
         }
-        candidates = new ArrayList<>();
-        return candidates;
+        chats = new ArrayList<>();
+        return chats;
     }
 
     @Override
     public void acceptMatch(User user, Candidate candidate) throws ServiceException {
         MatchClient matchClient = clientService.getAuthClient();
-        Call<MatchResponse> call = matchClient.matches.acceptMatch(new MatchRequest(user.getId(),candidate.getId()));
+        Call<MatchResponse> call = matchClient.matches.acceptMatch(new MatchRequest(user.getId(), candidate.getId()));
 
         try {
             Response<MatchResponse> response = call.execute();
@@ -98,13 +100,13 @@ public class UserMatchesServiceImpl extends UserMatchesService {
         }
     }
 
-    private List<Candidate> mapToCandidates(CandidatesResponse candidatesResponse) {
-        List<Candidate> candidates = new ArrayList<Candidate>();
+    private List<Chat> mapToChats(CandidatesResponse candidatesResponse) {
+        List<Chat> chats = new ArrayList<Chat>();
         for (UserResponse user_ : candidatesResponse.getUsers()) {
-            Candidate candidate = mapper.map(user_.getUser());
-            candidates.add(candidate);
+            Chat chat = mapper.map(user_.getUser());
+            chats.add(chat);
         }
-        return candidates;
+        return chats;
     }
 
 }

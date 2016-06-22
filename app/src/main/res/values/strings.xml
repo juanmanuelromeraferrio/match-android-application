@@ -34,6 +34,7 @@
     <string name="title_activity_sign_up_user_info">Datos Personales</string>
     <string name="title_activity_sign_up_account_info">Nuevo Usuario</string>
     <string name="error_activity_sign_up">Hay un error en los datos</string>
+    <string name="title_activity_chat_lobby">Chats</string>
 
     <string name="address">Domicilio</string>
     <string name="sign_up">Registrar</string>
@@ -59,6 +60,7 @@
     <string name="valor">Valor</string>
     <string name="agregar">Agregar</string>
     <string name="no_data_available">No hay candidatos para mostrar.</string>
+    <string name="no_chat_available">No hay chats para mostrar.</string>
 
     <string name="informacion_basica">Información básica</string>
     <string name="sexo">Sexo</string>
