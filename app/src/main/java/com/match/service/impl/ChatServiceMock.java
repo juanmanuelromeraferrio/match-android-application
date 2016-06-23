@@ -31,13 +31,19 @@ public class ChatServiceMock extends ChatService {
             historyMessages.add(chat3);
         }
 
+        try {
+            TimeUnit.SECONDS.sleep(3);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         return historyMessages;
     }
 
     public List<ChatMessage> pullNewMessages(String idFrom, String idTo) throws ServiceException {
         List<ChatMessage> newMessage = new ArrayList<>();
         try {
-            TimeUnit.SECONDS.sleep(10);
+            TimeUnit.SECONDS.sleep(5);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

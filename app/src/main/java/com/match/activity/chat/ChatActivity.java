@@ -16,7 +16,6 @@ import com.match.client.entities.ChatMessage;
 import com.match.utils.UiUtils;
 
 import java.util.List;
-import java.util.Vector;
 
 
 /**
@@ -36,15 +35,22 @@ public class ChatActivity extends AppCompatActivity implements ChatView {
     private String idTo;
     private String idFrom;
 
+    private boolean active = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
+        this.active = true;
         loadChatParameters();
-        createGUI();
         controller = new ChatControllerImpl(this, idFrom, idTo);
-        controller.pullHistory();
+        messages = controller.getMessages();
+        createGUI();
+
+        if (messages.isEmpty()) {
+            controller.pullHistory();
+        } else {
+            controller.pullNewMessages();
+        }
     }
 
     private void sendMessage() {
@@ -57,7 +63,6 @@ public class ChatActivity extends AppCompatActivity implements ChatView {
         this.candidateName = getIntent().getExtras().getString("candidateName");
         this.idTo = getIntent().getExtras().getString("idTo");
         this.idFrom = getIntent().getExtras().getString("idFrom");
-        this.messages = new Vector<>();
     }
 
     private void createGUI() {
@@ -126,6 +131,11 @@ public class ChatActivity extends AppCompatActivity implements ChatView {
     }
 
     @Override
+    public boolean isRunning() {
+        return active;
+    }
+
+    @Override
     public void showProgress() {
         if (messages.isEmpty()) {
             this.listViewChat.setVisibility(View.GONE);
@@ -143,9 +153,23 @@ public class ChatActivity extends AppCompatActivity implements ChatView {
         this.sendMessageButton.setEnabled(Boolean.TRUE);
     }
 
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        active = true;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        active = false;
+    }
+
     @Override
     public void goToNext() {
     }
+
 
     @Override
     public void sessionExpired() {

@@ -45,14 +45,21 @@ public class ChatControllerImpl implements ChatController {
 
     @Override
     public void pullNewMessages() {
-        PullNewMessagesTask task = new PullNewMessagesTask(ServiceFactory.getChatService(), this);
-        task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, idFrom, idTo);
+        if (view.isRunning()) {
+            PullNewMessagesTask task = new PullNewMessagesTask(ServiceFactory.getChatService(), this);
+            task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, idFrom, idTo);
+        }
     }
 
     @Override
     public void setLastMessage(String idFrom, String idTo, String idMsg) {
         SetLastMessageTask task = new SetLastMessageTask(ServiceFactory.getChatService(), this);
         task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, idFrom, idTo, idMsg);
+    }
+
+    @Override
+    public List<ChatMessage> getMessages() {
+        return ServiceFactory.getUserService().getLocalUser().getChatsMessages(idTo);
     }
 
     @Override

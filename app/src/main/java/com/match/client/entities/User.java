@@ -19,6 +19,7 @@ public class User implements Serializable {
     private String age;
     private List<Interest> interests;
     private List<Chat> chats;
+    private HashMap<String, List<ChatMessage>> chatMessageHashMap;
     private Location location;
     private String photo;
 
@@ -32,6 +33,7 @@ public class User implements Serializable {
         this.interests = new Vector<>();
         this.location = new Location();
         this.chats = new Vector<>();
+        this.chatMessageHashMap = new HashMap<>();
     }
 
     public User(String name) {
@@ -41,6 +43,19 @@ public class User implements Serializable {
         this.interests = new Vector<>();
         this.chats = new Vector<>();
         this.location = new Location();
+        this.chatMessageHashMap = new HashMap<>();
+    }
+
+    public User() {
+        this.id = "";
+        this.name = "";
+        this.email = "";
+        this.alias = "";
+        this.password = "";
+        this.interests = new Vector<>();
+        this.location = new Location();
+        this.chats = new Vector<>();
+        this.chatMessageHashMap = new HashMap<>();
     }
 
     public List<Chat> getChats() {
@@ -48,6 +63,13 @@ public class User implements Serializable {
             this.chats = new Vector<>();
         }
         return this.chats;
+    }
+
+    public List<ChatMessage> getChatsMessages(String idTo) {
+        if (!chatMessageHashMap.containsKey(idTo)) {
+            chatMessageHashMap.put(idTo, new Vector<ChatMessage>());
+        }
+        return chatMessageHashMap.get(idTo);
     }
 
     public String getId() {
