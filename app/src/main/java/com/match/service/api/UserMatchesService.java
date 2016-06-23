@@ -10,12 +10,15 @@ import com.match.utils.mapper.ChatMapper;
 import com.match.utils.mapper.MatchChatMapper;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.Vector;
 
 /**
  * Created by pablo on 11/06/16.
  */
-public abstract class UserMatchesService implements MatchService{
+public abstract class UserMatchesService implements MatchService {
 
     protected Database database;
     protected ChatMapper mapper;
@@ -29,9 +32,23 @@ public abstract class UserMatchesService implements MatchService{
 
     public abstract void acceptMatch(User user, Candidate candidate) throws ServiceException;
 
-    public boolean hasSavedInformation() {
-        User user = database.getUser();
-        return !user.getLocation().isDefault();
+    protected List<Chat> filterChats(User user, List<Chat> chats) {
+        List<Chat> localChats = user.getChats();
+        if (localChats.isEmpty() || chats.isEmpty()) {
+            return chats;
+        }
+        List<Chat> result = new Vector<>();
+        Set<String> localChatsId = new HashSet<>();
+        for (Chat chat : localChats) {
+            localChatsId.add(chat.getId());
+        }
+
+        for (Chat chat : chats) {
+            if (!localChatsId.contains(chat.getId())) {
+                result.add(chat);
+            }
+        }
+        return result;
     }
 
     @Override

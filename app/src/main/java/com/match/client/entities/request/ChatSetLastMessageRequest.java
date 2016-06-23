@@ -7,11 +7,11 @@ public class ChatSetLastMessageRequest {
 
     private String idFrom;
     private String idTo;
-    private String idMsg;
+    private String idMessage;
 
-    public ChatSetLastMessageRequest(String idFrom, String idTo, String idMsg) {
+    public ChatSetLastMessageRequest(String idFrom, String idTo, String idMessage) {
         this.idFrom = idFrom;
         this.idTo = idTo;
-        this.idMsg = idMsg;
+        this.idMessage = idMessage;
     }
 }

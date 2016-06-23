@@ -1,72 +1,95 @@
 package com.match.activity.chat;
 
-import android.app.Activity;
+import android.os.AsyncTask;
 
 import com.match.client.entities.ChatMessage;
-import com.match.service.api.ChatService;
 import com.match.service.factory.ServiceFactory;
-import com.match.service.impl.ChatServiceImpl;
 import com.match.task.PullHistoryTask;
 import com.match.task.PullNewMessagesTask;
 import com.match.task.SendMessageTask;
-import com.match.task.response.ChatTaskResponse;
 import com.match.task.SetLastMessageTask;
+import com.match.task.response.ChatTaskResponse;
 
 import java.util.List;
 
 /**
  * Created by pablo on 20/06/16.
  */
-public class ChatControllerImpl implements ChatController{
+public class ChatControllerImpl implements ChatController {
 
-    private ChatActivity activity;
+    private ChatView view;
+    private String idFrom;
+    private String idTo;
 
-    public ChatControllerImpl(ChatActivity activity){
-        this.activity = activity;
-
+    public ChatControllerImpl(ChatView view, String idFrom, String idTo) {
+        this.view = view;
+        this.idFrom = idFrom;
+        this.idTo = idTo;
     }
 
     @Override
-    public void pullHistory(String idFrom, String idTo){
-        PullHistoryTask task = new PullHistoryTask(ServiceFactory.getChatService(),this);
-        activity.disableSendButton();
-        task.execute(idFrom, idTo);
+    public void pullHistory() {
+        PullHistoryTask task = new PullHistoryTask(ServiceFactory.getChatService(), this);
+        task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, idFrom, idTo);
     }
 
     @Override
-    public void sendMessage(String idFrom, String idUTo,String msg) {
-        SendMessageTask task = new SendMessageTask(ServiceFactory.getChatService(),this);
-        activity.disableSendButton();
-        task.execute(idFrom, idUTo,msg);
+    public void sendMessage(String msg) {
+        ChatMessage chatSent = new ChatMessage("", idFrom, msg);
+        view.addMessage(chatSent);
+        view.clearTextBox();
+
+        SendMessageTask task = new SendMessageTask(ServiceFactory.getChatService(), this);
+        task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, idFrom, idTo, msg);
     }
 
     @Override
-    public void pullNewMessages(String idFrom, String idUTo) {
-        PullNewMessagesTask task = new PullNewMessagesTask(ServiceFactory.getChatService(),this);
-        task.execute(idFrom, idUTo);
+    public void pullNewMessages() {
+        PullNewMessagesTask task = new PullNewMessagesTask(ServiceFactory.getChatService(), this);
+        task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, idFrom, idTo);
     }
 
     @Override
-    public void setLastMessage(String idFrom, String idUTo,String idMsg) {
-        SetLastMessageTask task = new SetLastMessageTask(ServiceFactory.getChatService(),this);
-        task.execute(idFrom, idUTo, idMsg);
+    public void setLastMessage(String idFrom, String idTo, String idMsg) {
+        SetLastMessageTask task = new SetLastMessageTask(ServiceFactory.getChatService(), this);
+        task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, idFrom, idTo, idMsg);
     }
-
 
     @Override
     public void initTask() {
-        activity.clearMessage();
+        this.view.showProgress();
     }
 
     @Override
     public void finishTask() {
-
+        this.view.hideProgress();
     }
 
     @Override
     public void onResult(Object result) {
-        ChatTaskResponse msgPull = (ChatTaskResponse) result;
-        List<ChatMessage> msgs = (List<ChatMessage>) msgPull.getResponse();
-        activity.enableSendButton();
+
+        ChatTaskResponse response = (ChatTaskResponse) result;
+        if (response.sessionExpired()) {
+            view.sessionExpired();
+        } else if (response.hasError()) {
+            this.view.onError(response.getError());
+        } else {
+            switch (response.getState()) {
+                case PULL_NEW_MSG: {
+                    List<ChatMessage> messageList = (List<ChatMessage>) response.getResponse();
+                    view.addMessages(Boolean.TRUE, messageList);
+                    break;
+                }
+                case PULL_HISTORY: {
+                    List<ChatMessage> messageList = (List<ChatMessage>) response.getResponse();
+                    view.addMessages(Boolean.FALSE, messageList);
+                    break;
+                }
+                case SET_LAST: {
+                    pullNewMessages();
+                    break;
+                }
+            }
+        }
     }
 }

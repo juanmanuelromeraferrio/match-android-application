@@ -7,35 +7,13 @@ import com.match.client.entities.ChatMessage;
  */
 public class ChatResponse {
 
-    private String id;
-    private String user;
-    private String content;
+    private ChatMessage message;
 
-    public ChatResponse(String id, String user, String content) {
-        this.id = id;
-        this.user = user;
-        this.content = content;
+    public ChatResponse(ChatMessage message) {
+        this.message = message;
     }
 
-    public String getId() {
-        return id;
+    public ChatMessage getMessage() {
+        return message;
     }
-
-    public String getUser() {
-        return user;
-    }
-
-    public String getContent() {
-        return content;
-    }
-    /*  private ChatMessage chat;
-
-    public ChatResponse(ChatMessage chat){
-        this.chat = chat;
-    }
-
-    public ChatMessage getChat(){
-        return this.chat;
-    }
- */
 }

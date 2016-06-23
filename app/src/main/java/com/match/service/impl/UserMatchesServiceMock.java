@@ -6,7 +6,6 @@ import com.match.client.entities.User;
 import com.match.error.service.ServiceException;
 import com.match.infrastructure.Database;
 import com.match.service.api.UserMatchesService;
-import com.match.utils.mapper.CandidateMapper;
 import com.match.utils.mapper.ChatMapper;
 
 import java.util.ArrayList;
@@ -25,24 +24,20 @@ public class UserMatchesServiceMock extends UserMatchesService {
     @Override
     public List<Chat> findChats(User user) throws ServiceException {
         //String id, String name, String age, Bitmap photo, String interests
-        Chat erica = new Chat("1", "Erica Atanasoff", "27", null);
-        Chat agus = new Chat("2", "Agustin Linari", "34", null);
+        Chat erica = new Chat("4", "Erica Atanasoff", "27", null);
+        Chat agus = new Chat("5", "Agustin Linari", "34", null);
 
         List<Chat> list = new ArrayList<>();
         list.add(erica);
-        list.add(erica);
-        list.add(erica);
         list.add(agus);
-        list.add(agus);
-        list.add(agus);
-        list.add(agus);
-        list.add(agus);
-        list.add(erica);
-        list.add(agus);
-        list.add(agus);
-        list.add(agus);
-        list.add(agus);
-        list.add(agus);
+        list = filterChats(user, list);
+
+        //Save Chats
+        List<Chat> userChats = user.getChats();
+        if (userChats != null) {
+            userChats.addAll(list);
+        }
+        database.setUser(user);
 
         try {
             Thread.sleep(2000);

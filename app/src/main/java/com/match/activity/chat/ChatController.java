@@ -1,17 +1,20 @@
 package com.match.activity.chat;
 
 import com.match.activity.api.BaseController;
+import com.match.client.entities.ChatMessage;
+
+import java.util.List;
 
 /**
  * Created by pablo on 20/06/16.
  */
 public interface ChatController extends BaseController {
 
-    void sendMessage(String idFrom, String idUTo,String msg);
+    void sendMessage(String msg);
 
-    void pullHistory(String idFrom, String idTo);
+    void pullHistory();
 
-    void pullNewMessages(String idFrom, String idTo);
+    void pullNewMessages();
 
     void setLastMessage(String idFrom, String idTo, String idMsg);
 

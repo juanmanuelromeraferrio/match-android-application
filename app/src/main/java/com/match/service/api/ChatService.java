@@ -19,7 +19,7 @@ public abstract class ChatService implements MatchService {
 
     public abstract List<ChatMessage> pullHistory(String idFrom, String idTo) throws ServiceException;
 
-    public abstract void pullNewMessages(String idFrom, String idTo) throws ServiceException;
+    public abstract List<ChatMessage> pullNewMessages(String idFrom, String idTo) throws ServiceException;
 
     public abstract void setLastMessage(String idFrom, String idTo, String idMsg) throws ServiceException;
 

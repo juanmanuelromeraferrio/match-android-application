@@ -1,6 +1,7 @@
 package com.match.client.entities;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
 
@@ -112,4 +113,5 @@ public class User implements Serializable {
     public void setAge(String age) {
         this.age = age;
     }
+
 }

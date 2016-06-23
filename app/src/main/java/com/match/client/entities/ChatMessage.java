@@ -38,4 +38,24 @@ public class ChatMessage implements Serializable {
         return content;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ChatMessage that = (ChatMessage) o;
+
+        if (!id.equals(that.id)) return false;
+        if (!user.equals(that.user)) return false;
+        return content.equals(that.content);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id.hashCode();
+        result = 31 * result + user.hashCode();
+        result = 31 * result + content.hashCode();
+        return result;
+    }
 }

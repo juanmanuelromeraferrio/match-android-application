@@ -10,13 +10,13 @@ import java.util.List;
  */
 public class ChatsResponse {
 
-    private List<ChatMessage> chat;
+    private List<ChatResponse> chat;
 
-    public ChatsResponse(List<ChatMessage> chat){
+    public ChatsResponse(List<ChatResponse> chat) {
         this.chat = chat;
     }
 
-    public List<ChatMessage> getChat() {
+    public List<ChatResponse> getChat() {
         return chat;
     }
 

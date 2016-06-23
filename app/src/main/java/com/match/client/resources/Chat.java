@@ -25,7 +25,7 @@ public interface Chat {
     Call<ChatsResponse> pullHistory(@Query("idUser1")String idFrom, @Query("idUser2") String idTo);
 
     @GET("chat/new")
-    Call<ChatResponse> pullNewMessages(@Query("idFrom")String idFrom,@Query("idTo") String idTo);
+    Call<ChatsResponse> pullNewMessages(@Query("idFrom")String idFrom,@Query("idTo") String idTo);
 
     @PUT("chat/last")
     Call<ChatResponse> setLastMessage(@Body ChatSetLastMessageRequest request);

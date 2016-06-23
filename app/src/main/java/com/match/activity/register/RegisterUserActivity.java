@@ -116,10 +116,6 @@ public class RegisterUserActivity extends AppCompatActivity implements RegisterU
     public void saveUser(View view) {
         String sex = getSex();
         String age = _ageEditText.getText().toString();
-/*        Bitmap.Config conf = Bitmap.Config.ARGB_4444; // see other conf types
-        Bitmap bmp = Bitmap.createBitmap(50,50, conf); // this creates a ya MUTABLE bitmap
-        Canvas canvas = new Canvas(bmp);
-        photo = bmp;*/
         controller.saveUser(photo, sex, age, location, interests);
     }
 

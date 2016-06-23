@@ -90,12 +90,6 @@ public class UserMatchesServiceImpl extends UserMatchesService {
         try {
             Response<MatchResponse> response = call.execute();
             if (response.isSuccessful()) {
-                //Save Candidates
-                List<Chat> chats = user.getChats();
-                if (chats != null) {
-                    chats.add(new Chat(candidate.getId(),candidate.getName(), candidate.getAge(), PhotoUtils.bitmapToBase64(candidate.getPhoto())));
-                }
-                this.database.setUser(user);
                 //Save Token
                 clientService.saveToken(response.headers());
             } else {
@@ -112,24 +106,6 @@ public class UserMatchesServiceImpl extends UserMatchesService {
         }
     }
 
-    private List<Chat> filterChats(User user, List<Chat> chats) {
-        List<Chat> localChats = user.getChats();
-        if (localChats.isEmpty() || chats.isEmpty()) {
-            return chats;
-        }
-        List<Chat> result = new Vector<>();
-        Set<String> localChatsId = new HashSet<>();
-        for (Chat chat : localChats) {
-            localChatsId.add(chat.getId());
-        }
-
-        for (Chat chat : chats) {
-            if (!localChatsId.contains(chat.getId())) {
-                result.add(chat);
-            }
-        }
-        return result;
-    }
 
     private List<Chat> mapToChats(CandidatesResponse candidatesResponse) {
         List<Chat> chats = new ArrayList<Chat>();

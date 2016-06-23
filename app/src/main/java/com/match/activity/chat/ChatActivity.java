@@ -1,25 +1,36 @@
 package com.match.activity.chat;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
-
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import com.match.R;
+import com.match.client.entities.ChatMessage;
+import com.match.utils.UiUtils;
+
+import java.util.List;
+import java.util.Vector;
 
 
 /**
  * Created by pablo on 20/06/16.
  */
-public class ChatActivity extends AppCompatActivity {
+public class ChatActivity extends AppCompatActivity implements ChatView {
 
     private FloatingActionButton sendMessageButton;
     private EditText msgText;
     private ChatController controller;
+    private ChatListAdapter adapter;
+    private List<ChatMessage> messages;
+    private ListView listViewChat;
+    private LinearLayout linearLayoutHeaderProgress;
 
     private String candidateName;
     private String idTo;
@@ -28,33 +39,25 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        controller = new ChatControllerImpl(this);
+
+
         loadChatParameters();
         createGUI();
-        controller.pullHistory(idFrom,idTo);
-
+        controller = new ChatControllerImpl(this, idFrom, idTo);
+        controller.pullHistory();
     }
 
     private void sendMessage() {
-        controller.sendMessage(idFrom, idTo, msgText.getText().toString());
-    }
-
-    public void clearMessage() {
-        msgText.setText("");
-    }
-
-    public void disableSendButton() {
-        sendMessageButton.setEnabled(false);
-    }
-
-    public void enableSendButton() {
-        sendMessageButton.setEnabled(true);
+        if (!msgText.getText().toString().trim().isEmpty()) {
+            controller.sendMessage(msgText.getText().toString());
+        }
     }
 
     private void loadChatParameters() {
         this.candidateName = getIntent().getExtras().getString("candidateName");
         this.idTo = getIntent().getExtras().getString("idTo");
         this.idFrom = getIntent().getExtras().getString("idFrom");
+        this.messages = new Vector<>();
     }
 
     private void createGUI() {
@@ -63,6 +66,8 @@ public class ChatActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarChat);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(candidateName);
+
+        this.linearLayoutHeaderProgress = (LinearLayout) findViewById(R.id.linlaHeaderProgress);
         //Get Buttons
         this.msgText = (EditText) findViewById(R.id.msgText);
         this.sendMessageButton = (FloatingActionButton) findViewById(R.id.sendMessageButton);
@@ -73,5 +78,82 @@ public class ChatActivity extends AppCompatActivity {
                 sendMessage();
             }
         });
+
+        this.listViewChat = (ListView) findViewById(R.id.listChat);
+        this.listViewChat.setTranscriptMode(1);
+
+        this.adapter = new ChatListAdapter(this, this.idFrom, this.messages);
+        this.listViewChat.setAdapter(adapter);
+    }
+
+    @Override
+    public synchronized void addMessages(Boolean newMessages, List<ChatMessage> chatMessages) {
+
+        // Si los mensajes son nuevos no agrego los mios
+        // Esto lo deberia hacer el servidor
+        boolean addMessages = false;
+        for (ChatMessage chat : chatMessages) {
+            if (!newMessages || chat.getUser().equals(idTo)) {
+                this.messages.add(chat);
+                addMessages = true;
+            }
+        }
+
+        if (addMessages) {
+            this.adapter.notifyDataSetChanged();
+            ChatMessage lastMessage = this.messages.get(this.messages.size() - 1);
+            controller.setLastMessage(idFrom, idTo, lastMessage.getId());
+        } else {
+            //Pido nuevos mensajes
+            controller.pullNewMessages();
+        }
+    }
+
+    @Override
+    public void onError(String error) {
+        Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public synchronized void addMessage(ChatMessage chatSent) {
+        this.messages.add(chatSent);
+        this.adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void clearTextBox() {
+        msgText.setText("");
+    }
+
+    @Override
+    public void showProgress() {
+        if (messages.isEmpty()) {
+            this.listViewChat.setVisibility(View.GONE);
+            this.msgText.setEnabled(Boolean.FALSE);
+            this.sendMessageButton.setEnabled(Boolean.FALSE);
+            this.linearLayoutHeaderProgress.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void hideProgress() {
+        this.linearLayoutHeaderProgress.setVisibility(View.GONE);
+        this.listViewChat.setVisibility(View.VISIBLE);
+        this.msgText.setEnabled(Boolean.TRUE);
+        this.sendMessageButton.setEnabled(Boolean.TRUE);
+    }
+
+    @Override
+    public void goToNext() {
+    }
+
+    @Override
+    public void sessionExpired() {
+        UiUtils.showSessionExpired(this);
+    }
+
+    @Override
+    public Context getContext() {
+        return this;
     }
 }
