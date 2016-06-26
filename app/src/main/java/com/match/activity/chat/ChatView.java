@@ -17,6 +17,4 @@ public interface ChatView extends BaseView {
     void addMessage(ChatMessage chatSent);
 
     void clearTextBox();
-
-    boolean isRunning();
 }

@@ -19,4 +19,8 @@ public interface ChatController extends BaseController {
     void setLastMessage(String idFrom, String idTo, String idMsg);
 
     List<ChatMessage> getMessages();
+
+    void cancelPullNewMessages();
+
+    void saveUser();
 }

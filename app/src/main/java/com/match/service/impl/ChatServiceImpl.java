@@ -95,7 +95,7 @@ public class ChatServiceImpl extends ChatService {
     }
 
     public List<ChatMessage> pullNewMessages(String idFrom, String idTo) throws ServiceException {
-        MatchClient matchClient = clientService.getAuthClient();
+        MatchClient matchClient = clientService.getSpeedAuthClient();
         Call<ChatsResponse> call = matchClient.chat.pullNewMessages(idFrom, idTo);
         List<ChatMessage> chatMessages = new ArrayList<>();
         try {
@@ -115,7 +115,9 @@ public class ChatServiceImpl extends ChatService {
                 }
             }
         } catch (IOException e) {
-            Log.e(Configuration.LOG, e.getLocalizedMessage());
+            if (e != null && e.getMessage() != null) {
+                Log.e(Configuration.LOG, e.getMessage());
+            }
         }
 
         return chatMessages;

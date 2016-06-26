@@ -9,9 +9,9 @@ import android.graphics.Bitmap;
 public class PhotoTaskResponse {
 
     private String idCandidatePhoto;
-    private Bitmap photo;
+    private String photo;
 
-    public PhotoTaskResponse(String idCandidatePhoto, Bitmap photo) {
+    public PhotoTaskResponse(String idCandidatePhoto, String photo) {
         this.idCandidatePhoto = idCandidatePhoto;
         this.photo = photo;
     }
@@ -20,7 +20,7 @@ public class PhotoTaskResponse {
         return idCandidatePhoto;
     }
 
-    public Bitmap getPhoto() {
+    public String getPhoto() {
         return photo;
     }
 }

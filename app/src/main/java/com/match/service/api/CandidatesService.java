@@ -29,7 +29,7 @@ public abstract class CandidatesService implements MatchService {
 
     public abstract void voteNo(String userId, String candidateID) throws ServiceException;
 
-    public abstract Bitmap findPhoto(String id) throws ServiceException;
+    public abstract String findPhoto(String id) throws ServiceException;
 
     @Override
     public ServiceType getType() {

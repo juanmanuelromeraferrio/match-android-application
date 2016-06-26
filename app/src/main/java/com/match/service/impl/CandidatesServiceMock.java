@@ -76,7 +76,7 @@ public class CandidatesServiceMock extends CandidatesService {
     }
 
     @Override
-    public Bitmap findPhoto(String id) {
+    public String findPhoto(String id) {
         return null;
     }
 

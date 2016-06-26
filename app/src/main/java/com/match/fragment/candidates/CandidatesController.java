@@ -5,6 +5,8 @@ import com.match.client.entities.Candidate;
 import com.match.client.entities.User;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
 
 /**
  * Created by Juan Manuel Romera on 22/5/2016.
@@ -23,4 +25,5 @@ public interface CandidatesController extends BaseController {
 
     boolean isFindingCandidates();
 
+    List<Candidate> getCandidates();
 }

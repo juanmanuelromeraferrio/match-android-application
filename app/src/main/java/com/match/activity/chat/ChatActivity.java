@@ -35,12 +35,9 @@ public class ChatActivity extends AppCompatActivity implements ChatView {
     private String idTo;
     private String idFrom;
 
-    private boolean active = false;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.active = true;
         loadChatParameters();
         controller = new ChatControllerImpl(this, idFrom, idTo);
         messages = controller.getMessages();
@@ -49,7 +46,7 @@ public class ChatActivity extends AppCompatActivity implements ChatView {
         if (messages.isEmpty()) {
             controller.pullHistory();
         } else {
-            controller.pullNewMessages();
+            scroolListViewToBottom();
         }
     }
 
@@ -91,6 +88,15 @@ public class ChatActivity extends AppCompatActivity implements ChatView {
         this.listViewChat.setAdapter(adapter);
     }
 
+    private void scroolListViewToBottom() {
+        listViewChat.post(new Runnable() {
+            @Override
+            public void run() {
+                listViewChat.setSelection(adapter.getCount() - 1);
+            }
+        });
+    }
+
     @Override
     public synchronized void addMessages(Boolean newMessages, List<ChatMessage> chatMessages) {
 
@@ -99,7 +105,7 @@ public class ChatActivity extends AppCompatActivity implements ChatView {
         boolean addMessages = false;
         for (ChatMessage chat : chatMessages) {
             if (!newMessages || chat.getUser().equals(idTo)) {
-                this.messages.add(chat);
+                addMessageAndSave(chat);
                 addMessages = true;
             }
         }
@@ -109,9 +115,13 @@ public class ChatActivity extends AppCompatActivity implements ChatView {
             ChatMessage lastMessage = this.messages.get(this.messages.size() - 1);
             controller.setLastMessage(idFrom, idTo, lastMessage.getId());
         } else {
-            //Pido nuevos mensajes
-            controller.pullNewMessages();
+            controller.setLastMessage(idFrom, idTo, "");
         }
+    }
+
+    private void addMessageAndSave(ChatMessage chat) {
+        this.messages.add(chat);
+        this.controller.saveUser();
     }
 
     @Override
@@ -121,18 +131,13 @@ public class ChatActivity extends AppCompatActivity implements ChatView {
 
     @Override
     public synchronized void addMessage(ChatMessage chatSent) {
-        this.messages.add(chatSent);
+        addMessageAndSave(chatSent);
         this.adapter.notifyDataSetChanged();
     }
 
     @Override
     public void clearTextBox() {
         msgText.setText("");
-    }
-
-    @Override
-    public boolean isRunning() {
-        return active;
     }
 
     @Override
@@ -157,13 +162,13 @@ public class ChatActivity extends AppCompatActivity implements ChatView {
     @Override
     public void onStart() {
         super.onStart();
-        active = true;
+        controller.pullNewMessages();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        active = false;
+        controller.cancelPullNewMessages();
     }
 
     @Override

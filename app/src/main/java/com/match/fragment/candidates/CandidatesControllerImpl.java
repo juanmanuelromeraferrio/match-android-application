@@ -71,12 +71,17 @@ public class CandidatesControllerImpl implements CandidatesController {
 
     public void getPhoto(Candidate candidate) {
         GetPhotoTask task = new GetPhotoTask(candidatesService, this);
-        task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, candidate.getId());
+        task.execute(candidate.getId());
     }
 
     @Override
     public boolean isFindingCandidates() {
         return isFindingCandidates;
+    }
+
+    @Override
+    public List<Candidate> getCandidates() {
+        return ServiceFactory.getUserService().getLocalUser().getCandidates();
     }
 
     private void executeSendVoteTask(Candidate candidate, CandidateVote vote) {

@@ -13,6 +13,8 @@ public interface ClientService {
 
     MatchClient getAuthClient();
 
+    MatchClient getSpeedAuthClient();
+
     MatchClient getClient();
 
     void saveToken(Headers headers);

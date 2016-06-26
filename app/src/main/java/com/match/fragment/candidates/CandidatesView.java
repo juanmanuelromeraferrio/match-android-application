@@ -23,5 +23,5 @@ public interface CandidatesView extends BaseView {
 
     void showMatch(final Candidate candidate);
 
-    void loadPhoto(String idCandidatePhoto, Bitmap photo);
+    void loadPhoto(String idCandidatePhoto, String photo);
 }

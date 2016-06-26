@@ -19,6 +19,7 @@ public class User implements Serializable {
     private String age;
     private List<Interest> interests;
     private List<Chat> chats;
+    private List<Candidate> candidates;
     private HashMap<String, List<ChatMessage>> chatMessageHashMap;
     private Location location;
     private String photo;
@@ -33,6 +34,7 @@ public class User implements Serializable {
         this.interests = new Vector<>();
         this.location = new Location();
         this.chats = new Vector<>();
+        this.candidates = new Vector<>();
         this.chatMessageHashMap = new HashMap<>();
     }
 
@@ -42,6 +44,7 @@ public class User implements Serializable {
         this.alias = email;
         this.interests = new Vector<>();
         this.chats = new Vector<>();
+        this.candidates = new Vector<>();
         this.location = new Location();
         this.chatMessageHashMap = new HashMap<>();
     }
@@ -55,6 +58,7 @@ public class User implements Serializable {
         this.interests = new Vector<>();
         this.location = new Location();
         this.chats = new Vector<>();
+        this.candidates = new Vector<>();
         this.chatMessageHashMap = new HashMap<>();
     }
 
@@ -136,4 +140,7 @@ public class User implements Serializable {
         this.age = age;
     }
 
+    public List<Candidate> getCandidates() {
+        return candidates;
+    }
 }

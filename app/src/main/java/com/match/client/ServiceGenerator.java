@@ -73,4 +73,34 @@ public class ServiceGenerator {
 
         return retrofit;
     }
+
+
+    public static Retrofit authorizationSpeedRetrofit(final String token) {
+        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+        httpClient.readTimeout(5, TimeUnit.SECONDS);
+        httpClient.connectTimeout(5, TimeUnit.SECONDS);
+        httpClient.writeTimeout(5, TimeUnit.SECONDS);
+        httpClient.addInterceptor(new Interceptor() {
+            @Override
+            public Response intercept(Chain chain) throws IOException {
+                Request original = chain.request();
+                Request request = original.newBuilder()
+                        .header(Configuration.TOKEN_REQUEST, token)
+                        .header("Access-Control-Allow-Origin", "*")
+                        .header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
+                        .build();
+
+                return chain.proceed(request);
+            }
+        });
+
+        OkHttpClient client = httpClient.build();
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(Configuration.DEFAULT_API_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(client)
+                .build();
+
+        return retrofit;
+    }
 }

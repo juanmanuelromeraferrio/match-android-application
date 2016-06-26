@@ -4,6 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.util.Base64;
 
 import com.match.MatchApplication;
@@ -37,6 +40,16 @@ public class PhotoUtils {
         return bm;
     }
 
+    public static Bitmap scaleBitmap(Bitmap bitmap, int wantedWidth, int wantedHeight) {
+        Bitmap output = Bitmap.createBitmap(wantedWidth, wantedHeight, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(output);
+        Matrix m = new Matrix();
+        m.setScale((float) wantedWidth / bitmap.getWidth(), (float) wantedHeight / bitmap.getHeight());
+        canvas.drawBitmap(bitmap, m, new Paint());
+
+        return output;
+    }
+
     public static String bitmapToBase64(Bitmap bitmap) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
@@ -57,9 +70,9 @@ public class PhotoUtils {
         try {
             InputStream inputStream = context.getContentResolver().openInputStream(data.getData());
             Bitmap photo = BitmapFactory.decodeStream(inputStream);
-            Bitmap bitmapResized = resizeImage(photo, PhotoUtils.PHOTO_WIDHT_MAX, PhotoUtils.PHOTO_HEIGHT_MAX);
+            Bitmap bitmapResized = scaleBitmap(photo, PhotoUtils.PHOTO_WIDHT_MAX, PhotoUtils.PHOTO_HEIGHT_MAX);
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            bitmapResized.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+            bitmapResized.compress(Bitmap.CompressFormat.JPEG, 80, bos);
             byte[] bitmapArray = bos.toByteArray();
             return BitmapFactory.decodeByteArray(bitmapArray, 0, bitmapArray.length);
 
@@ -71,6 +84,7 @@ public class PhotoUtils {
 
         return null;
     }
+
 
 }
 

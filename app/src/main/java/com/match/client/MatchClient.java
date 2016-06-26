@@ -21,6 +21,7 @@ public class MatchClient {
     public Matches matches;
     public Chat chat;
     private Boolean auth = Boolean.FALSE;
+    private Boolean speed = Boolean.FALSE;
     private String token;
 
     public MatchClient() {
@@ -31,6 +32,10 @@ public class MatchClient {
             this.token = token;
             this.auth = Boolean.TRUE;
         }
+    }
+
+    public void setSpeed(Boolean speed) {
+        this.speed = speed;
     }
 
     public void build() {
@@ -44,7 +49,11 @@ public class MatchClient {
 
     private Retrofit getRetrofit() {
         if (auth) {
-            return ServiceGenerator.authorizationRetrofit(token);
+            if (speed) {
+                return ServiceGenerator.authorizationSpeedRetrofit(token);
+            } else {
+                return ServiceGenerator.authorizationRetrofit(token);
+            }
         } else {
             return ServiceGenerator.defaultRetrofit();
         }

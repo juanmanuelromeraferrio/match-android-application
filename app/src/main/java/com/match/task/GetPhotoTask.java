@@ -27,7 +27,7 @@ public class GetPhotoTask extends AsyncTask<Object, Void, TaskResponse> {
     protected TaskResponse doInBackground(Object... params) {
         CandidateTaskResponse response = new CandidateTaskResponse(CandidateTaskState.GET_PHOTO);
         String candidateID = (String) params[0];
-        Bitmap photo = null;
+        String photo = null;
         try {
             photo = candidatesService.findPhoto(candidateID);
         } catch (ServiceException e) {

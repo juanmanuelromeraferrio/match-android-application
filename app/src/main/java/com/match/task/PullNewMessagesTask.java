@@ -8,8 +8,10 @@ import com.match.error.service.ServiceException;
 import com.match.service.api.ChatService;
 import com.match.task.response.ChatTaskResponse;
 import com.match.task.response.TaskResponse;
+import com.match.utils.Configuration;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by pablo on 20/06/16.
@@ -29,6 +31,11 @@ public class PullNewMessagesTask extends AsyncTask<String, Void, TaskResponse> {
         ChatTaskResponse response = new ChatTaskResponse(ChatTaskState.PULL_NEW_MSG);
         String idFrom = (String) params[0];
         String idTo = (String) params[1];
+
+        try {
+            TimeUnit.SECONDS.sleep(Configuration.CHAT_TIME_REFRESH);
+        } catch (InterruptedException e) {
+        }
 
         try {
             List<ChatMessage> chatMessages = chatService.pullNewMessages(idFrom, idTo);

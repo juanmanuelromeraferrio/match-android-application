@@ -28,6 +28,16 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
+    public MatchClient getSpeedAuthClient() {
+        String token = database.getToken();
+        MatchClient matchClient = new MatchClient();
+        matchClient.setToken(token);
+        matchClient.setSpeed(Boolean.TRUE);
+        matchClient.build();
+        return matchClient;
+    }
+
+    @Override
     public MatchClient getClient() {
         MatchClient matchClient = new MatchClient();
         matchClient.build();

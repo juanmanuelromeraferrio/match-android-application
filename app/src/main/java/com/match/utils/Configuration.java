@@ -15,5 +15,5 @@ public class Configuration {
     public static final String TOKEN_REQUEST = "token";
     public static final String MATCHED_RESPONSE = "matched";
     public static final int HTTP_CODE_FORBIDDEN = 403;
-
+    public static final long CHAT_TIME_REFRESH = 1;
 }

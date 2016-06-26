@@ -2,20 +2,22 @@ package com.match.client.entities;
 
 import android.graphics.Bitmap;
 
+import com.match.utils.PhotoUtils;
+
 import java.io.Serializable;
 
 /**
  * Created by Juan Manuel Romera on 25/5/2016.
  */
-public class Candidate implements Serializable{
+public class Candidate implements Serializable {
 
     private String id;
     private String name;
     private String age;
-    private Bitmap photo;
+    private String photo;
     private String interests;
 
-    public Candidate(String id, String name, String age, Bitmap photo, String interests) {
+    public Candidate(String id, String name, String age, String photo, String interests) {
         this.id = id;
         this.name = name;
         this.age = age;
@@ -31,7 +33,7 @@ public class Candidate implements Serializable{
         return name;
     }
 
-    public Bitmap getPhoto() {
+    public String getPhoto() {
         return photo;
     }
 
@@ -39,7 +41,7 @@ public class Candidate implements Serializable{
         return interests;
     }
 
-    public void setPhoto(Bitmap photo) {
+    public void setPhoto(String photo) {
         this.photo = photo;
     }
 
@@ -48,7 +50,7 @@ public class Candidate implements Serializable{
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return getName();
     }
 

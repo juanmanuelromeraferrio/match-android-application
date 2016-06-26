@@ -26,8 +26,11 @@ import com.match.service.factory.ServiceFactory;
 import com.match.utils.UiUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by Juan Manuel Romera Ferrio on 26/10/16.
@@ -36,7 +39,8 @@ public class HomeFragment extends Fragment implements CandidatesView {
 
     private static final String TAG = "HomeFragment";
 
-    private Vector<Candidate> candidates;
+    private List<Candidate> candidates;
+    private Map<String, String> photos;
 
     private CandidateViewHolder candidateViewHolder;
     private TextView emptyView;
@@ -63,9 +67,11 @@ public class HomeFragment extends Fragment implements CandidatesView {
         candidateViewHolder = new CandidateViewHolder(mainView);
         linearLayoutHeaderProgress = (LinearLayout) mainView.findViewById(R.id.linlaHeaderProgress);
 
+        photos = new ConcurrentHashMap<>();
+
         // ListView
         emptyView = (TextView) mainView.findViewById(R.id.empty_view);
-        candidates = new Vector<>();
+        candidates = controller.getCandidates();
 
         //Buttons
         buttonYes = (ImageButton) mainView.findViewById(R.id.yesButton);
@@ -93,7 +99,13 @@ public class HomeFragment extends Fragment implements CandidatesView {
         });
         reloadButton.setEnabled(Boolean.FALSE);
 
-        controller.findCandidates();
+        if (candidates.isEmpty()) {
+            controller.findCandidates();
+        } else {
+            findAllPhotos(candidates);
+            refreshCandidate();
+        }
+
         return mainView;
     }
 
@@ -177,13 +189,23 @@ public class HomeFragment extends Fragment implements CandidatesView {
 
     @Override
     public void addCandidates(List<Candidate> candidates) {
+        findAllPhotos(candidates);
         this.candidates.addAll(candidates);
         refreshCandidate();
     }
 
+    private void findAllPhotos(List<Candidate> candidates) {
+        for (Candidate candidate : candidates) {
+            if (candidate.getPhoto() == null) {
+                this.controller.getPhoto(candidate);
+            }
+        }
+    }
+
     @Override
     public void removeCurrentCandidate() {
-        this.candidates.remove(0);
+        Candidate remove = this.candidates.remove(0);
+        this.photos.remove(remove.getId());
         refreshCandidate();
 
     }
@@ -232,11 +254,13 @@ public class HomeFragment extends Fragment implements CandidatesView {
     }
 
     @Override
-    public void loadPhoto(String idCandidatePhoto, Bitmap photo) {
+    public void loadPhoto(String idCandidatePhoto, String photo) {
         if (!this.candidates.isEmpty()) {
-            String currentId = candidates.get(0).getId();
-            if (currentId.equals(idCandidatePhoto)) {
-                candidateViewHolder.loadPhoto(photo);
+            Candidate candidate = candidates.get(0);
+            if (candidate.getId().equals(idCandidatePhoto)) {
+                candidateViewHolder.loadPhoto(candidate, photo);
+            } else {
+                photos.put(idCandidatePhoto, photo);
             }
         }
     }
@@ -244,8 +268,10 @@ public class HomeFragment extends Fragment implements CandidatesView {
     private void refreshCandidate() {
         if (!this.candidates.isEmpty()) {
             Candidate candidate = this.candidates.get(0);
-            this.controller.getPhoto(candidate);
             candidateViewHolder.loadCandidate(candidate);
+            if (photos.containsKey(candidate.getId())) {
+                candidateViewHolder.loadPhoto(candidate, photos.get(candidate.getId()));
+            }
         }
         finishLoadingCandidates();
     }

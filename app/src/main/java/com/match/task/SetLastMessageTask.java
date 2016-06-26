@@ -11,12 +11,12 @@ import com.match.task.response.TaskResponse;
 /**
  * Created by pablo on 20/06/16.
  */
-public class SetLastMessageTask extends AsyncTask<String,Void, TaskResponse> {
+public class SetLastMessageTask extends AsyncTask<String, Void, TaskResponse> {
 
     private final ChatService chatService;
     private final BaseController controller;
 
-    public SetLastMessageTask(ChatService chatService, BaseController controller){
+    public SetLastMessageTask(ChatService chatService, BaseController controller) {
         this.chatService = chatService;
         this.controller = controller;
     }
@@ -28,13 +28,17 @@ public class SetLastMessageTask extends AsyncTask<String,Void, TaskResponse> {
         String idTo = (String) params[1];
         String idMsg = (String) params[2];
 
-        try {
-            chatService.setLastMessage(idFrom,idTo, idMsg);
-        } catch (ServiceException e) {
-            response.setError(e.getMessage());
-            response.setSessionExpired(e.isSessionExpired());
-            return response;
+        if (!idMsg.isEmpty()) {
+            try {
+                chatService.setLastMessage(idFrom, idTo, idMsg);
+            } catch (ServiceException e) {
+                response.setError(e.getMessage());
+                response.setSessionExpired(e.isSessionExpired());
+                return response;
+            }
         }
+
+
         return response;
     }
 

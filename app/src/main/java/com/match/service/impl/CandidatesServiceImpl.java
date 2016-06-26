@@ -129,7 +129,7 @@ public class CandidatesServiceImpl extends CandidatesService {
     }
 
     @Override
-    public Bitmap findPhoto(String id) throws ServiceException {
+    public String findPhoto(String id) throws ServiceException {
         MatchClient matchClient = clientService.getAuthClient();
         Call<PhotoResponse> call = matchClient.users.getPhoto(id);
 
@@ -138,10 +138,9 @@ public class CandidatesServiceImpl extends CandidatesService {
             if (response.isSuccessful()) {
                 // Get Photo
                 PhotoResponse photoResponse = response.body();
-                Bitmap picture = PhotoUtils.base64ToBitmap(photoResponse.getPhoto());
                 //Save Token
                 clientService.saveToken(response.headers());
-                return picture;
+                return photoResponse.getPhoto();
             } else {
                 Boolean sessionExpired = ErrorUtils.sessionExpired(response);
                 if (sessionExpired) {
