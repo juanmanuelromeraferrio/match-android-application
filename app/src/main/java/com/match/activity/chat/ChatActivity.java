@@ -105,7 +105,7 @@ public class ChatActivity extends AppCompatActivity implements ChatView {
         boolean addMessages = false;
         for (ChatMessage chat : chatMessages) {
             if (!newMessages || chat.getUser().equals(idTo)) {
-                addMessageAndSave(chat);
+                addMessageAndSave(chat, Boolean.TRUE);
                 addMessages = true;
             }
         }
@@ -114,14 +114,23 @@ public class ChatActivity extends AppCompatActivity implements ChatView {
             this.adapter.notifyDataSetChanged();
             ChatMessage lastMessage = this.messages.get(this.messages.size() - 1);
             controller.setLastMessage(idFrom, idTo, lastMessage.getId());
+            scroolListViewToBottom();
         } else {
             controller.setLastMessage(idFrom, idTo, "");
         }
     }
 
-    private void addMessageAndSave(ChatMessage chat) {
-        this.messages.add(chat);
-        this.controller.saveUser();
+    private void addMessageAndSave(ChatMessage chat, Boolean checkExists) {
+        if (checkExists) {
+            if (!this.messages.contains(chat)) {
+                this.messages.add(chat);
+                this.controller.saveUser();
+            }
+        } else {
+            this.messages.add(chat);
+            this.controller.saveUser();
+        }
+
     }
 
     @Override
@@ -131,7 +140,7 @@ public class ChatActivity extends AppCompatActivity implements ChatView {
 
     @Override
     public synchronized void addMessage(ChatMessage chatSent) {
-        addMessageAndSave(chatSent);
+        addMessageAndSave(chatSent, Boolean.FALSE);
         this.adapter.notifyDataSetChanged();
     }
 
@@ -143,10 +152,10 @@ public class ChatActivity extends AppCompatActivity implements ChatView {
     @Override
     public void showProgress() {
         if (messages.isEmpty()) {
+            this.linearLayoutHeaderProgress.setVisibility(View.VISIBLE);
             this.listViewChat.setVisibility(View.GONE);
             this.msgText.setEnabled(Boolean.FALSE);
             this.sendMessageButton.setEnabled(Boolean.FALSE);
-            this.linearLayoutHeaderProgress.setVisibility(View.VISIBLE);
         }
     }
 
